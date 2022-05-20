@@ -1,0 +1,40 @@
+{
+    "name": "react-common-public",
+    "version": "1.0.0",
+    "description": "Public repo of React libraries useful to developers of MODE applications.",
+    "main": "index.js",
+    "dependencies": {
+        "typescript": "^4.6.4"
+    },
+    "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^5.8.1",
+        "@typescript-eslint/parser": "^5.8.1",
+        "eslint": "^8.5.0",
+        "eslint-config-airbnb": "^19.0.4",
+        "eslint-config-prettier": "^8.3.0",
+        "eslint-plugin-import": "^2.25.3",
+        "eslint-plugin-jsx-a11y": "^6.5.1",
+        "eslint-plugin-node": "^11.1.0",
+        "eslint-plugin-prettier": "^4.0.0",
+        "eslint-plugin-promise": "^6.0.0",
+        "eslint-plugin-react": "^7.28.0",
+        "eslint-plugin-react-hooks": "^4.3.0",
+        "typescript": "^4.5.4"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/moderepo/react-common-public.git"
+    },
+    "keywords": [
+        "mode"
+    ],
+    "author": "Mode",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/moderepo/react-common-public/issues"
+    },
+    "homepage": "https://github.com/moderepo/react-common-public#readme"
+}
