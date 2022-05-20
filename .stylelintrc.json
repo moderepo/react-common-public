@@ -1,0 +1,61 @@
+{
+    "extends": ["stylelint-config-standard"],
+    "plugins": [
+        "stylelint-order"
+    ],
+    "rules": {
+        "string-quotes": [
+            "single",
+            {
+                "severity": "error"
+            }
+        ],
+        "max-empty-lines": [
+            3,
+            {
+                "severity": "error"
+            }
+        ],
+        "indentation": [
+            4,
+            {
+                "severity": "error"
+            }
+        ],
+        "max-nesting-depth": [
+            3,
+            {
+                "severity": "error"
+            }
+        ],
+        "rule-empty-line-before": [
+            "always",
+            {
+                "ignore": ["after-comment", "first-nested", "inside-block"]
+            }
+        ],
+        "at-rule-empty-line-before": [
+            "always",
+            {
+                "ignore": [
+                    "after-comment",
+                    "first-nested",
+                    "inside-block",
+                    "blockless-after-same-name-blockless",
+                    "blockless-after-blockless"
+                ]
+            }
+        ],
+        "order/order": ["custom-properties", "declarations"],
+        "number-leading-zero": [
+            "always",
+            {
+                "severity": "error"
+            }
+        ],
+        "selector-max-id": [1],
+        "named-grid-areas-no-invalid": null,
+        "value-keyword-case": null,
+        "declaration-colon-space-before": null
+    }
+}
