@@ -1,0 +1,50 @@
+{
+    "name": "@moderepo/mode-data-state-robot-cloud",
+    "version": "0.0.037",
+    "description": "Module for managing Data states globally for mode ROBOT CLOUD applications",
+    "scripts": {
+        "build": "tsc"
+    },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/moderepo/react-common-public.git",
+        "directory": "mode-data-state-robot-cloud"
+    },
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "files": [
+        "dist"
+    ],
+    "keywords": [
+        "Mode",
+        "data",
+        "state"
+    ],
+    "author": "MODE Inc.",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/moderepo/react-common-public/issues"
+    },
+    "homepage": "https://github.com/moderepo/react-common-public#readme",
+    "dependencies": {
+        "@moderepo/mode-apis": "^0.1.88",
+        "@moderepo/mode-data-state-base": "0.0.25",
+        "immer": "^9.0.7",
+        "re-reselect": "^4.0.0",
+        "reselect": "^4.1.5"
+    },
+    "devDependencies": {
+        "@types/react": "^17.0.38",
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2",
+        "typescript": "^4.5.4"
+    },
+    "peerDependencies": {
+        "react": ">=17.0.2",
+        "react-dom": ">=17.0.2",
+        "@moderepo/mode-apis": ">=0.1.88"
+    }
+}

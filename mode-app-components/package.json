@@ -1,0 +1,72 @@
+{
+    "name": "@moderepo/mode-app-components",
+    "version": "0.0.1262",
+    "description": "Components that can be used for implementing MODE applications",
+    "scripts": {
+        "build": "tsc"
+    },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/moderepo/react-common-public.git",
+        "directory": "mode-app-components"
+    },
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "files": [
+        "dist"
+    ],
+    "author": "MODE Inc.",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/moderepo/react-common-public/issues"
+    },
+    "homepage": "https://github.com/moderepo/react-common-public#readme",
+    "dependencies": {
+        "@amcharts/amcharts4": "^4.10.18",
+        "@fortawesome/fontawesome-free": "^5.15.4",
+        "@material-ui/core": "^4.12.3",
+        "@material-ui/icons": "^4.11.2",
+        "@material-ui/lab": "^4.0.0-alpha.60",
+        "@material-ui/pickers": "^3.3.10",
+        "@moderepo/mode-apis": "^0.1.88",
+        "@moderepo/mode-data-state-robot-cloud": "0.0.37",
+        "@moderepo/mode-data-state-user-app": "0.0.34",
+        "@moderepo/mode-ui-state": "0.0.13",
+        "@types/react": "^17.0.38",
+        "@types/react-dom": "^17.0.11",
+        "clsx": "^1.1.1",
+        "debug": "^4.3.3",
+        "deepmerge": "^4.2.2",
+        "immer": "^9.0.7",
+        "material-icons": "^1.10.4",
+        "moment": "^2.29.2",
+        "react-draggable": "^4.4.4",
+        "react-helmet": "^6.1.0",
+        "react-scripts": "^5.0.0",
+        "sass": "^1.45.1",
+        "typeface-roboto": "^1.1.13",
+        "use-debounce": "^7.0.1",
+        "web-vitals": "^2.1.2"
+    },
+    "devDependencies": {
+        "react": "^17.0.2",
+        "react-dom": "^17.0.2",
+        "react-router-dom": "^5.2.0",
+        "typescript": "^4.5.4"
+    },
+    "peerDependencies": {
+        "react": ">=17.0.2",
+        "react-dom": ">=17.0.2",
+        "@material-ui/core": ">=4.12.3",
+        "@material-ui/icons": ">=4.11.2",
+        "react-router-dom": ">=5.2.0",
+        "use-debounce": ">=7.0.1",
+        "@moderepo/mode-apis": ">=0.1.88",
+        "@moderepo/mode-data-state-robot-cloud": "0.0.37",
+        "@moderepo/mode-data-state-user-app": "0.0.34",
+        "@moderepo/mode-ui-state": ">=0.0.13"
+    }
+}

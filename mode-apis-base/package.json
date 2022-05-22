@@ -1,0 +1,37 @@
+{
+    "name": "@moderepo/mode-apis-base",
+    "version": "0.0.52",
+    "description": "Classes, Models, and utils for all MODE apis",
+    "scripts": {
+        "build": "tsc"
+    },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/moderepo/react-common-public.git",
+        "directory": "mode-apis-base"
+    },
+    "keywords": [
+        "MODE",
+        "apis"
+    ],
+    "author": "MODE Inc",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/moderepo/react-common-public/issues"
+    },
+    "homepage": "https://github.com/moderepo/react-common-public#readme",
+    "files": [
+        "dist"
+    ],
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "dependencies": {
+        "axios": "^0.24.0"
+    },
+    "devDependencies": {
+        "typescript": "^4.5.4"
+    }
+}
