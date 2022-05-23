@@ -1,6 +1,6 @@
 {
     "name": "@moderepo/mode-ui-state",
-    "version": "0.0.013",
+    "version": "0.1.1",
     "description": "Module for managing UI states e.g. Drawer Menu, Alert, Dialog, etc...",
     "scripts": {
         "build": "tsc"
