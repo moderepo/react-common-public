@@ -235,6 +235,10 @@ export interface Alert {
     // ALERTING -> RECOVERED or INEFFECTIVE or OBSOLETE
     readonly state: AlertState;
 
+    readonly entityId: string;
+    readonly description: string;
+    readonly severity: AlertSeverity;
+
     readonly invocationTimestamp: string;
     readonly recoveryTimestamp?: string;
 }
