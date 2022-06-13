@@ -226,40 +226,10 @@ export enum AlertState {
     INEFFECTIVE = 4,
 }
 
-
-export interface AlertEvaluation {
-    // Snapshot of an AlertCondition taken when it is evaluated.
-    readonly condition: AlertCondition;
-    readonly description: string;
-    readonly entityId: string;
-    readonly severity: AlertSeverity;
-}
-
-
-export interface MetricsAlertEvaluation extends AlertEvaluation {
-    readonly condition: MetricsAlertCondition;
-
-    // A metric is determined by entityClass, metricsDefinitionId and metricName
-    readonly entityClass: string;
-    readonly metricsDefinitionId: string;
-    readonly metricName: string;
-
-    // beginTime and endTime represent the time range against which the alert condition is evaluated
-    readonly beginTime: string;
-    readonly endTime: string;
-}
-
-
-export interface MetricsThresholdAlertEvaluation extends MetricsAlertEvaluation {
-    readonly condition: MetricsThresholdAlertCondition;
-
-    // the value that is evaluated against a condition when the condition is bleached.
-    readonly evaluatedValue: number;
-}
-
-
 export interface Alert {
     readonly id: string;
+
+    readonly condition: AlertCondition;
 
     readonly projectId: number;
 
@@ -267,11 +237,30 @@ export interface Alert {
     // ALERTING -> RECOVERED or INEFFECTIVE or OBSOLETE
     readonly state: AlertState;
 
-    readonly evaluation: AlertEvaluation;
+    readonly entityId: string;
+    readonly description: string;
+    readonly severity: AlertSeverity;
+
     readonly invocationTimestamp: string;
     readonly recoveryTimestamp?: string;
 }
 
+export interface MetricAlert extends Alert {
+    readonly condition: MetricsAlertCondition;
+
+    // A metric is determined by entityClass, metricsDefinitionId and metricName
+    readonly entityClass: string;
+    readonly metricsDefinitionId: string;
+    readonly metricName: string;
+}
+
+export interface MetricThresholdAlert extends MetricAlert {
+    readonly condition: MetricsThresholdAlertCondition;
+}
+
+export interface MetricHeartbeatAlert extends MetricAlert {
+    readonly condition: MetricsHeartbeatAlertCondition;
+}
 
 /**
  * The filter options that the Fetch alerts API support
