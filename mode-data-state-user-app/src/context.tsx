@@ -43,6 +43,9 @@ import {
 import {
     initialDeviceConfigSchemasState,
 } from './deviceConfigSchemasState';
+import {
+    initialAlertingState,
+} from './alertingState';
 
 
 export interface UserAppDataContext {
@@ -66,6 +69,7 @@ export const initialUserAppDataState: UserAppDataState = {
     timeSeriesState    : initialTimeSeriesState,
     homeVideosState    : initialHomeVideosState,
     entities           : initialEntitiesState,
+    alerting           : initialAlertingState,
     deviceConfigSchemas: initialDeviceConfigSchemasState,
 };
 

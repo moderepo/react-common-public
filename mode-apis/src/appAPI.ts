@@ -7,7 +7,7 @@ import {
     TimeSeriesCollectionRange, TimeSeriesCollectionExportedUrl, BaseAPI, RequestMethod, MemberRole, VideoInfo, SortOrder, TimeSeriesExportInfo,
     TimeSeriesRawData, TimeSeriesCollectionRawData, createFormData, PaginationDataSet, DATA_RANGE_HEADER_KEY, parseDataRange, Entity,
     FetchEntityFilters, EntityClass, UpdateEntityParams, CreateEntityParams, TimeSeriesResolution, UpdatableHomeDeviceProps,
-    DeviceConfigFirmwareSchema,
+    DeviceConfigFirmwareSchema, AlertRule, FetchAlertRulesFilters, CreateAlertRuleParams, UpdateAlertRuleParams,
 } from '@moderepo/mode-apis-base';
 import {
     AUTHORIZATION_KEY, AUTHORIZATION_KEY_PREFIX, UserLoginInfo, UserSessionInfo,
@@ -1147,6 +1147,75 @@ export class AppAPI extends BaseAPI {
         }, projectApiKey ? {
             [AUTHORIZATION_KEY]: `${AUTHORIZATION_KEY_PREFIX} ${projectApiKey}`,
         } : undefined);
+    }
+
+
+
+    /**
+     * Get a list of alert rules
+     * @param projectId
+     * @param entityId
+     * @returns
+     */
+    public async getAlertRules (projectId: number, filters: FetchAlertRulesFilters): Promise<PaginationDataSet<AlertRule>> {
+        const response = await this.sendRequest(RequestMethod.GET, `/projects/${projectId}/alertRules`, filters);
+
+        if (response.data instanceof Array) {
+            const range = parseDataRange(response.headers[DATA_RANGE_HEADER_KEY]);
+            return {
+                range,
+                items: response.data as readonly AlertRule[],
+            };
+        }
+
+        return {
+            range: {
+                start: 0, end: 0, total: 0,
+            },
+            items: [],
+        };
+    }
+
+
+    /**
+     * Get 1 alert rule by id
+     * @param projectId
+     * @param alertRuleId
+     */
+    public async getAlertRuleById (projectId: number, alertRuleId: number): Promise<AlertRule> {
+        const response = await this.sendRequest(RequestMethod.GET, `/projects/${projectId}/alertRules/${alertRuleId}`);
+        return response.data as AlertRule;
+    }
+
+
+    /**
+     * Create an entity
+     * @param projectId
+     * @param params
+     */
+    public async createAlertRule (projectId: number, params: CreateAlertRuleParams): Promise<void> {
+        await this.sendRequest(RequestMethod.POST, `/projects/${projectId}/alertRules`, params);
+    }
+
+
+    /**
+     * Update an alert rule
+     * @param projectId
+     * @param alertRuleId
+     * @param params
+     */
+    public async updateAlertRule (projectId: number, alertRuleId: number, params: UpdateAlertRuleParams): Promise<void> {
+        await this.sendRequest(RequestMethod.PATCH, `/projects/${projectId}/alertRules/${alertRuleId}`, params);
+    }
+
+
+    /**
+     * Delete an alert rule by Id
+     * @param projectId
+     * @param alertRuleId
+     */
+    public async deleteAlertRule (projectId: number, alertRuleId: number): Promise<void> {
+        await this.sendRequest(RequestMethod.DELETE, `/projects/${projectId}/alertRules/${alertRuleId}`);
     }
 
 
