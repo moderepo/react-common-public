@@ -83,7 +83,7 @@ export interface AlertCondition {
 
 export interface AlertTargetMetric {
     readonly entityClass: string;
-    readonly metricDefinitionId: string;
+    readonly metricsDefinitionId: string;
 
     // OPTIONAL. Omit means to monitor all metrics in the specified 'metricDefinitionId'.
     // If this is undefined then it is the same as "robotV1.core.*"
