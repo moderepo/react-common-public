@@ -229,6 +229,8 @@ export enum AlertState {
 export interface Alert {
     readonly id: string;
 
+    readonly condition: AlertCondition;
+
     readonly projectId: number;
 
     // Alert Status can transition in the following manner:
