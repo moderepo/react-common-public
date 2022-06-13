@@ -239,8 +239,8 @@ export interface Alert {
     readonly recoveryTimestamp?: string;
 }
 
-export interface MetricsAlert extends Alert {
-    readonly condition: MetricsHeartbeatAlertCondition | MetricsThresholdAlertCondition;
+export interface MetricAlert extends Alert {
+    readonly condition: MetricsAlertCondition;
 
     // A metric is determined by entityClass, metricsDefinitionId and metricName
     readonly entityClass: string;
@@ -248,12 +248,12 @@ export interface MetricsAlert extends Alert {
     readonly metricName: string;
 }
 
-export interface MetricsThresholdAlert extends Alert {
+export interface MetricThresholdAlert extends MetricAlert {
     readonly condition: MetricsThresholdAlertCondition;
 }
 
-export interface MetricsThresholdHeartbeat extends Alert {
-    readonly condition: MetricsThresholdAlertCondition;
+export interface MetricHeartbeatAlert extends MetricAlert {
+    readonly condition: MetricsHeartbeatAlertCondition;
 }
 
 /**
