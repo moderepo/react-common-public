@@ -31,6 +31,9 @@ import {
 import {
     DeviceConfigSchemasState,
 } from './deviceConfigSchemasState';
+import {
+    AlertingState,
+} from './alertingState';
 
 
 /**
@@ -47,5 +50,6 @@ export interface UserAppDataState {
     readonly timeSeriesState: TimeSeriesState;
     readonly homeVideosState: HomeVideosState;
     readonly entities: EntitiesState;
+    readonly alerting: AlertingState;
     readonly deviceConfigSchemas: DeviceConfigSchemasState;
 }

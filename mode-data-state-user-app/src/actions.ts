@@ -2,24 +2,20 @@ import {
     BatchActionsAction, ExtDispatch,
 } from '@moderepo/mode-data-state-base';
 import {
-    ClearProjectHomesAction,
-    ClearUserHomesAction, SetProjectHomesAction, SetHomeAction, SetUserHomesAction,
+    ClearProjectHomesAction, ClearUserHomesAction, SetProjectHomesAction, SetHomeAction, SetUserHomesAction,
 } from './homesState';
 import {
     AuthenticatingAction, AuthenticateSuccessAction, AuthenticateFailureAction, SetLoginInfoAction, UpdateLoggedInUserAction, LogoutUserAction,
-}
-    from './authState';
+} from './authState';
 import {
     SetDeviceKVStoresAction, SetDeviceKVStoreAction, RemoveDeviceKVStoreAction, ClearDeviceKVStoresAction,
-}
-    from './deviceKVStoresState';
+} from './deviceKVStoresState';
 import {
     SetHomeDevicesAction, SetHomeDeviceAction, ClearHomeDevicesAction,
 } from './homeDevicesState';
 import {
     SetHomeKVStoreAction, ClearHomeKVStoresAction, SetHomeKVStoresAction, RemoveHomeKVStoreAction,
-}
-    from './homeKVStoresState';
+} from './homeKVStoresState';
 import {
     SetHomeMemberAction, ClearHomeMembersAction, SetHomeMembersAction,
 } from './homeMembersState';
@@ -33,16 +29,17 @@ import {
     SetTimeSeriesDataAction, SetTimeSeriesInfoAction, SetTimeSeriesRangeAction, SetAllTimeSeriesInfoAction, SetAllTimeSeriesCollectionInfoAction,
     SetTimeSeriesCollectionDataAction, SetTimeSeriesCollectionInfoAction, SetTimeSeriesCollectionRangeAction, SetTimeSeriesCollectionRawDataAction,
     SetTimeSeriesRawDataAction,
-}
-    from './timeSeriesState';
+} from './timeSeriesState';
 import {
-    ClearEntitiesAction,
-    ClearEntityClassesAction,
-    SetEntitiesAction, SetEntityAction, SetEntityClassAction, SetEntityClassesAction,
+    ClearEntitiesAction, ClearEntityClassesAction, SetEntitiesAction, SetEntityAction, SetEntityClassAction, SetEntityClassesAction,
 } from './entitiesState';
 import {
     SetDeviceConfigSchemasAction,
 } from './deviceConfigSchemasState';
+import {
+    SetAlertRulesAction, SetAlertRuleAction, ClearAlertRulesAction,
+} from './alertingState';
+
 
 
 // Re-export actions defined in each individual sub state
@@ -108,7 +105,7 @@ type UserAppDataStateSyncAction =
     | SetTimeSeriesCollectionRangeAction
     | SetTimeSeriesCollectionDataAction
     | SetTimeSeriesCollectionRawDataAction
-    | BatchActionsAction
+    // Entity actions
     | SetEntityClassesAction
     | SetEntityClassAction
     | SetEntitiesAction
@@ -117,6 +114,12 @@ type UserAppDataStateSyncAction =
     | ClearEntityClassesAction
     // Device Config Schema actions
     | SetDeviceConfigSchemasAction
+    // Alerting actions
+    | SetAlertRulesAction
+    | SetAlertRuleAction
+    | ClearAlertRulesAction
+    // Other actions
+    | BatchActionsAction
 ;
 
 

@@ -7,7 +7,6 @@ export * from './context';
 export * from './model';
 export * from './reducer';
 export * from './selectors';
-
 export * from './authState';
 export * from './deviceKVStoresState';
 export * from './homeDevicesState';
@@ -18,4 +17,5 @@ export * from './homesState';
 export * from './homeVideosState';
 export * from './timeSeriesState';
 export * from './entitiesState';
+export * from './alertingState';
 export * from './deviceConfigSchemasState';

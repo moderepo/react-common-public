@@ -40,6 +40,9 @@ import {
 import {
     deviceConfigSchemasStateReducer,
 } from './deviceConfigSchemasState/reducers';
+import {
+    alertRulesStateReducer,
+} from '.';
 
 
 /**
@@ -74,6 +77,7 @@ export const userAppDataStateReducer = (currentState: UserAppDataState, action: 
                 draft.timeSeriesState = castDraft(timeSeriesStateReducer(currentState.timeSeriesState, action));
                 draft.homeVideosState = castDraft(homeVideosStateReducer(currentState.homeVideosState, action));
                 draft.entities = castDraft(entitiesStateReducer(currentState.entities, action));
+                draft.alerting = castDraft(alertRulesStateReducer(currentState.alerting, action));
                 draft.deviceConfigSchemas = castDraft(deviceConfigSchemasStateReducer(currentState.deviceConfigSchemas, action));
             });
     }

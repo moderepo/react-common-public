@@ -12,4 +12,5 @@ export * from './deviceKVStoresState/selectors';
 export * from './timeSeriesState/selectors';
 export * from './homeVideosState/selectors';
 export * from './entitiesState/selectors';
+export * from './alertingState/selectors';
 export * from './deviceConfigSchemasState/selectors';
