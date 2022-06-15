@@ -241,8 +241,8 @@ export interface Alert {
     readonly description: string;
     readonly severity: AlertSeverity;
 
-    readonly invocationTimestamp: string;
-    readonly recoveryTimestamp?: string;
+    readonly invocationTime: string;
+    readonly recoveryTime?: string;
 }
 
 export interface MetricAlert extends Alert {
