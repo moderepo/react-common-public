@@ -6,6 +6,7 @@ import {
     BaseAction,
 } from '@moderepo/mode-data-state-base';
 import {
+    Alert,
     AlertRule,
 } from '@moderepo/mode-apis';
 import {
@@ -14,6 +15,11 @@ import {
 import {
     AlertingState,
 } from './models';
+import {
+    ClearAlertsAction,
+    SetAlertAction,
+    SetAlertsAction,
+} from '.';
 
 
 
@@ -92,9 +98,87 @@ const alertRuleIdsByProjectIdReducer = (
 
 
 
+const alertsByProjectIdByAlertIdReducer = (
+    currentState: AlertingState['alertsByProjectIdByAlertId'], action: BaseAction,
+): AlertingState['alertsByProjectIdByAlertId'] => {
+    const { type } = action;
+
+    switch (type) {
+
+        case AlertingActionType.SET_ALERTS:
+            return produce(currentState, (draft: Draft<typeof currentState>) => {
+                const { projectId, alerts } = action as SetAlertsAction;
+                const temp = draft[projectId] || {
+                };
+                draft[projectId] = temp;
+    
+                alerts.items.forEach((alert: Alert) => {
+                    temp[alert.id] = castDraft(alert);
+                });
+            });
+
+        case AlertingActionType.SET_ALERT:
+            return produce(currentState, (draft: Draft<typeof currentState>) => {
+                const { projectId, alert } = action as SetAlertAction;
+                const temp = draft[projectId] || {
+                };
+                draft[projectId] = temp;
+                temp[alert.id] = castDraft(alert);
+            });
+
+        case AlertingActionType.CLEAR_ALERTS:
+            return produce(currentState, (draft: Draft<typeof currentState>) => {
+                const { projectId } = action as ClearAlertsAction;
+                delete draft[projectId];
+            });
+
+        default:
+            return currentState;
+    }
+};
+
+
+
+const alertIdsByProjectIdReducer = (
+    currentState: AlertingState['alertIdsByProjectId'], action: BaseAction,
+): AlertingState['alertIdsByProjectId'] => {
+
+    const { type } = action;
+
+    switch (type) {
+        case AlertingActionType.SET_ALERTS:
+            return produce(currentState, (draft: Draft<typeof currentState>) => {
+                const { projectId, alerts, searchParams } = action as SetAlertsAction;
+                const temp = draft[projectId] || {
+                };
+                draft[projectId] = temp;
+                temp[searchParams] = {
+                    range: alerts.range,
+                    items: alerts.items.map((alert: Alert): string => {
+                        return alert.id;
+                    }),
+                };
+            });
+
+        case AlertingActionType.CLEAR_ALERTS:
+            return produce(currentState, (draft: Draft<typeof currentState>) => {
+                const { projectId } = action as ClearAlertsAction;
+                delete draft[projectId];
+            });
+
+        default:
+            return currentState;
+    }
+};
+
+
+
 export const alertRulesStateReducer = (currentState: AlertingState, action: BaseAction): AlertingState => {
     return produce(currentState, (draft: Draft<AlertingState>) => {
         draft.alertRulesByProjectIdByAlertRuleId = castDraft(alertRulesByProjectIdByAlertRuleIdReducer(currentState.alertRulesByProjectIdByAlertRuleId, action));
         draft.alertRuleIdsByProjectId = castDraft(alertRuleIdsByProjectIdReducer(currentState.alertRuleIdsByProjectId, action));
+
+        draft.alertsByProjectIdByAlertId = castDraft(alertsByProjectIdByAlertIdReducer(currentState.alertsByProjectIdByAlertId, action));
+        draft.alertIdsByProjectId = castDraft(alertIdsByProjectIdReducer(currentState.alertIdsByProjectId, action));
     });
 };

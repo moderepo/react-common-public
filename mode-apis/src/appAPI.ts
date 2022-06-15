@@ -7,7 +7,7 @@ import {
     TimeSeriesCollectionRange, TimeSeriesCollectionExportedUrl, BaseAPI, RequestMethod, MemberRole, VideoInfo, SortOrder, TimeSeriesExportInfo,
     TimeSeriesRawData, TimeSeriesCollectionRawData, createFormData, PaginationDataSet, DATA_RANGE_HEADER_KEY, parseDataRange, Entity,
     FetchEntityFilters, EntityClass, UpdateEntityParams, CreateEntityParams, TimeSeriesResolution, UpdatableHomeDeviceProps,
-    DeviceConfigFirmwareSchema, AlertRule, FetchAlertRulesFilters, CreateAlertRuleParams, UpdateAlertRuleParams,
+    DeviceConfigFirmwareSchema, AlertRule, FetchAlertRulesFilters, CreateAlertRuleParams, UpdateAlertRuleParams, Alert, FetchAlertsFilters,
 } from '@moderepo/mode-apis-base';
 import {
     AUTHORIZATION_KEY, AUTHORIZATION_KEY_PREFIX, UserLoginInfo, UserSessionInfo,
@@ -1216,6 +1216,43 @@ export class AppAPI extends BaseAPI {
      */
     public async deleteAlertRule (projectId: number, alertRuleId: number): Promise<void> {
         await this.sendRequest(RequestMethod.DELETE, `/projects/${projectId}/alertRules/${alertRuleId}`);
+    }
+
+
+    /**
+     * Get a list of alerts
+     * @param projectId
+     * @param entityId
+     * @returns
+     */
+    public async getAlerts (projectId: number, filters: FetchAlertsFilters): Promise<PaginationDataSet<Alert>> {
+        const response = await this.sendRequest(RequestMethod.GET, `/projects/${projectId}/alerts`, filters);
+
+        if (response.data instanceof Array) {
+            const range = parseDataRange(response.headers[DATA_RANGE_HEADER_KEY]);
+            return {
+                range,
+                items: response.data as readonly Alert[],
+            };
+        }
+
+        return {
+            range: {
+                start: 0, end: 0, total: 0,
+            },
+            items: [],
+        };
+    }
+
+
+    /**
+     * Get 1 alert  by id
+     * @param projectId
+     * @param alertId
+     */
+    public async getAlertById (projectId: number, alertId: string): Promise<Alert> {
+        const response = await this.sendRequest(RequestMethod.GET, `/projects/${projectId}/alerts/${alertId}`);
+        return response.data as Alert;
     }
 
 

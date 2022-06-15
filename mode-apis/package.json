@@ -29,7 +29,7 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "dependencies": {
-        "@moderepo/mode-apis-base": "^0.1.2",
+        "@moderepo/mode-apis-base": "file:../packages/moderepo-mode-apis-base-0.1.2.tgz",
         "axios": "^0.24.0"
     },
     "devDependencies": {

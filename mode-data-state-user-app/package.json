@@ -30,8 +30,8 @@
     },
     "homepage": "https://github.com/moderepo/react-common-public#readme",
     "dependencies": {
-        "@moderepo/mode-apis": "^0.2.2",
-        "@moderepo/mode-data-state-base": "^0.1.2",
+        "@moderepo/mode-apis": "file:../packages/moderepo-mode-apis-0.2.2.tgz",
+        "@moderepo/mode-data-state-base": "file:../packages/moderepo-mode-data-state-base-0.1.2.tgz",
         "immer": "^9.0.7",
         "re-reselect": "^4.0.0",
         "reselect": "^4.1.5"
