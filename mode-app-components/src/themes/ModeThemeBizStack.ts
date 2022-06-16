@@ -253,14 +253,6 @@ const modeThemeBizStack = createModeTheme(deepmerge(modeThemeBizStackBase, {
                     },
                 },
             },
-            [modeThemeBizStackBase.breakpoints.only('md')]: {
-                root: {
-                    width: 65,
-                },
-                drawerPaper: {
-                    width: 65,
-                },
-            },
         },
     },
 }));

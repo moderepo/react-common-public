@@ -2,7 +2,7 @@ import React, {
     CSSProperties,
 } from 'react';
 import {
-    Icon,
+    Icon, PropTypes,
 } from '@material-ui/core';
 import clsx from 'clsx';
 
@@ -11,6 +11,7 @@ export interface IconProps {
     readonly className?: string;
     readonly style?: CSSProperties;
     readonly iconName: string;
+    readonly color?: PropTypes.Color | 'action' | 'disabled' | 'error';
 }
 
 
@@ -35,11 +36,22 @@ const ModeFontIcon = (props: IconProps) => {
 
     if (props.iconName.includes('mode-icon') || props.iconName.includes('fas') || props.iconName.includes('fab')) {
         return (
-            <span className={clsx(props.className, props.iconName)} style={props.style} />
+            <Icon
+                color={props.color}
+                className={clsx(props.className)}
+                style={props.style}
+            >
+                <span
+                    className={clsx(props.iconName)}
+                    style={{
+                        display: 'block',
+                    }}
+                />
+            </Icon>
         );
     }
 
-    return <Icon className={clsx(props.className)} style={props.style}>{props.iconName}</Icon>;
+    return <Icon color={props.color} className={clsx(props.className)} style={props.style}>{props.iconName}</Icon>;
 };
 
 export const FontIcon = React.memo(ModeFontIcon);
