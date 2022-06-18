@@ -175,8 +175,8 @@ export const fetchAlertRules = (
         const modifiedFilters = {
             ...filters,                                             // Copy the filters
             // change pageSize/pageNumber to skip/limit
-            skip      : filters?.pageNumber && filters?.pageSize ? filters.pageNumber * filters.pageSize : undefined,
-            limit     : filters?.pageSize ? filters.pageSize : undefined,
+            skip      : filters?.pageNumber !== undefined && filters?.pageSize !== undefined ? filters.pageNumber * filters.pageSize : undefined,
+            limit     : filters?.pageSize != undefined ? filters.pageSize : undefined,
             // exclude pageSize/pageNumber
             pageNumber: undefined,
             pageSize  : undefined,
@@ -199,7 +199,7 @@ export const fetchAlertRules = (
 export const fetchAlertRuleById = (projectId: number, alertRuleId: number): UserAppThunkAction => {
     return async (dataDispatch: ExtDispatch<UserAppDataStateAction
     >): Promise<void> => {
-        const alertRule = await AppAPI.getInstance().getAlertRuleById(projectId, alertRuleId);
+        const alertRule = await AppAPI.getInstance().getAlertRuleById(alertRuleId);
         await dataDispatch(setAlertRule(projectId, alertRule));
     };
 };
@@ -215,7 +215,7 @@ export const createAlertRule = (
     params: CreateAlertRuleParams,
 ): UserAppThunkAction => {
     return async (dataDispatch: ExtDispatch<UserAppDataStateAction>): Promise<void> => {
-        await AppAPI.getInstance().createAlertRule(projectId, params);
+        await AppAPI.getInstance().createAlertRule(params);
 
         // Need to clear the alert rules because the list of alert rules changed
         await dataDispatch(clearAlertRules(projectId));
@@ -236,7 +236,7 @@ export const updateAlertRule = (
     params: UpdateAlertRuleParams,
 ): UserAppThunkAction => {
     return async (dataDispatch: ExtDispatch<UserAppDataStateAction>): Promise<void> => {
-        await AppAPI.getInstance().updateAlertRule(projectId, alertRuleId, params);
+        await AppAPI.getInstance().updateAlertRule(alertRuleId, params);
 
         // Need to clear the alert rules because updating the alert rule's attributes can cause the list of alert rules to be changed
         await dataDispatch(clearAlertRules(projectId));
@@ -256,7 +256,7 @@ export const deleteAlertRule = (
     alertRuleId: number,
 ): UserAppThunkAction => {
     return async (dataDispatch: ExtDispatch<UserAppDataStateAction>): Promise<void> => {
-        await AppAPI.getInstance().deleteAlertRule(projectId, alertRuleId);
+        await AppAPI.getInstance().deleteAlertRule(alertRuleId);
 
         // Need to clear the alert rules because the list of alert rules changed
         await dataDispatch(clearAlertRules(projectId));
@@ -287,8 +287,8 @@ export const fetchAlerts = (
         const modifiedFilters = {
             ...filters,                                             // Copy the filters
             // change pageSize/pageNumber to skip/limit
-            skip      : filters?.pageNumber && filters?.pageSize ? filters.pageNumber * filters.pageSize : undefined,
-            limit     : filters?.pageSize ? filters.pageSize : undefined,
+            skip      : filters?.pageNumber !== undefined && filters?.pageSize !== undefined ? filters.pageNumber * filters.pageSize : undefined,
+            limit     : filters?.pageSize !== undefined ? filters.pageSize : undefined,
             // exclude pageSize/pageNumber
             pageNumber: undefined,
             pageSize  : undefined,
@@ -311,7 +311,7 @@ export const fetchAlerts = (
 export const fetchAlertById = (projectId: number, alertId: string): UserAppThunkAction => {
     return async (dataDispatch: ExtDispatch<UserAppDataStateAction
     >): Promise<void> => {
-        const alert = await AppAPI.getInstance().getAlertById(projectId, alertId);
+        const alert = await AppAPI.getInstance().getAlertById(alertId);
         await dataDispatch(setAlert(projectId, alert));
     };
 };

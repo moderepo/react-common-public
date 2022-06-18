@@ -266,6 +266,7 @@ export interface MetricHeartbeatAlert extends MetricAlert {
  * The filter options that the Fetch alerts API support
  */
 export interface FetchAlertsFilters {
+    readonly homeId?: number | undefined;
     readonly skip?: number | undefined;
     readonly limit?: number | undefined;
     readonly alertRuleId?: number | undefined;
