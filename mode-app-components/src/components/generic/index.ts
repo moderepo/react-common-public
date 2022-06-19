@@ -13,4 +13,4 @@ export * from './SubRouteNavBar';
 export * from './GenericDialog';
 export * from './TimelineScroller';
 export * from './SlideOutPanel';
-export * from './NoDataMessage';
+export * from './GenericMessageBox';

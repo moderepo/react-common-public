@@ -253,6 +253,11 @@ const modeThemeBizStack = createModeTheme(deepmerge(modeThemeBizStackBase, {
                     },
                 },
             },
+            subMenuItem: {
+                '& .menu-item-wrapper': {
+                    minHeight: 45,
+                },
+            },
         },
     },
 }));

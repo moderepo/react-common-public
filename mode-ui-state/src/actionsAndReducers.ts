@@ -3,6 +3,9 @@ import produce, {
 } from 'immer';
 import React from 'react';
 import {
+    UsageMode,
+} from '.';
+import {
     ModeUIState, NotificationTypes, Notification, DialogOptions, SlideOutPanelOptions,
 } from './models';
 
@@ -26,6 +29,7 @@ enum ActionType {
     REMOVE_CONTROL_PANEL_COMP = 'REMOVE_CONTROL_PANEL_COMP',
     SET_CACHE = 'SET_CACHE',
     DELETE_CACHE = 'DELETE_CACHE',
+    SET_USAGE_MODE = 'SET_USAGE_MODE',
     BATCH_ACTIONS = 'BATCH_ACTIONS',
 }
 
@@ -143,6 +147,10 @@ interface DeleteCacheAction extends Action {
     readonly key: string;
 }
 
+interface SetUsageModeAction extends Action {
+    readonly type: ActionType.SET_USAGE_MODE,
+    readonly value: UsageMode;
+}
 
 interface BatchActionsAction extends Action {
     readonly type: ActionType.BATCH_ACTIONS;
@@ -168,6 +176,7 @@ export type UIAction =
     RemoveControlPanelCompPanelAction |
     SetCacheAction |
     DeleteCacheAction |
+    SetUsageModeAction |
     BatchActionsAction;
 
 
@@ -418,6 +427,17 @@ export const deleteCache = (key: string): DeleteCacheAction => {
 
 
 /**
+ * Create an action to change the usage mode
+ */
+export const setUsageMode = (value: UsageMode): SetUsageModeAction => {
+    return {
+        type: ActionType.SET_USAGE_MODE,
+        value,
+    };
+};
+
+
+/**
  * Create an action to batch multiple data actions in 1 dispatch
  * @param actions
  */
@@ -524,6 +544,12 @@ export const uiStateReducer = (currentState: ModeUIState, action: Action): ModeU
                 delete draft.cache[actualAction.key];
             });
     
+        case ActionType.SET_USAGE_MODE:
+            return produce(currentState, (draft: Draft<ModeUIState>) => {
+                const actualAction = action as SetCacheAction;
+                draft.usageMode = actualAction.value;
+            });
+
         case ActionType.BATCH_ACTIONS:
             return produce(currentState, () => {
                 const actualAction = action as BatchActionsAction;

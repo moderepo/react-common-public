@@ -65,12 +65,12 @@ const useStyle = makeStyles((theme: Theme) => {
         },
     };
 }, {
-    name: 'NoDataMessage',
+    name: 'GenericMessageBox',
 });
 
 
 
-export interface NoDataMessageProps {
+export interface GenericMessageBoxProps {
     readonly className?: string | undefined;
     readonly style?: CSSProperties | undefined;
     readonly title?: string | undefined;            // Pre-translated text used for title
@@ -87,7 +87,7 @@ export interface NoDataMessageProps {
 
 
 
-export const NoDataMessage: React.FC<NoDataMessageProps> = (props: NoDataMessageProps) => {
+export const GenericMessageBox: React.FC<GenericMessageBoxProps> = (props: GenericMessageBoxProps) => {
     const classes = useStyle();
 
     return (

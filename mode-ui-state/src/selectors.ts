@@ -54,3 +54,7 @@ export const selectControlPanelComponent = (state: ModeUIState): React.ReactNode
 export const selectCache = (state: ModeUIState, key: string): any => {
     return state.cache[key];
 };
+
+export const selectCurrentUsageMode = (state: ModeUIState): any => {
+    return state.usageMode;
+};
