@@ -48,18 +48,18 @@ export enum DialogType {
  * The type of mode the user is using the app for. Most application doesn't need to use this state but it can be used when an application have
  * different mode for different user.
  *
- * MANAGE MODE - The user uses the app for managing the project. In this mode, the user can have more access and control. The user can
+ * MANAGE DATA - The user uses the app for managing the project. In this mode, the user can have more access and control. The user can
  *               create/edit/delete things.
  *
- * VIEW MODE - The user uses the app for viewing project data. In this mode, the user usually have less access. The user can only view data but
+ * VIEW DATA - The user uses the app for viewing project data. In this mode, the user usually have less access. The user can only view data but
  *             don't have access to change anything.
  *
  * The UIState only provide a way to keep track of the user's usage mode but not how it is implemented. It is up to the application that uses the
  * UIState to do what it is supposed to do.
  */
 export enum UsageMode {
-    MANAGE = 'manage mode',
-    VIEW = 'view mode',
+    MANAGE_DATA = 'manage data',
+    VIEW_DATA = 'view data',
 }
 
 

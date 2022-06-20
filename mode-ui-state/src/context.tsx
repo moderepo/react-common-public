@@ -33,7 +33,7 @@ const initialModeUIState: ModeUIState = {
     drawerMenuOpened: false,
     currentLanguage : 'en',
     isEditingForm   : false,
-    usageMode       : UsageMode.MANAGE,
+    usageMode       : UsageMode.MANAGE_DATA,
     cache           : {
     },
 };
