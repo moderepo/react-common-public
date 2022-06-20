@@ -4,7 +4,7 @@ import {
 } from '@material-ui/core';
 import clsx from 'clsx';
 import {
-    useModePanelStyle, EmptyListMessage,
+    useModePanelStyle,
 } from '../../..';
 import {
     CompPanelHeader,
@@ -60,8 +60,8 @@ export interface TimeSeriesChartPanelProps extends BaseCompProps {
     readonly texts?: {
         readonly currentValueLabel?: string;
     };
-    readonly emptyListMessageTitle: string;
-    readonly emptyListMessageMessage: string;
+    // The component to show when there are no data
+    readonly noDataMessageComp: React.ReactNode;
 }
 
 
@@ -113,12 +113,7 @@ export const TimeSeriesChartPanel: React.FC<TimeSeriesChartPanelProps & React.Pr
                     If there is no selected metrics or empty data points which mean either the user didn't select and column or there is no data for
                     the selected filters so show empty result message
                 */}
-                {(props.seriesCount === 0 || props.dataCount === 0) && (
-                    <EmptyListMessage
-                        title={props.emptyListMessageTitle}
-                        message={props.emptyListMessageMessage}
-                    />
-                )}
+                {(props.seriesCount === 0 || props.dataCount === 0) && props.noDataMessageComp}
 
                 {/* If dataPoints is undefined, that mean we have not loaded data so show loading spinner */}
                 {props.dataCount === undefined && (
