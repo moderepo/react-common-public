@@ -7,9 +7,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
 import {
-    Menu, MenuItem, Button, ListItemIcon, IconButton, makeStyles, Theme, Hidden,
+    Menu, MenuItem, Button, ListItemIcon, makeStyles, Theme,
 } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
 import clsx from 'clsx';
 import {
     useDropdown,
@@ -24,10 +23,6 @@ const useStyle = makeStyles((theme: Theme) => {
         },
 
         toolBar: {
-        },
-
-        drawerMenuToggler: {
-            marginRight: theme.spacing(2),
         },
 
         title: {
@@ -138,16 +133,11 @@ export interface TopNavBarProps {
     readonly title: string;
     readonly profileMenu?: ProfileMenu | undefined;
     readonly loginLabel: string;
+    readonly drawerMenuTogglerComp?: React.ReactNode | undefined;
     readonly languageSelectorComp?: React.ReactNode | undefined;
     readonly breadcrumbsBarComp?: React.ReactNode | undefined;
     readonly subRouteNavBarComp?: React.ReactNode | undefined;
     readonly controlBarComp?: React.ReactNode | undefined;
-
-    readonly onDrawerMenuTogglerClicked?: ()=> void;
-
-    // To specify when to show the drawer menu toggler. By default, it will be shown on SMALL screen or smaller. But to have it be shown
-    // on MEDIUM screen or smaller, set it to 'md'. To have it show on LARGE screen or smaller, set it to 'lg', etc...
-    readonly showDrawerMenuTogglerOnScreenSizeAndSmaller?: 'md' | 'lg' | undefined;
 
     readonly onGoHomeClicked: ()=> void;
     readonly onLoginClicked: ()=> void;
@@ -231,22 +221,7 @@ export const TopNavBar: React.FC<TopNavBarProps> = (props: TopNavBarProps) => {
     return (
         <AppBar className={clsx(classes.root, props.className)} style={props.style}>
             <Toolbar className={classes.toolBar}>
-                {props.onDrawerMenuTogglerClicked && (
-                    <Hidden
-                        mdUp={props.showDrawerMenuTogglerOnScreenSizeAndSmaller === undefined ? true : undefined}
-                        lgUp={props.showDrawerMenuTogglerOnScreenSizeAndSmaller === 'md' ? true : undefined}
-                        xlUp={props.showDrawerMenuTogglerOnScreenSizeAndSmaller === 'lg' ? true : undefined}
-                    >
-                        <IconButton
-                            color="inherit"
-                            edge="start"
-                            onClick={props.onDrawerMenuTogglerClicked}
-                            className={classes.drawerMenuToggler}
-                        >
-                            <MenuIcon />
-                        </IconButton>
-                    </Hidden>
-                )}
+                {props.drawerMenuTogglerComp}
 
                 <Typography variant="h6" className={classes.title}>
                     <Button variant="text" onClick={props.onGoHomeClicked}>{props.title}</Button>

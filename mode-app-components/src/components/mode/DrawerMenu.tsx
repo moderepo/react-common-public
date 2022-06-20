@@ -270,7 +270,7 @@ export interface DrawerMenuItem extends DrawerSubMenuItem {
  * Custom hook to mark the menu items expanded when menuItems, expandAllOnLoad, or collapsible state changed.
  */
 const useInitializeExpandedMenu = (
-    menuGroups: readonly DrawerMenuItem[][],
+    menuGroups: readonly (readonly DrawerMenuItem[])[],
     expandAllOnLoad: boolean | undefined,
     collapsible: boolean | undefined,
 ): readonly boolean[][] => {
@@ -293,7 +293,7 @@ export interface DrawerMenuProps {
     readonly appLogo?: string | JSX.Element | undefined;
     readonly projectName?: string | undefined;
     readonly open: boolean;
-    readonly menuItems: DrawerMenuItem[][];
+    readonly menuItems: readonly (readonly DrawerMenuItem[])[];
     readonly backgroundImage?: string | undefined;
 
     // Whether or not to automatically expand all menu items that has submenu. The default is TRUE unless this is specifically set to false
@@ -408,7 +408,7 @@ export const DrawerMenu: React.FC<DrawerMenuProps> = (props: DrawerMenuProps) =>
                 </Box>
                 <Divider className={classes.divider} />
                 <List className={classes.menuItemList}>
-                    {props.menuItems.map((itemGroup: DrawerMenuItem[], groupIndex: number) => {
+                    {props.menuItems.map((itemGroup: readonly DrawerMenuItem[], groupIndex: number) => {
                         return renderItemGroup(itemGroup, groupIndex, true, false);
                     })}
                 </List>
