@@ -2,7 +2,7 @@ import React, {
     CSSProperties,
 } from 'react';
 import {
-    Icon,
+    Icon, useTheme,
 } from '@material-ui/core';
 import clsx from 'clsx';
 
@@ -11,6 +11,7 @@ export interface IconProps {
     readonly className?: string;
     readonly style?: CSSProperties;
     readonly iconName: string;
+    readonly color?: 'primary' | 'secondary' | 'error' | 'success' | 'warning' | 'info';
 }
 
 
@@ -32,14 +33,36 @@ export interface IconProps {
  * <span className="fas con-name" />.
  */
 const ModeFontIcon = (props: IconProps) => {
+    const theme = useTheme();
+
+    const style = {
+        ...props.style,
+    };
+    if (props.color) {
+        if (props.color === 'primary' || props.color === 'secondary') {
+            style.color = theme.palette.text[props.color];
+        } else {
+            style.color = theme.palette[props.color]?.main;
+        }
+    }
 
     if (props.iconName.includes('mode-icon') || props.iconName.includes('fas') || props.iconName.includes('fab')) {
         return (
-            <span className={clsx(props.className, props.iconName)} style={props.style} />
+            <span
+                className={clsx(props.className, props.iconName)}
+                style={style}
+            />
         );
     }
 
-    return <Icon className={clsx(props.className)} style={props.style}>{props.iconName}</Icon>;
+    return (
+        <Icon
+            className={clsx(props.className)}
+            style={style}
+        >
+            {props.iconName}
+        </Icon>
+    );
 };
 
 export const FontIcon = React.memo(ModeFontIcon);
