@@ -34,7 +34,7 @@
         "@moderepo/mode-apis": "^0.2.2",
         "@moderepo/mode-data-state-robot-cloud": "^0.1.2",
         "@moderepo/mode-data-state-user-app": "^0.1.2",
-        "@moderepo/mode-ui-state": "^0.1.1",
+        "@moderepo/mode-ui-state": "file:../packages/moderepo-mode-ui-state-0.1.1.tgz",
         "@types/react": "^17.0.38",
         "@types/react-dom": "^17.0.11",
         "clsx": "^1.1.1",
