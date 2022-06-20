@@ -2,7 +2,7 @@ import React, {
     CSSProperties,
 } from 'react';
 import {
-    Typography, Theme, makeStyles, Button, ButtonProps, TypographyProps, PropTypes,
+    Typography, Theme, makeStyles, Button, ButtonProps, TypographyProps,
 } from '@material-ui/core';
 import clsx from 'clsx';
 import {
@@ -78,7 +78,7 @@ export interface GenericMessageBoxProps {
     readonly message?: string | undefined;          // Pre-translated text used for message
     readonly messageColor?: TypographyProps['color'] | undefined;
     readonly icon?: string | undefined;
-    readonly iconColor?: PropTypes.Color | 'action' | 'disabled' | 'error';
+    readonly iconColor?: 'primary' | 'secondary' | 'error' | 'success' | 'warning' | 'info';
     readonly action?: string | null;
     readonly actionVariant?: ButtonProps['variant'] | undefined;
     readonly actionColor?: ButtonProps['color'] | undefined;
