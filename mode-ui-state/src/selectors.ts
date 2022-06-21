@@ -1,5 +1,8 @@
 import React from 'react';
 import {
+    UsageMode,
+} from '.';
+import {
     ModeUIState, Notification, DialogOptions, SlideOutPanelOptions,
 } from './models';
 
@@ -55,6 +58,6 @@ export const selectCache = (state: ModeUIState, key: string): any => {
     return state.cache[key];
 };
 
-export const selectCurrentUsageMode = (state: ModeUIState): any => {
+export const selectCurrentUsageMode = (state: ModeUIState): UsageMode => {
     return state.usageMode;
 };
