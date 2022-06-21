@@ -7,7 +7,7 @@ import {
     TimeSeriesCollectionRange, TimeSeriesCollectionExportedUrl, BaseAPI, RequestMethod, MemberRole, VideoInfo, SortOrder, TimeSeriesExportInfo,
     TimeSeriesRawData, TimeSeriesCollectionRawData, createFormData, PaginationDataSet, DATA_RANGE_HEADER_KEY, parseDataRange, Entity,
     FetchEntityFilters, EntityClass, UpdateEntityParams, CreateEntityParams, TimeSeriesResolution, UpdatableHomeDeviceProps,
-    DeviceConfigFirmwareSchema, AlertRule, FetchAlertRulesFilters, CreateAlertRuleParams, UpdateAlertRuleParams,
+    DeviceConfigFirmwareSchema, AlertRule, FetchAlertRulesFilters, CreateAlertRuleParams, UpdateAlertRuleParams, Alert, FetchAlertsFilters,
 } from '@moderepo/mode-apis-base';
 import {
     AUTHORIZATION_KEY, AUTHORIZATION_KEY_PREFIX, UserLoginInfo, UserSessionInfo,
@@ -1157,8 +1157,11 @@ export class AppAPI extends BaseAPI {
      * @param entityId
      * @returns
      */
-    public async getAlertRules (projectId: number, filters: FetchAlertRulesFilters): Promise<PaginationDataSet<AlertRule>> {
-        const response = await this.sendRequest(RequestMethod.GET, `/projects/${projectId}/alertRules`, filters);
+    public async getAlertRules (projectId: number, filters?: FetchAlertRulesFilters): Promise<PaginationDataSet<AlertRule>> {
+        const response = await this.sendRequest(RequestMethod.GET, '/alertRules', {
+            ...filters,
+            projectId,
+        });
 
         if (response.data instanceof Array) {
             const range = parseDataRange(response.headers[DATA_RANGE_HEADER_KEY]);
@@ -1179,43 +1182,78 @@ export class AppAPI extends BaseAPI {
 
     /**
      * Get 1 alert rule by id
-     * @param projectId
      * @param alertRuleId
      */
-    public async getAlertRuleById (projectId: number, alertRuleId: number): Promise<AlertRule> {
-        const response = await this.sendRequest(RequestMethod.GET, `/projects/${projectId}/alertRules/${alertRuleId}`);
+    public async getAlertRuleById (alertRuleId: number): Promise<AlertRule> {
+        const response = await this.sendRequest(RequestMethod.GET, `/alertRules/${alertRuleId}`);
         return response.data as AlertRule;
     }
 
 
     /**
      * Create an entity
-     * @param projectId
      * @param params
      */
-    public async createAlertRule (projectId: number, params: CreateAlertRuleParams): Promise<void> {
-        await this.sendRequest(RequestMethod.POST, `/projects/${projectId}/alertRules`, params);
+    public async createAlertRule (params: CreateAlertRuleParams): Promise<void> {
+        await this.sendRequest(RequestMethod.POST, '/alertRules', params);
     }
 
 
     /**
      * Update an alert rule
-     * @param projectId
      * @param alertRuleId
      * @param params
      */
-    public async updateAlertRule (projectId: number, alertRuleId: number, params: UpdateAlertRuleParams): Promise<void> {
-        await this.sendRequest(RequestMethod.PATCH, `/projects/${projectId}/alertRules/${alertRuleId}`, params);
+    public async updateAlertRule (alertRuleId: number, params: UpdateAlertRuleParams): Promise<void> {
+        await this.sendRequest(RequestMethod.PATCH, `/alertRules/${alertRuleId}`, params);
     }
 
 
     /**
      * Delete an alert rule by Id
-     * @param projectId
      * @param alertRuleId
      */
-    public async deleteAlertRule (projectId: number, alertRuleId: number): Promise<void> {
-        await this.sendRequest(RequestMethod.DELETE, `/projects/${projectId}/alertRules/${alertRuleId}`);
+    public async deleteAlertRule (alertRuleId: number): Promise<void> {
+        await this.sendRequest(RequestMethod.DELETE, `/alertRules/${alertRuleId}`);
+    }
+
+
+    /**
+     * Get a list of alerts
+     * @param projectId
+     * @param entityId
+     * @returns
+     */
+    public async getAlerts (projectId: number, filters: FetchAlertsFilters): Promise<PaginationDataSet<Alert>> {
+        const response = await this.sendRequest(RequestMethod.GET, '/alerts', {
+            ...filters,
+            projectId,
+        });
+
+        if (response.data instanceof Array) {
+            const range = parseDataRange(response.headers[DATA_RANGE_HEADER_KEY]);
+            return {
+                range,
+                items: response.data as readonly Alert[],
+            };
+        }
+
+        return {
+            range: {
+                start: 0, end: 0, total: 0,
+            },
+            items: [],
+        };
+    }
+
+
+    /**
+     * Get 1 alert  by id
+     * @param alertId
+     */
+    public async getAlertById (alertId: string): Promise<Alert> {
+        const response = await this.sendRequest(RequestMethod.GET, `/alerts/${alertId}`);
+        return response.data as Alert;
     }
 
 
