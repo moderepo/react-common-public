@@ -37,7 +37,7 @@ import {
     SetDeviceConfigSchemasAction,
 } from './deviceConfigSchemasState';
 import {
-    SetAlertRulesAction, SetAlertRuleAction, ClearAlertRulesAction,
+    SetAlertRulesAction, SetAlertRuleAction, ClearAlertRulesAction, SetAlertsAction, SetAlertAction, ClearAlertsAction,
 } from './alertingState';
 
 
@@ -118,6 +118,9 @@ type UserAppDataStateSyncAction =
     | SetAlertRulesAction
     | SetAlertRuleAction
     | ClearAlertRulesAction
+    | SetAlertsAction
+    | SetAlertAction
+    | ClearAlertsAction
     // Other actions
     | BatchActionsAction
 ;

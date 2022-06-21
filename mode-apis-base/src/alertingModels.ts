@@ -241,8 +241,8 @@ export interface Alert {
     readonly description: string;
     readonly severity: AlertSeverity;
 
-    readonly invocationTimestamp: string;
-    readonly recoveryTimestamp?: string;
+    readonly invocationTime: string;
+    readonly recoveryTime?: string;
 }
 
 export interface MetricAlert extends Alert {
@@ -264,9 +264,12 @@ export interface MetricHeartbeatAlert extends MetricAlert {
 
 /**
  * The filter options that the Fetch alerts API support
- * TODO - Update the set of filters based on what the backend supports
  */
 export interface FetchAlertsFilters {
+    readonly homeId?: number | undefined;
     readonly skip?: number | undefined;
     readonly limit?: number | undefined;
+    readonly alertRuleId?: number | undefined;
+    readonly entityId?: string | undefined;
+    readonly state?: AlertState | undefined;
 }
