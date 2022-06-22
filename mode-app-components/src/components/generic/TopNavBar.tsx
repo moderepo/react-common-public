@@ -7,13 +7,12 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Icon from '@material-ui/core/Icon';
 import Typography from '@material-ui/core/Typography';
 import {
-    Menu, MenuItem, Button, ListItemIcon, IconButton, makeStyles, Theme,
+    Menu, MenuItem, Button, ListItemIcon, makeStyles, Theme,
 } from '@material-ui/core';
-import MenuIcon from '@material-ui/icons/Menu';
 import clsx from 'clsx';
 import {
     useDropdown,
-} from '../../utils/customHooks';
+} from '../..';
 
 
 const useStyle = makeStyles((theme: Theme) => {
@@ -24,13 +23,6 @@ const useStyle = makeStyles((theme: Theme) => {
         },
 
         toolBar: {
-        },
-
-        drawerMenuToggler: {
-            marginRight                 : theme.spacing(2),
-            [theme.breakpoints.up('md')]: {
-                display: 'none',
-            },
         },
 
         title: {
@@ -136,16 +128,17 @@ export interface ProfileMenu {
 }
 
 export interface TopNavBarProps {
-    readonly className?: string;
+    readonly className?: string | undefined;
     readonly style?: CSSProperties | undefined;
     readonly title: string;
-    readonly profileMenu?: ProfileMenu;
+    readonly profileMenu?: ProfileMenu | undefined;
     readonly loginLabel: string;
-    readonly languageSelectorComp?: React.ReactNode;
-    readonly breadcrumbsBarComp?: React.ReactNode
-    readonly subRouteNavBarComp?: React.ReactNode
-    readonly controlBarComp?: React.ReactNode
-    readonly onDrawerMenuTogglerClicked?: ()=> void;
+    readonly drawerMenuTogglerComp?: React.ReactNode | undefined;
+    readonly languageSelectorComp?: React.ReactNode | undefined;
+    readonly breadcrumbsBarComp?: React.ReactNode | undefined;
+    readonly subRouteNavBarComp?: React.ReactNode | undefined;
+    readonly controlBarComp?: React.ReactNode | undefined;
+
     readonly onGoHomeClicked: ()=> void;
     readonly onLoginClicked: ()=> void;
 }
@@ -228,16 +221,7 @@ export const TopNavBar: React.FC<TopNavBarProps> = (props: TopNavBarProps) => {
     return (
         <AppBar className={clsx(classes.root, props.className)} style={props.style}>
             <Toolbar className={classes.toolBar}>
-                {props.onDrawerMenuTogglerClicked && (
-                    <IconButton
-                        color="inherit"
-                        edge="start"
-                        onClick={props.onDrawerMenuTogglerClicked}
-                        className={classes.drawerMenuToggler}
-                    >
-                        <MenuIcon />
-                    </IconButton>
-                )}
+                {props.drawerMenuTogglerComp}
 
                 <Typography variant="h6" className={classes.title}>
                     <Button variant="text" onClick={props.onGoHomeClicked}>{props.title}</Button>

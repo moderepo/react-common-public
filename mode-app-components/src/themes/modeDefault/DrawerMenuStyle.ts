@@ -42,13 +42,5 @@ export const getModeDefaultDrawerMenuStyle = (baseTheme: Theme, palette: Palette
             backgroundColor: '#ffffff',
             opacity        : 0.3,
         },
-        [baseTheme.breakpoints.only('md')]: {
-            root: {
-                width: 65,
-            },
-            drawerPaper: {
-                width: 65,
-            },
-        },
     };
 };

@@ -7,6 +7,9 @@ import {
 import {
     UIAction, uiStateReducer,
 } from './actionsAndReducers';
+import {
+    UsageMode,
+} from '.';
 
 
 /**
@@ -30,6 +33,7 @@ const initialModeUIState: ModeUIState = {
     drawerMenuOpened: false,
     currentLanguage : 'en',
     isEditingForm   : false,
+    usageMode       : UsageMode.MANAGE_DATA,
     cache           : {
     },
 };
