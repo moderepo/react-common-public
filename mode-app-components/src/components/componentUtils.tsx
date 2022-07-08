@@ -1,9 +1,9 @@
 import React, {
-    useState, useEffect, useMemo, useCallback, HTMLInputTypeAttribute,
+    useState, useEffect, useMemo, useCallback, HTMLInputTypeAttribute, Dispatch, SetStateAction,
 } from 'react';
 import {
     TableCell, Button, Icon, TextField, FormControl, InputLabel, Select, MenuItem, FormHelperText, FormControlLabel, Checkbox, FormLabel,
-    FormGroup, IconButton, Chip, TextFieldProps, InputAdornment, useTheme,
+    FormGroup, IconButton, Chip, TextFieldProps, InputAdornment, useTheme, makeStyles, Theme,
 } from '@material-ui/core';
 import clsx from 'clsx';
 import {
@@ -47,7 +47,7 @@ export const isInputFieldHidden = (
 /**
  * Custom hook use for updating local state when a value from component's props changed.
  */
-export const usePropValue = <T extends any>(propValue: T): [T, (v: T)=> void] => {
+export const usePropValue = <T extends unknown>(propValue: T): [T, Dispatch<SetStateAction<T>>] => {
     const [value, setValue] = useState<T>(propValue);
 
     useEffect(() => {
@@ -958,12 +958,55 @@ export interface ModeAutoCompleteInputFieldProps extends ModeBaseInputFieldProps
 }
 
 
+const useAutoCompleteStyle = makeStyles((theme: Theme) => {
+    return {
+        tag: {
+            display      : 'flex',
+            flexDirection: 'row',
+            alignItems   : 'center',
+            fontSize     : 'small',
+            borderRadius : 2,
+            border       : `1px solid ${theme.palette.divider}`,
+            padding      : '2px 10px',
+            background   : theme.palette.background.default,
+            '& .label'   : {
+                overflow    : 'hidden',
+                whiteSpace  : 'nowrap',
+                textOverflow: 'ellipsis',
+            },
+            '& .icon': {
+                fontSize  : 'small',
+                cursor    : 'pointer',
+                marginLeft: 5,
+            },
+        },
+    };
+});
+
+
+
+// eslint-disable-next-line react/prop-types
+const AutoCompleteTag = ({ label, isInEditMode, onDelete, ...props }) => {
+    const classes = useAutoCompleteStyle();
+
+    return (
+        <div
+            {...props}
+            // eslint-disable-next-line react/prop-types
+            className={clsx(props.className, classes.tag)}
+        >
+            <span className="label">{label}</span>
+            {isInEditMode && (<Icon className="icon" onClick={onDelete} fontSize="small">close</Icon>)}
+        </div>
+    );
+};
+
 /**
  * ModeTextInputField is a wrapper of an Input Field that comes with Mode's style and functionalities built-in. In most of the form
  * in Mode app, we can reuse this component instead of implementing this logic for each input field.
  */
 export const ModeAutoCompleteInputField: React.FC<ModeAutoCompleteInputFieldProps> = (props: ModeAutoCompleteInputFieldProps) => {
-    
+
     const hideInput = useMemo(() => {
         if (props.hidden) return true;
         if (props.editingModeOnly && !props.isInEditMode) return true;
@@ -1048,7 +1091,7 @@ export const ModeAutoCompleteInputField: React.FC<ModeAutoCompleteInputFieldProp
         }
         return option.value === value;
     }, []);
-    
+
     const renderInput = useCallback((params) => {
         return (
             <TextField
@@ -1099,17 +1142,20 @@ export const ModeAutoCompleteInputField: React.FC<ModeAutoCompleteInputFieldProp
     const renderTags = useCallback((tagValues, getTagProps) => {
         // override the renderTags so that we can disable the tags when not in edit mode
         return tagValues.map((option, index) => {
+            const selectOption = props.options?.find((o) => {
+                return o.value === option;
+            });
             return (
-                <Chip
-                    label={option}
+                <AutoCompleteTag
+                    label={selectOption?.label ?? option}
+                    isInEditMode={props.isInEditMode}
                     {...getTagProps({
                         index,
                     })}
-                    deleteIcon={!props.isInEditMode ? <></> : undefined}
                 />
             );
         });
-    }, [props.isInEditMode]);
+    }, [props.isInEditMode, props.options]);
 
 
     return (

@@ -14,3 +14,5 @@ export * from './GenericDialog';
 export * from './TimelineScroller';
 export * from './SlideOutPanel';
 export * from './GenericMessageBox';
+export * from './GenericPanelComp';
+export * from './GenericTableComp';

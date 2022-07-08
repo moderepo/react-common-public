@@ -254,13 +254,30 @@ export interface MetricAlert extends Alert {
     readonly metricName: string;
 }
 
+export const isMetricsAlert = (obj: unknown): obj is MetricAlert => {
+    const alert = obj as MetricAlert;
+    return alert.condition !== undefined && isMetricsAlertCondition(alert.condition);
+};
+
 export interface MetricThresholdAlert extends MetricAlert {
     readonly condition: MetricsThresholdAlertCondition;
 }
 
+export const isMetricThresholdAlert = (obj: unknown): obj is MetricThresholdAlert => {
+    const alert = obj as MetricThresholdAlert;
+    return alert.condition !== undefined && isMetricsThresholdAlertCondition(alert.condition);
+};
+
 export interface MetricHeartbeatAlert extends MetricAlert {
     readonly condition: MetricsHeartbeatAlertCondition;
 }
+
+export const isMetricHeartbeatAlert = (obj: unknown): obj is MetricHeartbeatAlert => {
+    const alert = obj as MetricHeartbeatAlert;
+    return alert.condition !== undefined && isMetricsHeartbeatAlertCondition(alert.condition);
+};
+
+
 
 /**
  * The filter options that the Fetch alerts API support

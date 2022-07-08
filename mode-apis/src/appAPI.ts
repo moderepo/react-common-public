@@ -1227,7 +1227,7 @@ export class AppAPI extends BaseAPI {
     public async getAlerts (projectId: number, filters: FetchAlertsFilters): Promise<PaginationDataSet<Alert>> {
         const response = await this.sendRequest(RequestMethod.GET, '/alerts', {
             ...filters,
-            projectId,
+            projectId: filters.homeId === undefined ? projectId : undefined,
         });
 
         if (response.data instanceof Array) {
