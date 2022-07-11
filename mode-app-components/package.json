@@ -42,7 +42,7 @@
         "deepmerge": "^4.2.2",
         "immer": "^9.0.7",
         "material-icons": "^1.10.4",
-        "moment": "^2.29.2",
+        "moment": "^2.29.4",
         "react-draggable": "^4.4.4",
         "react-helmet": "^6.1.0",
         "react-scripts": "^5.0.0",
