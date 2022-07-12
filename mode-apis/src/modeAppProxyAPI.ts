@@ -40,12 +40,12 @@ export interface EventLogData {
 export interface GetEventLogFilter {
     // commas separated keys
     readonly searchKeys: string;
-    // RFC3339 date string
     readonly begin: string;
     readonly end: string;
     readonly limit?: number | undefined;
     readonly skip?: number | undefined;
     readonly sortBy?: SortOrder | undefined;
+    readonly attributesQuery?: string | undefined;
 }
 
 

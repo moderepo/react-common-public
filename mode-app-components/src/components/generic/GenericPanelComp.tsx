@@ -46,6 +46,7 @@ export const GenericPanelComp: React.FC<GenericPanelCompProps & PropsWithChildre
         <Paper
             elevation={2}
             className={clsx(panelClasses.root, props.className, classes.root)}
+            style={props.style}
         >
             <InfoCompPanelHeader {...props} />
             <div className={clsx(panelClasses.panelContent, classes.panelContent)}>

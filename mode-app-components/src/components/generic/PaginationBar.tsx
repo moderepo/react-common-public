@@ -106,7 +106,7 @@ const useStyle = makeStyles((theme: Theme) => {
  */
 export interface PaginationBarProps {
     readonly className?: string;
-    readonly itemsPerPageList: readonly number[];
+    readonly itemsPerPageList?: readonly number[] | undefined;
     readonly itemsPerPage: number;
     readonly pagingMinPages: number;
     readonly currentPage: number;
@@ -207,47 +207,51 @@ const PaginationBarSrc: React.FC<PaginationBarProps> = (props: PaginationBarProp
         <div
             className={clsx(classes.root, props.className)}
         >
-            <span className={classes.paginationItemsPerPageLabel}>
-                {props.texts?.itemsPerPage}
-            </span>
+            {props.itemsPerPageList && props.itemsPerPageList.length > 0 && (
+                <>
+                    <span className={classes.paginationItemsPerPageLabel}>
+                        {props.texts?.itemsPerPage}
+                    </span>
 
-            <Button
-                className={classes.paginationPageDropdown}
-                onClick={onLimitMenuAnchorClicked}
-                endIcon={<Icon>arrow_drop_down</Icon>}
-            >
-                {props.itemsPerPage}
-            </Button>
-            <Menu
-                getContentAnchorEl={null}
-                anchorEl={limitMenuAnchorEl}
-                keepMounted
-                anchorOrigin={{
-                    vertical  : 'bottom',
-                    horizontal: 'right',
-                }}
-                transformOrigin={{
-                    vertical  : 'top',
-                    horizontal: 'right',
-                }}
-                open={isLimitMenuOpened}
-                onClose={onLimitMenuClosed}
-            >
-                {props.itemsPerPageList.map((value: number) => {
-                    return (
-                        <MenuItem
-                            value={value}
-                            key={value}
-                            selected={value === props.itemsPerPage}
-                            onClick={() => {
-                                onLimitMenuClosed();
-                                onItemsPerPage(value);
-                            }}
-                        >{value}
-                        </MenuItem>
-                    );
-                })}
-            </Menu>
+                    <Button
+                        className={classes.paginationPageDropdown}
+                        onClick={onLimitMenuAnchorClicked}
+                        endIcon={<Icon>arrow_drop_down</Icon>}
+                    >
+                        {props.itemsPerPage}
+                    </Button>
+                    <Menu
+                        getContentAnchorEl={null}
+                        anchorEl={limitMenuAnchorEl}
+                        keepMounted
+                        anchorOrigin={{
+                            vertical  : 'bottom',
+                            horizontal: 'right',
+                        }}
+                        transformOrigin={{
+                            vertical  : 'top',
+                            horizontal: 'right',
+                        }}
+                        open={isLimitMenuOpened}
+                        onClose={onLimitMenuClosed}
+                    >
+                        {props.itemsPerPageList.map((value: number) => {
+                            return (
+                                <MenuItem
+                                    value={value}
+                                    key={value}
+                                    selected={value === props.itemsPerPage}
+                                    onClick={() => {
+                                        onLimitMenuClosed();
+                                        onItemsPerPage(value);
+                                    }}
+                                >{value}
+                                </MenuItem>
+                            );
+                        })}
+                    </Menu>
+                </>
+            )}
 
             <Box className={classes.paginationPrevNextButtonsContainer}>
                 {(!totalPages || totalPages) > props.pagingMinPages && (
