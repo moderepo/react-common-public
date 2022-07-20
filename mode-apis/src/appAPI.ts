@@ -857,6 +857,109 @@ export class AppAPI extends BaseAPI {
         };
     }
 
+
+    /**
+     * WARNING - Use this function carefully because it can be bad for performance. Only use this for a small set of data.
+     *
+     * Get time series Collection AGGREGATED data for the specified collectionId before or after a point in time.
+     *
+     * NOTE: Backend DOES NOT allow "selectValues" to be empty. However, this function will take care of that problem by passing a dummy
+     * valueName in the selectedValues array. This mean backend will return a column for this dummy valueName where all the values are null.
+     * This function will take care of removing this column as well.
+     *
+     * @param homeId
+     * @param smartModuleId
+     * @param collectionId
+     * @param startTime - The beginning time of the data entries. The format follows RFC3339.
+     * @param endTime - The end time of the data entries. The format follows RFC3339.
+     * @param selectValues - The value fields to be returned.
+     * @param selectTags - The tag fields to be returned.
+     */
+    public async getTimeSeriesCollectionRawDataWithStartEndTime (
+        homeId: number,
+        smartModuleId: string,
+        collectionId: string,
+        startTime: string,
+        endTime: string,
+        selectValues: readonly string[],
+        selectTags: readonly string[],
+        maxApiCalls?: number,
+    ): Promise<TimeSeriesCollectionRawData> {
+        // eslint-disable-next-line no-console, max-len
+        console.warn('WARNING: This function "getTimeSeriesCollectionRawDataWithStartEndTime" is not efficient therefore it should be used carefully.');
+
+        const dataPoints: [string, ...(string | number | null)[]][] = [];
+
+        const valueNames = selectValues.length > 0 ? selectValues : ['DUMMY_VALUE_NAME'];
+        let startTimestamp = (new Date(startTime)).valueOf();
+        const endTimestamp = (new Date(endTime)).valueOf();
+        const dataCount = 100;
+        let totalDataCount = 0;
+
+        let apiCallCount = 0;
+
+        // Make sure the limit is only 20 API calls to prevent the user from fetching too much data
+        const actualMaxApiCall = maxApiCalls !== undefined && maxApiCalls > 1 && maxApiCalls <= 20 ? maxApiCalls : 20;
+
+        while (startTimestamp <= endTimestamp && apiCallCount < actualMaxApiCall) {
+            // eslint-disable-next-line no-await-in-loop
+            const response = await this.sendRequest(
+                RequestMethod.GET,
+                `/homes/${homeId}/smartModules/${smartModuleId}/collections/${collectionId}/data?`,
+                {
+                    ts          : (new Date(startTimestamp)).toISOString(),
+                    limit       : dataCount,
+                    selectValues: valueNames.join(','),
+                    selectTags  : selectTags.join(','),
+                },
+            );
+    
+            const responseData = response.data as TimeSeriesCollectionRawData;
+            const fixedData = selectValues.length > 0
+                ? responseData.data
+                : responseData.data.map((row) => {
+                    // Value at index 0 should be the date, value at index 1 should be the value for the DUMMY_VALUE_NAME. We
+                    // need to delete the value at index 1
+                    row.splice(1, 1);
+                    return row;
+                });
+            
+            if (fixedData.length > 0) {
+                dataPoints.push(...fixedData.filter((dataPoint) => {
+                    // remove the data point that is outside of endTimestamp
+                    const dataPointTimestamp = (new Date(dataPoint[0])).valueOf();
+                    return dataPointTimestamp < endTimestamp;
+                }));
+            }
+
+            // Calculate the NEXT startTime. The next startTime will be 1 MS after that LAST data point's timestamp in the previous result
+            const lastDataPoint = fixedData.length > 0 ? fixedData[fixedData.length - 1] : undefined;
+
+            if (lastDataPoint && fixedData.length >= dataCount) {
+                // If the last API call returned some data AND the number of data points returned is at least the number of data point we requested
+                // then set the next startTimestamp to the last data point timestamp
+                const lastDataPointTimestamp = (new Date(lastDataPoint[0])).valueOf();
+                startTimestamp = lastDataPointTimestamp + 1;
+            } else {
+                // If the last API call didn't return any data OR didn't return enough data then there is probably no more data to fetch
+                // so we can just set startTimestamp to the end
+                startTimestamp = endTimestamp + 1;
+            }
+
+            totalDataCount += dataCount;
+            apiCallCount += 1;
+        }
+
+        
+        return {
+            collectionId,
+            ts   : startTime,
+            limit: totalDataCount,
+            data : dataPoints,
+        };
+    }
+
+
     /**
      * Export time series data by time range. This can be used to export BOTH time series and collection
      * @param homeId

@@ -1,9 +1,6 @@
 import {
-    RobotInfo,
+    RobotInfo, SortOrder,
 } from '@moderepo/mode-apis';
-import {
-    FieldSortOrder,
-} from '../../componentInterfaces';
 import {
     compareBooleans, compareNumbers, compareObjects, compareStrings, compareTimestamps,
 } from '../../utils';
@@ -26,7 +23,7 @@ export abstract class BaseRobotCompCtrl extends BaseCompCtrl {
      * @param order
      */
     public sortRobots (
-        dataArray: readonly RobotInfo[] | undefined, field: keyof RobotInfo | undefined, order: FieldSortOrder | undefined,
+        dataArray: readonly RobotInfo[] | undefined, field: keyof RobotInfo | undefined, order: SortOrder | undefined,
     ): readonly RobotInfo[] | undefined {
         if (!dataArray || !field) {
             return dataArray;
@@ -51,7 +48,7 @@ export abstract class BaseRobotCompCtrl extends BaseCompCtrl {
             // Compare the 1 element using ASCENDING order and then multiply the result with -1 if the sort order is DESC
             const ascCompareResult = compareObjects(data1, data2, field, compareFunctionMapping);
 
-            if (order === FieldSortOrder.DESC) {
+            if (order === SortOrder.DESC) {
                 return ascCompareResult * -1;
             }
             return ascCompareResult;
