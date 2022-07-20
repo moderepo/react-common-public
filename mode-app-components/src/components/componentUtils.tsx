@@ -3,14 +3,17 @@ import React, {
 } from 'react';
 import {
     TableCell, Button, Icon, TextField, FormControl, InputLabel, Select, MenuItem, FormHelperText, FormControlLabel, Checkbox, FormLabel,
-    FormGroup, IconButton, Chip, TextFieldProps, InputAdornment, useTheme, makeStyles, Theme,
+    FormGroup, IconButton, TextFieldProps, InputAdornment, useTheme, makeStyles, Theme,
 } from '@material-ui/core';
 import clsx from 'clsx';
 import {
     Autocomplete, createFilterOptions,
 } from '@material-ui/lab';
 import {
-    BaseInfoCompProps, BaseEntityField, SelectInputOption, BaseListCompField, FieldSortOrder, BaseListCompFieldsSet, BaseListCompFieldsSettings,
+    SortOrder,
+} from '@moderepo/mode-apis';
+import {
+    BaseInfoCompProps, BaseEntityField, SelectInputOption, BaseListCompField, BaseListCompFieldsSet, BaseListCompFieldsSettings,
 } from '..';
 import {
     BaseListCompDataItem, isSelectInputOption,
@@ -1272,9 +1275,9 @@ export const inputStateSetterHelper = (inputName: string, value: any, inputState
  * base on the current sort order. If the specified field is not the current sort field then don't return
  * any icon
  */
-export const getSortIcon = (order: FieldSortOrder | undefined): string => {
+export const getSortIcon = (order: SortOrder | undefined): string => {
     if (order !== undefined) {
-        if (order === FieldSortOrder.ASC) {
+        if (order === SortOrder.ASC) {
             return 'expand_less';
         }
         return 'expand_more';

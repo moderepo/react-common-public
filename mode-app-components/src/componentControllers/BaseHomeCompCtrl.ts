@@ -1,8 +1,8 @@
 import {
-    Home,
+    Home, SortOrder,
 } from '@moderepo/mode-apis';
 import {
-    BaseCompInputErrors, BaseHomeInfoUpdatableInputs, FieldSortOrder,
+    BaseCompInputErrors, BaseHomeInfoUpdatableInputs,
 } from '../componentInterfaces';
 import {
     compareNumbers, compareObjects, compareStrings, compareTimestamps,
@@ -48,7 +48,7 @@ export abstract class BaseHomeCompCtrl extends BaseCompCtrl {
      * @param order
      */
     public sortHomes (
-        dataArray: readonly Home[] | undefined, field: keyof Home | undefined, order: FieldSortOrder | undefined,
+        dataArray: readonly Home[] | undefined, field: keyof Home | undefined, order: SortOrder | undefined,
     ): readonly Home[] | undefined {
         if (!dataArray || !field) {
             return dataArray;
@@ -68,7 +68,7 @@ export abstract class BaseHomeCompCtrl extends BaseCompCtrl {
             // Compare the 1 element using ASCENDING order and then multiply the result with -1 if the sort order is DESC
             const ascCompareResult = compareObjects(data1, data2, field, compareFunctionMapping);
 
-            if (order === FieldSortOrder.DESC) {
+            if (order === SortOrder.DESC) {
                 return ascCompareResult * -1;
             }
             return ascCompareResult;

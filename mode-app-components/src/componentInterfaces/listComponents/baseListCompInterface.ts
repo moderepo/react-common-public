@@ -1,14 +1,9 @@
 import {
+    SortOrder,
+} from '@moderepo/mode-apis';
+import {
     BaseCompProps,
 } from '../baseCompInterfaces';
-
-/**
- * Define the set of sort order the user can sort by
- */
-export enum FieldSortOrder {
-    ASC = 'asc',
-    DESC = 'desc',
-}
 
 
 
@@ -56,7 +51,7 @@ export interface BaseListCompFieldsSet {
 export interface BaseListCompFieldsSettings<T extends BaseListCompFieldsSet> {
     readonly fields: T;
     readonly currentSortedField?: string;
-    readonly currentSortedOrder?: FieldSortOrder;
+    readonly currentSortedOrder?: SortOrder;
     readonly onSortByField?: (field: BaseListCompField)=> void;
 }
 

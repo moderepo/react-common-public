@@ -13,7 +13,7 @@ import {
  */
 export interface MetricInfo {
     readonly name: string;
-    readonly displayName?: string;
+    readonly displayName?: string | undefined;
 }
 
 /**
