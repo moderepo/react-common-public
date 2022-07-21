@@ -10,19 +10,16 @@ import {
 } from './AppProxyAPI';
 
 
-export interface EventLogRecordField {
-    [fieldName: string]: string | number | null | undefined;
-}
-
 
 export interface EventLogRecord {
     readonly timestamp: string;
-    readonly searchKey: string;
+    readonly searchKey?: string | undefined;
+    readonly searchKeys?: readonly string[] | undefined;
     readonly projectId: number;
     readonly homeId: number;
     readonly eventKey: string;
     readonly tags: readonly string[];
-    readonly fields: readonly EventLogRecordField[];
+    readonly fields: object;
     readonly createdAt: string;
     readonly updatedAt: string;
 }
