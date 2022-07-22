@@ -93,8 +93,8 @@ export abstract class BaseAPI {
 
 
         if (method === RequestMethod.GET) {
-        // Get the base64 encoded value of the request data e.g. url, params, headers, etc...
-            const hash = window.btoa(JSON.stringify(config));
+            // Get the stringified request data e.g. url, params, headers, etc...
+            const hash = JSON.stringify(config);
 
             const existingPendingRequest = this.pendingGetRequests[hash];
             if (existingPendingRequest) {
