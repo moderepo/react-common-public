@@ -524,14 +524,18 @@ export class ApiError extends Error {
     // Status # from backend e.g. 404, 403, 500, etc...
     public status: number;
 
+    // The backend response data
+    public response: any;
+
     /**
      * @param code - The front end error code, not the same as the response status returned by the backend
      * @param message - The error message. This message should only be used internally to look at errors, not for displaying to agent
      */
-    constructor (code: string, status: number, message?: string) {
+    constructor (code: string, status: number, message?: string, response?: any) {
         super(message);
         this.status = status;
         this.code = code;
+        this.response = response;
     }
 }
 

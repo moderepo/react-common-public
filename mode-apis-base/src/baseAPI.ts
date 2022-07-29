@@ -196,7 +196,7 @@ export abstract class BaseAPI {
             }
         }
 
-        return new ApiError(code, status, message);
+        return new ApiError(code, status, message, error?.response?.data);
     }
 
 

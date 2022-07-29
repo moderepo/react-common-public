@@ -1,6 +1,6 @@
 {
     "name": "@moderepo/mode-apis",
-    "version": "0.2.8",
+    "version": "0.2.9",
     "description": "MODE's apis for end-user apps",
     "scripts": {
         "build": "tsc"
@@ -29,7 +29,7 @@
     "main": "dist/index.js",
     "types": "dist/index.d.ts",
     "dependencies": {
-        "@moderepo/mode-apis-base": "^0.1.5",
+        "@moderepo/mode-apis-base": "^0.1.6",
         "axios": "^0.24.0"
     },
     "devDependencies": {
