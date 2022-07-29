@@ -42,7 +42,7 @@ export interface GetEventLogFilter {
     readonly limit?: number | undefined;
     readonly skip?: number | undefined;
     readonly sortBy?: SortOrder | undefined;
-    readonly attributesQuery?: string | undefined;
+    readonly fieldsFilter?: string | undefined;
 }
 
 
