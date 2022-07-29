@@ -1102,7 +1102,7 @@ export class AppAPI extends BaseAPI {
         }
 
         // Invalid response from backend, just use 500 status code
-        return Promise.reject(new ApiError(ApiErrorCode.INVALID_RESPONSE, 500, 'Invalid response'));
+        return Promise.reject(new ApiError(ApiErrorCode.INVALID_RESPONSE, 500, 'Invalid response', response?.data));
     }
 
 
