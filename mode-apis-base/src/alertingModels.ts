@@ -169,28 +169,34 @@ export interface AlertMessageTemplate {
     readonly recoveryMessage?: string;
 }
 
-export type AlertRecipientType = 'email';
+export enum AlertRecipientType {
+    EMAIL = 'email'
+};
 
 export interface AlertRecipient {
-    recipientType: AlertRecipientType;
+    readonly recipientType: AlertRecipientType;
 }
 
 export interface AlertRecipientEmail extends AlertRecipient {
-    readonly recipientType: 'email';
+    readonly recipientType: AlertRecipientType.EMAIL;
     readonly email: string;
 }
 
 // We may want to have more various recipient types in the future.
 //
-// export type AlertRecipientType = 'email' | 'agent' | 'event';
+// export type AlertRecipientType {
+//     EMAIL: 'email';
+//     AGENT: 'agent';
+//     EVENT: 'event';
+// }
 //
 // export interface AlertRecipientAgent extends AlertRecipient {
-//     readonly recipientType: 'agent';
+//     readonly recipientType: AlertRecipientType.AGENT;
 //     readonly agentId: number;
 // }
 //
 // export interface AlertRecipientEvent extends AlertRecipient {
-//     readonly recipientType: 'event';
+//     readonly recipientType: AlertRecipientType.EVENT;
 //     readonly eventType: string;
 // }
 
