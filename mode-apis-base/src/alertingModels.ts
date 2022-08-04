@@ -163,12 +163,53 @@ export const isMetricsThresholdAlertCondition = (obj: unknown): obj is MetricsTh
 
 
 
-/**
- * TODO - Define the attributes required for AlertAction
- */
-export interface AlertAction {
+export interface AlertMessageTemplate {
+    readonly title: string;
+    readonly message: string;
+    readonly recoveryMessage?: string;
 }
 
+export enum AlertRecipientType {
+    EMAIL = 'email'
+};
+
+export interface AlertRecipient {
+    readonly recipientType: AlertRecipientType;
+}
+
+export interface AlertRecipientEmail extends AlertRecipient {
+    readonly recipientType: AlertRecipientType.EMAIL;
+    readonly email: string;
+}
+
+// We may want to have more various recipient types in the future.
+//
+// export type AlertRecipientType {
+//     EMAIL: 'email';
+//     AGENT: 'agent';
+//     EVENT: 'event';
+// }
+//
+// export interface AlertRecipientAgent extends AlertRecipient {
+//     readonly recipientType: AlertRecipientType.AGENT;
+//     readonly agentId: number;
+// }
+//
+// export interface AlertRecipientEvent extends AlertRecipient {
+//     readonly recipientType: AlertRecipientType.EVENT;
+//     readonly eventType: string;
+// }
+
+export interface AlertFilter {
+    // TODO: implement this later
+    // AlertFilter let you filter alerts by some criteria.
+    // For example, you can filter alerts by severity, or by alert condition type, or entity types.
+}
+
+export interface AlertAction {
+    readonly filter?: AlertFilter;
+    readonly recipients: readonly [AlertRecipient, ...AlertRecipient[]];
+}
 
 /**
  * The structure for an AlertRule object.
@@ -180,6 +221,7 @@ export interface AlertRule {
     readonly description?: string | undefined;
     readonly enabled: boolean;
     readonly condition: AlertCondition;
+    readonly messageTemplate: AlertMessageTemplate;
     readonly actions: readonly AlertAction[];
     readonly problem?: string | undefined;
     readonly creationTime: string;
