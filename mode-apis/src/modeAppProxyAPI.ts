@@ -30,7 +30,7 @@ export interface EventLogData {
     readonly limit: number;
     readonly skip: number;
     readonly total: number;
-    readonly records: readonly EventLogRecord[];
+    readonly records?: readonly EventLogRecord[] | null | undefined;
 }
 
 

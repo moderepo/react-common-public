@@ -1,6 +1,6 @@
 {
     "name": "@moderepo/mode-data-state-user-app",
-    "version": "0.1.9",
+    "version": "0.1.11",
     "description": "Module for managing Data states globally for End-User apps",
     "scripts": {
         "build": "tsc"
@@ -30,8 +30,8 @@
     },
     "homepage": "https://github.com/moderepo/react-common-public#readme",
     "dependencies": {
-        "@moderepo/mode-apis": "^0.2.11",
-        "@moderepo/mode-data-state-base": "^0.1.7",
+        "@moderepo/mode-apis": "^0.2.13",
+        "@moderepo/mode-data-state-base": "^0.1.9",
         "immer": "^9.0.7",
         "re-reselect": "^4.0.0",
         "reselect": "^4.1.5"
@@ -45,6 +45,6 @@
     "peerDependencies": {
         "react": ">=17.0.2",
         "react-dom": ">=17.0.2",
-        "@moderepo/mode-apis": ">=0.2.11"
+        "@moderepo/mode-apis": ">=0.2.13"
     }
 }
