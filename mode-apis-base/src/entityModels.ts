@@ -167,6 +167,7 @@ export enum MetricType {
  */
 export enum EntityModuleType {
     HOME_APP_PROXY = 'home_app_proxy',
+    VIDEO = 'video'
 }
 
 
@@ -178,13 +179,28 @@ export interface EntityDataStoreConfiguration {
 
 
 /**
- * Type guard function to check if an object is a DataStoreConfiguration
+ * Type guard function to check if an object is a EntityDataStoreConfiguration
  */
-export const isDataStoreConfiguration = (obj: unknown): obj is EntityDataStoreConfiguration => {
+export const isEntityDataStoreConfiguration = (obj: unknown): obj is EntityDataStoreConfiguration => {
     const object = obj as EntityDataStoreConfiguration;
     return [...Object.values(SmartModuleType), ...Object.values(EntityModuleType)].includes(object.moduleType)
         && (typeof object.moduleInstanceId === 'string' && object.moduleInstanceId.length > 0)
         && (typeof object.bulkDataLabel === 'string' && object.bulkDataLabel.length > 0);
+};
+
+
+export interface EntityMetricsDefinitionLinkTo {
+    readonly blobDefinitionId: string;
+    readonly keyField: string;
+}
+
+/**
+ * Type guard function to check if an object is a EntityMetricsDefinitionLinkTo
+ */
+export const isEntityMetricsDefinitionLinkTo = (obj: unknown): obj is EntityMetricsDefinitionLinkTo => {
+    const object = obj as EntityMetricsDefinitionLinkTo;
+    return (typeof object.blobDefinitionId === 'string' && object.blobDefinitionId.length > 0)
+        && (typeof object.keyField === 'string' && object.keyField.length > 0);
 };
 
 
@@ -195,6 +211,7 @@ export interface EntityMetricsDefinition {
     readonly tagMetrics: readonly TagMetricInfo[];
     readonly numericMetrics: readonly NumericMetricInfo[];
     readonly dataStoreConfiguration: EntityDataStoreConfiguration;
+    readonly linksTo?: readonly EntityMetricsDefinitionLinkTo[] | undefined;
 }
 
 
@@ -211,7 +228,28 @@ export const isEntityMetricsDefinition = (obj: unknown): obj is EntityMetricsDef
         && (object.tagMetrics && !object.tagMetrics.find((metric) => {
             return !isTagMetricInfo(metric);
         }) === undefined)
-        && isDataStoreConfiguration(object.dataStoreConfiguration);
+        && isEntityDataStoreConfiguration(object.dataStoreConfiguration)
+        && (!object.linksTo || (object.linksTo instanceof Array && object.linksTo.every((linkTo) => {
+            return isEntityMetricsDefinitionLinkTo(linkTo);
+        })));
+};
+
+
+export interface EntityBlobDefinition {
+    readonly blobDefinitionId: string;
+    readonly displayName?: string | undefined;
+    readonly dataStoreConfiguration: EntityDataStoreConfiguration;
+}
+
+
+/**
+ * Type guard function to check if an object is a EntityBlobDefinition
+ */
+export const isEntityBlobDefinition = (obj: unknown): obj is EntityBlobDefinition => {
+    const object = obj as EntityBlobDefinition;
+    return (typeof object.blobDefinitionId === 'string' && object.blobDefinitionId.length > 0)
+    && (!object.displayName || (typeof object.displayName === 'string' && object.blobDefinitionId.length > 0))
+        && isEntityDataStoreConfiguration(object.dataStoreConfiguration);
 };
 
 
@@ -319,6 +357,7 @@ export interface EntityClass {
     readonly projectId: number;
     readonly displaySettings: EntityDisplaySettings;
     readonly metricsDefinitions: readonly EntityMetricsDefinition[];
+    readonly blobDefinitions?: readonly EntityBlobDefinition[] | undefined;
     readonly attributeSchema?: readonly EntityAttributeParam<EntityAttributeValueType>[] | undefined;
     readonly createdAt: string;
     readonly updatedAt: string;
