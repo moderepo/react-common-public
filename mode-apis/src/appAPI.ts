@@ -645,6 +645,18 @@ export class AppAPI extends BaseAPI {
         return response.data as TimeSeriesInfo;
     }
 
+    /**
+     * Delete time series
+     */
+    public async deleteTimeSeries (
+        homeId: number, smartModuleId: string, seriesId: string, projectApiKey?: string,
+    ): Promise<void> {
+        await this.sendRequest(
+            RequestMethod.DELETE, `/homes/${homeId}/smartModules/${smartModuleId}/timeSeries/${seriesId}`, undefined, projectApiKey ? {
+                [AUTHORIZATION_KEY]: `${AUTHORIZATION_KEY_PREFIX} ${projectApiKey}`,
+            } : undefined,
+        );
+    }
 
     /**
      * Get time series's data boundaries. This return the "begin" and "end" date which are the very first and very last
@@ -715,6 +727,22 @@ export class AppAPI extends BaseAPI {
 
 
     /**
+     * Delete time series data at the specified time range
+     */
+    public async deleteTimeSeriesData (
+        homeId: number, smartModuleId: string, seriesId: string, begin: string, end: String, projectApiKey?: string,
+    ): Promise<void> {
+        await this.sendRequest(
+            RequestMethod.DELETE,
+            `/homes/${homeId}/smartModules/${smartModuleId}/timeSeries/${seriesId}/data?begin=${begin}&end=${end}`,
+            undefined,
+            projectApiKey ? {
+                [AUTHORIZATION_KEY]: `${AUTHORIZATION_KEY_PREFIX} ${projectApiKey}`,
+            } : undefined);
+    }
+
+
+    /**
      * Get the list of all time series collections being stored for this home.
      * @param homeId
      * @param smartModuleId
@@ -734,6 +762,20 @@ export class AppAPI extends BaseAPI {
     public async getTimeSeriesCollectionInfo (homeId: number, smartModuleId: string, collectionId: string): Promise<TimeSeriesCollectionInfo> {
         const response = await this.sendRequest(RequestMethod.GET, `/homes/${homeId}/smartModules/${smartModuleId}/collections/${collectionId}`);
         return response.data as TimeSeriesCollectionInfo;
+    }
+
+
+    /**
+     * Delete time series collection
+     */
+    public async deleteTimeSeriesCollection (
+        homeId: number, smartModuleId: string, collectionId: string, projectApiKey?: string,
+    ): Promise<void> {
+        await this.sendRequest(
+            RequestMethod.DELETE, `/homes/${homeId}/smartModules/${smartModuleId}/collections/${collectionId}`, undefined, projectApiKey ? {
+                [AUTHORIZATION_KEY]: `${AUTHORIZATION_KEY_PREFIX} ${projectApiKey}`,
+            } : undefined,
+        );
     }
 
 
@@ -957,6 +999,22 @@ export class AppAPI extends BaseAPI {
             limit: totalDataCount,
             data : dataPoints,
         };
+    }
+
+
+    /**
+     * Delete time series collection data at the specified time range
+     */
+    public async deleteTimeSeriesCollectionData (
+        homeId: number, smartModuleId: string, collectionId: string, begin: string, end: String, projectApiKey?: string,
+    ): Promise<void> {
+        await this.sendRequest(
+            RequestMethod.DELETE,
+            `/homes/${homeId}/smartModules/${smartModuleId}/collections/${collectionId}/data?begin=${begin}&end=${end}`,
+            undefined,
+            projectApiKey ? {
+                [AUTHORIZATION_KEY]: `${AUTHORIZATION_KEY_PREFIX} ${projectApiKey}`,
+            } : undefined);
     }
 
 
