@@ -28,7 +28,8 @@ import {
 import {
     SetTimeSeriesDataAction, SetTimeSeriesInfoAction, SetTimeSeriesRangeAction, SetAllTimeSeriesInfoAction, SetAllTimeSeriesCollectionInfoAction,
     SetTimeSeriesCollectionDataAction, SetTimeSeriesCollectionInfoAction, SetTimeSeriesCollectionRangeAction, SetTimeSeriesCollectionRawDataAction,
-    SetTimeSeriesRawDataAction,
+    SetTimeSeriesRawDataAction, ClearTimeSeriesAction, ClearTimeSeriesDataAction, ClearTimeSeriesCollectionsAction,
+    ClearTimeSeriesCollectionDataAction,
 } from './timeSeriesState';
 import {
     ClearEntitiesAction, ClearEntityClassesAction, SetEntitiesAction, SetEntityAction, SetEntityClassAction, SetEntityClassesAction,
@@ -105,6 +106,10 @@ type UserAppDataStateSyncAction =
     | SetTimeSeriesCollectionRangeAction
     | SetTimeSeriesCollectionDataAction
     | SetTimeSeriesCollectionRawDataAction
+    | ClearTimeSeriesAction
+    | ClearTimeSeriesDataAction
+    | ClearTimeSeriesCollectionsAction
+    | ClearTimeSeriesCollectionDataAction
     // Entity actions
     | SetEntityClassesAction
     | SetEntityClassAction
