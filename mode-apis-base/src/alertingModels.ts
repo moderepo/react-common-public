@@ -101,7 +101,7 @@ export interface AlertTargetMetric {
 export interface MetricsAlertCondition extends AlertCondition {
     readonly conditionType: AlertConditionType.METRIC_HEARTBEAT | AlertConditionType.METRIC_THRESHOLD;
 
-    // Metrics that are monitored.
+    // The Metrics that is being monitored.
     readonly targetMetrics: [AlertTargetMetric, ...AlertTargetMetric[]];
 }
 
@@ -171,7 +171,7 @@ export interface AlertMessageTemplate {
 
 export enum AlertRecipientType {
     EMAIL = 'email'
-};
+}
 
 export interface AlertRecipient {
     readonly recipientType: AlertRecipientType;

@@ -4,6 +4,11 @@ import {
 } from '.';
 
 
+export enum MetricValueType {
+    NUMBER = 'number',
+    STRING = 'string'
+}
+
 
 /**
  * valueName - The name of the metric. Usually this will be the same as type except when there are multiple metrics of the same type then this value

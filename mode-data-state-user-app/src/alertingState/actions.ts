@@ -176,7 +176,7 @@ export const fetchAlertRules = (
             ...filters,                                             // Copy the filters
             // change pageSize/pageNumber to skip/limit
             skip      : filters?.pageNumber !== undefined && filters?.pageSize !== undefined ? filters.pageNumber * filters.pageSize : undefined,
-            limit     : filters?.pageSize != undefined ? filters.pageSize : undefined,
+            limit     : filters?.pageSize !== undefined ? filters.pageSize : undefined,
             // exclude pageSize/pageNumber
             pageNumber: undefined,
             pageSize  : undefined,

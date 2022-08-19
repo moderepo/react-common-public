@@ -8,6 +8,9 @@ import produce, {
     castDraft, Draft,
 } from 'immer';
 import {
+    ClearTimeSeriesAction, ClearTimeSeriesCollectionDataAction, ClearTimeSeriesCollectionsAction, ClearTimeSeriesDataAction,
+} from '.';
+import {
     SetAllTimeSeriesCollectionInfoAction, SetAllTimeSeriesInfoAction, SetTimeSeriesCollectionDataAction, SetTimeSeriesCollectionInfoAction,
     SetTimeSeriesCollectionRangeAction, SetTimeSeriesCollectionRawDataAction, SetTimeSeriesDataAction, SetTimeSeriesInfoAction,
     SetTimeSeriesRangeAction, SetTimeSeriesRawDataAction, TimeSeriesActionType,
@@ -36,6 +39,15 @@ const tsIdsByHomeIdByTSDBModuleIdReducer = (
                 temp[actualAction.tsdbModuleId] = actualAction.timeSeries.map((timeSeriesInfo: TimeSeriesInfo) => {
                     return timeSeriesInfo.id;
                 });
+            });
+
+        case TimeSeriesActionType.CLEAR_TIME_SERIES:
+            return produce(currentState, (draft: Draft<typeof currentState>) => {
+                const actualAction = action as ClearTimeSeriesAction;
+                const timeSeriesByHomeId = draft[actualAction.homeId];
+                if (timeSeriesByHomeId) {
+                    delete timeSeriesByHomeId[actualAction.tsdbModuleId];
+                }
             });
 
         default:
@@ -138,6 +150,17 @@ const tsDataByIdByHomeIdByTSDBModuleIdBySearchParamsReducer = (
                 );
             });
 
+        case TimeSeriesActionType.CLEAR_TIME_SERIES_DATA:
+            return produce(currentState, (draft: Draft<typeof currentState>) => {
+                const actualAction = action as ClearTimeSeriesDataAction;
+                const timeSeriesByHomeId = draft[actualAction.homeId];
+                const timeSeriesByHomeIdBySmartModuleId = timeSeriesByHomeId?.[actualAction.tsdbModuleId];
+                if (timeSeriesByHomeIdBySmartModuleId) {
+                    timeSeriesByHomeIdBySmartModuleId[actualAction.timeSeriesId] = {
+                    };
+                }
+            });
+
         default:
             return currentState;
     }
@@ -169,6 +192,18 @@ const tsRawDataByIdByHomeIdByTSDBModuleIdBySearchParamsReducer = (
                 );
             });
 
+        case TimeSeriesActionType.CLEAR_TIME_SERIES_DATA:
+            return produce(currentState, (draft: Draft<typeof currentState>) => {
+                const actualAction = action as ClearTimeSeriesDataAction;
+                const timeSeriesByHomeId = draft[actualAction.homeId];
+                const timeSeriesByHomeIdBySmartModuleId = timeSeriesByHomeId?.[actualAction.tsdbModuleId];
+                if (timeSeriesByHomeIdBySmartModuleId) {
+                    timeSeriesByHomeIdBySmartModuleId[actualAction.timeSeriesId] = {
+                    };
+                }
+            });
+    
+
         default:
             return currentState;
     }
@@ -193,6 +228,15 @@ const tsCollectionIdsByHomeIdByTSDBModuleIdReducer = (
                 temp[actualAction.tsdbModuleId] = actualAction.collections.map((collectionInfo: TimeSeriesCollectionInfo) => {
                     return collectionInfo.id;
                 });
+            });
+
+        case TimeSeriesActionType.CLEAR_TIME_SERIES_COLLECTION:
+            return produce(currentState, (draft: Draft<typeof currentState>) => {
+                const actualAction = action as ClearTimeSeriesCollectionsAction;
+                const collectionsByHomeId = draft[actualAction.homeId];
+                if (collectionsByHomeId) {
+                    delete collectionsByHomeId[actualAction.tsdbModuleId];
+                }
             });
 
         default:
@@ -294,6 +338,18 @@ const tsCollectionDataByIdByHomeIdByTSDBModuleIdBySearchParamsReducer = (
                 );
             });
 
+        case TimeSeriesActionType.CLEAR_TIME_SERIES_COLLECTION_DATA:
+            return produce(currentState, (draft: Draft<typeof currentState>) => {
+                const actualAction = action as ClearTimeSeriesCollectionDataAction;
+                const collectionsByHomeId = draft[actualAction.homeId];
+                const collectionByHomeIdBySmartModuleId = collectionsByHomeId?.[actualAction.tsdbModuleId];
+                if (collectionByHomeIdBySmartModuleId) {
+                    collectionByHomeIdBySmartModuleId[actualAction.collectionId] = {
+                    };
+                }
+            });
+    
+
         default:
             return currentState;
     }
@@ -324,6 +380,17 @@ const tsCollectionRawDataByIdByHomeIdByTSDBModuleIdBySearchParamsReducer = (
                 temp3[actualAction.searchParams] = castDraft(
                     actualAction.data,
                 );
+            });
+
+        case TimeSeriesActionType.CLEAR_TIME_SERIES_COLLECTION_DATA:
+            return produce(currentState, (draft: Draft<typeof currentState>) => {
+                const actualAction = action as ClearTimeSeriesCollectionDataAction;
+                const collectionsByHomeId = draft[actualAction.homeId];
+                const collectionByHomeIdBySmartModuleId = collectionsByHomeId?.[actualAction.tsdbModuleId];
+                if (collectionByHomeIdBySmartModuleId) {
+                    collectionByHomeIdBySmartModuleId[actualAction.collectionId] = {
+                    };
+                }
             });
 
         default:
