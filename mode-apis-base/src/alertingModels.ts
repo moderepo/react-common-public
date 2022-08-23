@@ -166,7 +166,7 @@ export const isMetricsThresholdAlertCondition = (obj: unknown): obj is MetricsTh
 export interface AlertMessageTemplate {
     readonly title: string;
     readonly message: string;
-    readonly recoveryMessage?: string;
+    readonly recoveryMessage?: string | undefined;
 }
 
 export enum AlertRecipientType {
@@ -181,6 +181,15 @@ export interface AlertRecipientEmail extends AlertRecipient {
     readonly recipientType: AlertRecipientType.EMAIL;
     readonly email: string;
 }
+
+/**
+ * Type guard to check if an object is an AlertRecipientEmail
+ */
+export const isEmailAlertRecipient = (obj: unknown): obj is AlertRecipientEmail => {
+    const recipient = obj as AlertRecipientEmail;
+    return recipient.recipientType === AlertRecipientType.EMAIL;
+};
+
 
 // We may want to have more various recipient types in the future.
 //
@@ -207,7 +216,7 @@ export interface AlertFilter {
 }
 
 export interface AlertAction {
-    readonly filter?: AlertFilter;
+    readonly filter?: AlertFilter | undefined;
     readonly recipients: readonly [AlertRecipient, ...AlertRecipient[]];
 }
 
@@ -232,7 +241,7 @@ export interface AlertRule {
 /**
  * The structure for a NEW AlertRule object. This structure's attributes is a subset of the attributes defined in AlertRule interface.
  */
-export interface CreateAlertRuleParams extends Pick<AlertRule, 'name' | 'description' | 'enabled' | 'condition' | 'actions'> {
+export interface CreateAlertRuleParams extends Pick<AlertRule, 'name' | 'description' | 'enabled' | 'condition' | 'messageTemplate' | 'actions'> {
 }
 
 
