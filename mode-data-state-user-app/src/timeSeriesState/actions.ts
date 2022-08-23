@@ -26,7 +26,7 @@ export enum TimeSeriesActionType {
     SET_TIME_SERIES_COLLECTION_RAW_DATA = 'set time series collection raw data',
     CLEAR_TIME_SERIES = 'clear all time series',
     CLEAR_TIME_SERIES_DATA = 'clear time series data',
-    CLEAR_TIME_SERIES_COLLECTION = 'clear all collections',
+    CLEAR_TIME_SERIES_COLLECTIONS = 'clear all collections',
     CLEAR_TIME_SERIES_COLLECTION_DATA = 'clear collections data',
 }
 
@@ -133,7 +133,7 @@ export interface ClearTimeSeriesDataAction extends BaseAction {
 
 
 export interface ClearTimeSeriesCollectionsAction extends BaseAction {
-    readonly type: TimeSeriesActionType.CLEAR_TIME_SERIES_COLLECTION;
+    readonly type: TimeSeriesActionType.CLEAR_TIME_SERIES_COLLECTIONS;
     readonly homeId: number;
     readonly tsdbModuleId: string;
 }
@@ -302,11 +302,11 @@ export const setTimeSeriesCollectionRawData = (
 };
 
 
-export const clearTimeSeriesCollection = (
+export const clearTimeSeriesCollections = (
     homeId: number, tsdbModuleId: string,
 ): ClearTimeSeriesCollectionsAction => {
     return {
-        type: TimeSeriesActionType.CLEAR_TIME_SERIES_COLLECTION,
+        type: TimeSeriesActionType.CLEAR_TIME_SERIES_COLLECTIONS,
         homeId,
         tsdbModuleId,
     };
@@ -597,8 +597,8 @@ export const deleteTimeSeriesCollection = (
     return async (dataDispatch: ExtDispatch<UserAppDataStateAction>): Promise<void> => {
         await AppAPI.getInstance().deleteTimeSeriesCollection(homeId, tsdbModuleId, collectionId, projectApiKey);
 
-        // Need to clear the time series collection because the list of time series collection changed
-        await dataDispatch(clearTimeSeriesCollection(homeId, tsdbModuleId));
+        // Need to clear the time series collections because the list of time series collections changed
+        await dataDispatch(clearTimeSeriesCollections(homeId, tsdbModuleId));
     };
 };
 

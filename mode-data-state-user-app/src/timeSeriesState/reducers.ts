@@ -230,7 +230,7 @@ const tsCollectionIdsByHomeIdByTSDBModuleIdReducer = (
                 });
             });
 
-        case TimeSeriesActionType.CLEAR_TIME_SERIES_COLLECTION:
+        case TimeSeriesActionType.CLEAR_TIME_SERIES_COLLECTIONS:
             return produce(currentState, (draft: Draft<typeof currentState>) => {
                 const actualAction = action as ClearTimeSeriesCollectionsAction;
                 const collectionsByHomeId = draft[actualAction.homeId];
