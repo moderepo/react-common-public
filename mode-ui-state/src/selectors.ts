@@ -1,5 +1,6 @@
 import React from 'react';
 import {
+    ControlPanelCompPriority,
     UsageMode,
 } from '.';
 import {
@@ -50,8 +51,21 @@ export const selectSlideOutPanelOptions = (state: ModeUIState): SlideOutPanelOpt
     return state.slideOutPanelOptions;
 };
 
-export const selectControlPanelComponent = (state: ModeUIState): React.ReactNode | undefined => {
-    return state.controlPanelComp;
+export const selectControlPanelComponents = (state: ModeUIState): readonly React.ReactNode[] | undefined => {
+    return [...state.controlPanelComps].sort((compInfo1, compInfo2) => {
+        if (compInfo1 && compInfo2) {
+            return (compInfo1.priority ?? ControlPanelCompPriority.LOW) - (compInfo2.priority ?? ControlPanelCompPriority.LOW);
+        }
+        if (compInfo1) {
+            return 1;
+        }
+        if (compInfo2) {
+            return -1;
+        }
+        return 0;
+    }).map((compInfo): React.ReactNode => {
+        return compInfo?.comp;
+    });
 };
 
 export const selectCache = (state: ModeUIState, key: string): any => {

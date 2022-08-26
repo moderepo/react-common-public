@@ -25,12 +25,20 @@ enum ActionType {
     SET_IS_EDITING_FORM = 'SET_IS_EDITING_FORM',
     SHOW_SLIDE_OUT_PANEL = 'SHOW_SLIDE_OUT_PANEL',
     HIDE_SLIDE_OUT_PANEL = 'HIDE_SLIDE_OUT_PANEL',
-    SET_CONTROL_PANEL_COMP = 'SET_CONTROL_PANEL_COMP',
+    ADD_CONTROL_PANEL_COMP = 'ADD_CONTROL_PANEL_COMP',
     REMOVE_CONTROL_PANEL_COMP = 'REMOVE_CONTROL_PANEL_COMP',
     SET_CACHE = 'SET_CACHE',
     DELETE_CACHE = 'DELETE_CACHE',
     SET_USAGE_MODE = 'SET_USAGE_MODE',
     BATCH_ACTIONS = 'BATCH_ACTIONS',
+}
+
+
+
+export enum ControlPanelCompPriority {
+    HIGH = 1,
+    MEDIUM = 2,
+    LOW = 3,
 }
 
 
@@ -127,13 +135,16 @@ interface HideSlideOutPanelAction extends Action {
     readonly type: ActionType.HIDE_SLIDE_OUT_PANEL,
 }
 
-interface SetControlPanelCompPanelAction extends Action {
-    readonly type: ActionType.SET_CONTROL_PANEL_COMP,
+interface AddControlPanelCompPanelAction extends Action {
+    readonly type: ActionType.ADD_CONTROL_PANEL_COMP,
+    readonly name: string;
     readonly component: React.ReactNode;
+    readonly priority?: ControlPanelCompPriority | undefined;
 }
 
 interface RemoveControlPanelCompPanelAction extends Action {
     readonly type: ActionType.REMOVE_CONTROL_PANEL_COMP,
+    readonly name: string;
 }
 
 interface SetCacheAction extends Action {
@@ -172,7 +183,7 @@ export type UIAction =
     SetIsEditingFormAction |
     ShowSlideOutPanelAction |
     HideSlideOutPanelAction |
-    SetControlPanelCompPanelAction |
+    AddControlPanelCompPanelAction |
     RemoveControlPanelCompPanelAction |
     SetCacheAction |
     DeleteCacheAction |
@@ -384,12 +395,17 @@ export const hideSlideOutPanel = (): HideSlideOutPanelAction => {
 
 
 /**
- * Create an action to show the slide out panel.
+ * Create an action to add a component to the control panel.
+ * @param priority - If not specified, the default is LOW and the component will be placed at the bottom of the container
  */
-export const setControlPanelComp = (component: React.ReactNode): SetControlPanelCompPanelAction => {
+export const addControlPanelComp = (
+    name: string, component: React.ReactNode, priority?: ControlPanelCompPriority,
+): AddControlPanelCompPanelAction => {
     return {
-        type: ActionType.SET_CONTROL_PANEL_COMP,
+        type: ActionType.ADD_CONTROL_PANEL_COMP,
+        name,
         component,
+        priority,
     };
 };
 
@@ -397,9 +413,10 @@ export const setControlPanelComp = (component: React.ReactNode): SetControlPanel
 /**
  * Create an action to hide the current slide out panel
  */
-export const removeControlPanelComp = (): RemoveControlPanelCompPanelAction => {
+export const removeControlPanelComp = (name: string): RemoveControlPanelCompPanelAction => {
     return {
         type: ActionType.REMOVE_CONTROL_PANEL_COMP,
+        name,
     };
 };
 
@@ -521,15 +538,33 @@ export const uiStateReducer = (currentState: ModeUIState, action: Action): ModeU
                 delete draft.slideOutPanelOptions;
             });
 
-        case ActionType.SET_CONTROL_PANEL_COMP:
+        case ActionType.ADD_CONTROL_PANEL_COMP:
             return produce(currentState, (draft: Draft<ModeUIState>) => {
-                const actualAction = action as SetControlPanelCompPanelAction;
-                draft.controlPanelComp = actualAction.component;
+                const actualAction = action as AddControlPanelCompPanelAction;
+
+                // Only add the component info the the "controlPanelComps" if there isn't a compInfo with the same name
+                if (
+                    draft.controlPanelComps.find((compInfo) => {
+                        return compInfo.name === actualAction.name;
+                    }) === undefined
+                ) {
+                    draft.controlPanelComps.push({
+                        name    : actualAction.name,
+                        comp    : actualAction.component,
+                        priority: actualAction.priority,
+                    });
+                }
             });
         
         case ActionType.REMOVE_CONTROL_PANEL_COMP:
             return produce(currentState, (draft: Draft<ModeUIState>) => {
-                delete draft.controlPanelComp;
+                const actualAction = action as AddControlPanelCompPanelAction;
+                const index = draft.controlPanelComps.findIndex((compInfo) => {
+                    return compInfo.name === actualAction.name;
+                });
+                if (index >= 0) {
+                    draft.controlPanelComps.splice(index, 1);
+                }
             });
 
         case ActionType.SET_CACHE:

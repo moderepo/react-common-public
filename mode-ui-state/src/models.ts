@@ -1,6 +1,9 @@
 import {
     CSSProperties,
 } from 'react';
+import {
+    ControlPanelCompPriority,
+} from '.';
 
 /**
  * The types of notification we can show
@@ -114,7 +117,11 @@ export interface ModeUIState {
     readonly currentLanguage: string;
     readonly isEditingForm: boolean;
     readonly slideOutPanelOptions?: SlideOutPanelOptions | undefined;
-    readonly controlPanelComp?: React.ReactNode | undefined;
+    readonly controlPanelComps: readonly {
+        readonly name: string;
+        readonly comp: React.ReactNode;
+        readonly priority?: ControlPanelCompPriority | undefined;
+    }[];
     readonly cache: object;
     readonly usageMode: UsageMode;
 }
