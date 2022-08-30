@@ -29,12 +29,13 @@ export interface ModeUIContext {
 
 // The initial state values for the global UI state
 const initialModeUIState: ModeUIState = {
-    isLoading       : false,
-    drawerMenuOpened: false,
-    currentLanguage : 'en',
-    isEditingForm   : false,
-    usageMode       : UsageMode.MANAGE_DATA,
-    cache           : {
+    isLoading        : false,
+    drawerMenuOpened : false,
+    currentLanguage  : 'en',
+    isEditingForm    : false,
+    usageMode        : UsageMode.MANAGE_DATA,
+    controlPanelComps: [],
+    cache            : {
     },
 };
 

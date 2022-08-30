@@ -67,7 +67,7 @@ export const useModeFormStyle = makeStyles((theme: Theme) => {
                     },
 
                     '& $formInputSectionTitle': {
-                        padding         : theme.spacing(0.5),
+                        padding         : theme.spacing(0.5, 1),
                         borderBottom    : 'none',
                         '& .toggle-icon': {
                             transform: 'rotateZ(180deg)',
