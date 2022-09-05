@@ -60,6 +60,9 @@ export interface SearchBoxProps {
     readonly initialValue?: string | undefined;
     readonly placeholder?: string;           // placeholder to show in the input field
     readonly delay?: number;
+    // Whether or not to allow case sensitive. If this is true, the user input will NOT automatically be converted to lowercase. The default is
+    // FALSE and all input will be converted to lowercase
+    readonly caseSensitive?: boolean | undefined;
     readonly onChange: (value: string)=> void;
 }
 
@@ -94,7 +97,11 @@ export const SearchBox: React.FC<SearchBoxProps> = (props: SearchBoxProps) => {
                     ref: searchInputRef,
                 }}
                 onChange={(event: React.ChangeEvent) => {
-                    setSearchText((event.currentTarget as HTMLInputElement).value.toLowerCase());
+                    if (props.caseSensitive === true) {
+                        setSearchText((event.currentTarget as HTMLInputElement).value);
+                    } else {
+                        setSearchText((event.currentTarget as HTMLInputElement).value.toLowerCase());
+                    }
                 }}
             />
             {searchText.length > 0
