@@ -19,3 +19,4 @@ export * from './timeSeriesState';
 export * from './entitiesState';
 export * from './alertingState';
 export * from './deviceConfigSchemasState';
+export * from './eventLogsState';
