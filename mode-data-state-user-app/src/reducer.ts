@@ -41,7 +41,7 @@ import {
     deviceConfigSchemasStateReducer,
 } from './deviceConfigSchemasState/reducers';
 import {
-    alertRulesStateReducer,
+    alertRulesStateReducer, eventLogsStateReducer,
 } from '.';
 
 
@@ -79,6 +79,7 @@ export const userAppDataStateReducer = (currentState: UserAppDataState, action: 
                 draft.entities = castDraft(entitiesStateReducer(currentState.entities, action));
                 draft.alerting = castDraft(alertRulesStateReducer(currentState.alerting, action));
                 draft.deviceConfigSchemas = castDraft(deviceConfigSchemasStateReducer(currentState.deviceConfigSchemas, action));
+                draft.eventLogsState = castDraft(eventLogsStateReducer(currentState.eventLogsState, action));
             });
     }
 };

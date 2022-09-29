@@ -1,6 +1,6 @@
 {
     "name": "@moderepo/mode-data-state-user-app",
-    "version": "0.1.13",
+    "version": "0.1.14",
     "description": "Module for managing Data states globally for End-User apps",
     "scripts": {
         "build": "tsc"

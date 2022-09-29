@@ -14,3 +14,4 @@ export * from './homeVideosState/selectors';
 export * from './entitiesState/selectors';
 export * from './alertingState/selectors';
 export * from './deviceConfigSchemasState/selectors';
+export * from './eventLogsState/selectors';

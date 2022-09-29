@@ -124,7 +124,7 @@ export const selectEntities = createCachedSelector(
     readonly pageNumber?: number | undefined;
     readonly pageSize?: number | undefined;
 }) => {
-    // use searchParams as cache key for creatCachedSelector
+    // use searchParams as cache key for createCachedSelector
     return searchParamsToString(searchParams);
 });
 

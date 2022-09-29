@@ -40,7 +40,9 @@ import {
 import {
     SetAlertRulesAction, SetAlertRuleAction, ClearAlertRulesAction, SetAlertsAction, SetAlertAction, ClearAlertsAction,
 } from './alertingState';
-
+import {
+    SetEventLogsDataAction, ClearEventLogsDataAction,
+} from './eventLogsState';
 
 
 // Re-export actions defined in each individual sub state
@@ -126,6 +128,9 @@ type UserAppDataStateSyncAction =
     | SetAlertsAction
     | SetAlertAction
     | ClearAlertsAction
+    // Event Logs actions
+    | SetEventLogsDataAction
+    | ClearEventLogsDataAction
     // Other actions
     | BatchActionsAction
 ;

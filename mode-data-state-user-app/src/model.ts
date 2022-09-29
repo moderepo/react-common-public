@@ -34,7 +34,9 @@ import {
 import {
     AlertingState,
 } from './alertingState';
-
+import {
+    EventLogsState,
+} from './eventLogsState';
 
 /**
  * UserAppDataState is a Global data state used for managing MODE end-user app data.
@@ -52,4 +54,5 @@ export interface UserAppDataState {
     readonly entities: EntitiesState;
     readonly alerting: AlertingState;
     readonly deviceConfigSchemas: DeviceConfigSchemasState;
+    readonly eventLogsState: EventLogsState;
 }
