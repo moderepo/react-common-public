@@ -361,7 +361,7 @@ export interface EntityClass {
     readonly entityClass: string;
     readonly projectId: number;
     readonly displaySettings: EntityDisplaySettings;
-    readonly metricsDefinitions: readonly EntityMetricsDefinition[];
+    readonly metricsDefinitions?: readonly EntityMetricsDefinition[] | undefined;
     readonly blobDefinitions?: readonly EntityBlobDefinition[] | undefined;
     readonly attributeSchema?: readonly EntityAttributeParam<EntityAttributeValueType>[] | undefined;
     readonly createdAt: string;
@@ -387,9 +387,9 @@ export const isEntityClass = (obj: unknown): obj is EntityClass => {
     return (typeof object.entityClass === 'string' && object.entityClass.length > 0)
          && (typeof object.projectId === 'number')
          && (isEntityDisplaySettings(object.displaySettings))
-         && (object.metricsDefinitions && object.metricsDefinitions.find((metricDef) => {
-             return !isEntityMetricsDefinition(metricDef);
-         }) === undefined)
+         && (object.metricsDefinitions === undefined || object.metricsDefinitions.every((metricDef) => {
+             return isEntityMetricsDefinition(metricDef);
+         }))
          && (object.attributeSchema === undefined || isEntityAttributeParam(object.attributeSchema));
 };
 
