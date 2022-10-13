@@ -411,10 +411,10 @@ export interface Entity {
 
     // An array of metricsDefinitionId and the id of the metrics data e.g. collection ID
     // There should be 1 item per metricsDefinition defined in the entityClass
-    readonly metrics: readonly {
+    readonly metrics?: readonly {
         readonly metricsDefinitionId: string;
         readonly metricsId: string;
-    }[];
+    }[] | undefined;
 }
 
 /**

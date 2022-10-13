@@ -165,7 +165,8 @@ export const isMetricsThresholdAlertCondition = (obj: unknown): obj is MetricsTh
 
 export interface AlertMessageTemplate {
     readonly title: string;
-    readonly message: string;
+    readonly recoveryTitle?: string | undefined;
+    readonly message?: string | undefined;
     readonly recoveryMessage?: string | undefined;
 }
 
