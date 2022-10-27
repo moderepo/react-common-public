@@ -1,38 +1,38 @@
 {
-  "name": "@moderepo/mode-apis",
-  "version": "0.2.19",
-  "description": "MODE's apis for end-user apps",
-  "scripts": {
-    "build": "tsc"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/moderepo/react-common-public.git",
-    "directory": "mode-apis"
-  },
-  "keywords": [
-    "MODE",
-    "apis"
-  ],
-  "author": "MODE Inc",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/moderepo/react-common-public/issues"
-  },
-  "homepage": "https://github.com/moderepo/react-common-public#readme",
-  "files": [
-    "dist"
-  ],
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
-  "dependencies": {
-    "@moderepo/mode-apis-base": "^0.1.13",
-    "axios": "^0.24.0"
-  },
-  "devDependencies": {
-    "typescript": "^4.5.4"
-  }
+    "name": "@moderepo/mode-apis",
+    "version": "0.2.19",
+    "description": "MODE's apis for end-user apps",
+    "scripts": {
+        "build": "tsc"
+    },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
+    },
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/moderepo/react-common-public.git",
+        "directory": "mode-apis"
+    },
+    "keywords": [
+        "MODE",
+        "apis"
+    ],
+    "author": "MODE Inc",
+    "license": "ISC",
+    "bugs": {
+        "url": "https://github.com/moderepo/react-common-public/issues"
+    },
+    "homepage": "https://github.com/moderepo/react-common-public#readme",
+    "files": [
+        "dist"
+    ],
+    "main": "dist/index.js",
+    "types": "dist/index.d.ts",
+    "dependencies": {
+        "@moderepo/mode-apis-base": "^0.1.13",
+        "axios": "^0.24.0"
+    },
+    "devDependencies": {
+        "typescript": "^4.5.4"
+    }
 }
