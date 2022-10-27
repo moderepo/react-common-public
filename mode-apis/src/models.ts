@@ -3,9 +3,8 @@
  */
 
 import {
-    LoginInfo, AppSettings,
+    LoginInfo, AppSettings, SortOrder,
 } from '@moderepo/mode-apis-base';
-
 
 
 // The Key we will add to the REQUEST header when we make API call to AppAPI to pass user's auth token to the backend
@@ -34,6 +33,18 @@ export interface UserSessionInfo {
     readonly creationTime: string;
 }
 
+
+/**
+ * The filter options that the Fetch home videos API support
+ */
+export interface FetchHomeVideosFilters {
+    readonly searchKeys?: string;
+    readonly searchKeyPrefix?: string;
+    readonly skip?: number;
+    readonly limit?: number;
+    readonly sortBy?: string;
+    readonly sortOrder?: SortOrder;
+}
 
 
 /**

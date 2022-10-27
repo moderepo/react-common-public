@@ -18,6 +18,9 @@ import {
 import {
     EntitiesState,
 } from './models';
+import {
+    UIFetchEntityFilters,
+} from '.';
 
 
 
@@ -115,15 +118,9 @@ export const selectEntities = createCachedSelector(
     (state: UserAppDataState) => { return state.entities.entitiesByProjectIdByEntityId; },
     (state: UserAppDataState) => { return state.entities.entityIdsByProjectId; },
     (state: UserAppDataState, projectId: number) => { return projectId; },
-    (state: UserAppDataState, projectId: number, searchParams?: {
-        readonly pageNumber?: number | undefined;
-        readonly pageSize?: number | undefined;
-    }) => { return searchParamsToString(searchParams); },
+    (state: UserAppDataState, projectId: number, searchParams?: UIFetchEntityFilters) => { return searchParamsToString(searchParams); },
     selectEntitiesFunc,
-)((state: UserAppDataState, projectId: number, searchParams?: {
-    readonly pageNumber?: number | undefined;
-    readonly pageSize?: number | undefined;
-}) => {
+)((state: UserAppDataState, projectId: number, searchParams?: UIFetchEntityFilters) => {
     // use searchParams as cache key for createCachedSelector
     return searchParamsToString(searchParams);
 });

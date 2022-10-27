@@ -1,5 +1,4 @@
 import {
-    SortOrder,
     VideoInfo,
 } from '@moderepo/mode-apis';
 import {
@@ -8,6 +7,9 @@ import {
 import {
     createCachedSelector,
 } from 're-reselect';
+import {
+    UIFetchHomeVideosFilters,
+} from '.';
 import {
     UserAppDataState,
 } from '../model';
@@ -48,23 +50,11 @@ export const selectHomeVideos = createCachedSelector(
     (state: UserAppDataState) => { return state.homeVideosState.videoKeysByHomeIdBySmartModuleIdBySearchParams; },
     (state: UserAppDataState, homeId: number) => { return homeId; },
     (state: UserAppDataState, homeId: number, smartModuleId: string) => { return smartModuleId; },
-    (state: UserAppDataState, homeId: number, smartModuleId: string, searchParams: {
-        readonly pageNumber: number;
-        readonly pageSize: number;
-        readonly searchKeys?: string;
-        readonly searchKeyPrefix?: string;
-        readonly sortBy?: string;
-        readonly sortOrder?: SortOrder;
-    }) => { return searchParamsToString(searchParams); },
+    (state: UserAppDataState, homeId: number, smartModuleId: string, searchParams?: UIFetchHomeVideosFilters) => {
+        return searchParamsToString(searchParams);
+    },
     selectHomeVideosFunc,
-)((state: UserAppDataState, homeId: number, smartModuleId: string, searchParams: {
-    readonly pageNumber: number;
-    readonly pageSize: number;
-    readonly searchKeys?: string;
-    readonly searchKeyPrefix?: string;
-    readonly sortBy?: string;
-    readonly sortOrder?: SortOrder;
-}) => {
+)((state: UserAppDataState, homeId: number, smartModuleId: string, searchParams?: UIFetchHomeVideosFilters) => {
     // use homeId, smartModuleId, and searchParams as cache key for createCachedSelector
     return `${homeId}:${smartModuleId}:${searchParamsToString(searchParams)}`;
 });
