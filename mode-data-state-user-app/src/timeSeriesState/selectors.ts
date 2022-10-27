@@ -1,6 +1,6 @@
 import {
     TimeSeriesAggregation, TimeSeriesCollectionData, TimeSeriesCollectionInfo, TimeSeriesCollectionRange, TimeSeriesCollectionRawData, TimeSeriesData,
-    TimeSeriesInfo, TimeSeriesRange, TimeSeriesRawData,
+    TimeSeriesInfo, TimeSeriesRange, TimeSeriesRawData, TimeSeriesResolution,
 } from '@moderepo/mode-apis';
 import {
     searchParamsToString,
@@ -93,10 +93,11 @@ export const selectTimeSeriesRange = (
  * @param seriesId
  */
 export const selectTimeSeriesData = (
-    state: UserAppDataState, homeId: number, tsdbModuleId: string, seriesId: string, startTime: string, endTime: string, aggr?: TimeSeriesAggregation,
+    state: UserAppDataState, homeId: number, tsdbModuleId: string, seriesId: string, startTime: string, endTime: string,
+    aggr?: TimeSeriesAggregation, resolution?: TimeSeriesResolution,
 ): TimeSeriesData | undefined => {
     const searchParams = searchParamsToString({
-        startTime, endTime, aggr,
+        startTime, endTime, aggr, resolution,
     });
     return state.timeSeriesState.tsDataByIdByHomeIdByTSDBModuleIdBySearchParams?.[homeId]?.[tsdbModuleId]?.[seriesId]?.[searchParams];
 };
@@ -200,10 +201,10 @@ export const selectTimeSeriesCollectionRange = (
  */
 export const selectTimeSeriesCollectionData = (
     state: UserAppDataState, homeId: number, tsdbModuleId: string, collectionId: string,
-    startTime: string, endTime: string, selectedValues: readonly string[], aggr?: TimeSeriesAggregation,
+    startTime: string, endTime: string, selectedValues: readonly string[], aggr?: TimeSeriesAggregation, resolution?: TimeSeriesResolution,
 ): TimeSeriesCollectionData | undefined => {
     const searchParams = searchParamsToString({
-        startTime, endTime, selectedValues: [...selectedValues].sort().join(','), aggr,
+        startTime, endTime, selectedValues: [...selectedValues].sort().join(','), aggr, resolution,
     });
     return state.timeSeriesState.tsCollectionDataByIdByHomeIdByTSDBModuleIdBySearchParams?.[homeId]?.[tsdbModuleId]?.[collectionId]?.[searchParams];
 };

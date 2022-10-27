@@ -1,5 +1,5 @@
 import {
-    SortOrder, AppAPI, VideoInfo,
+    AppAPI, VideoInfo, FetchHomeVideosFilters,
 } from '@moderepo/mode-apis';
 import {
     BaseAction, ExtDispatch, searchParamsToString,
@@ -72,30 +72,39 @@ export const clearVideos = (homeId: number, smartModuleId: string): ClearVideosA
 };
 
 
+
+/**
+ * Backend uses 'limit' and 'skip' attributes however in the frontend, we use pageNumber and pageSize so this function need
+ * to accept a filter object that uses pageNumber, pageSize and then convert that to skip/limit before calling the API
+ */
+export interface UIFetchHomeVideosFilters extends Omit<Omit<FetchHomeVideosFilters, 'skip'>, 'limit'> {
+    readonly pageNumber?: number | undefined;
+    readonly pageSize?: number | undefined;
+}
+
+
+
 /**
  * Fetch videos for a home
  */
 export const fetchHomeVideos = (
     homeId: number,
     smartModuleId: string,
-    pageNumber: number,
-    pageSize: number,
-    filters?: {
-        readonly searchKeys?: string;
-        readonly searchKeyPrefix?: string;
-        readonly sortBy?: string;
-        readonly sortOrder?: SortOrder;
-    },
+    filters?: UIFetchHomeVideosFilters | undefined,
 ): UserAppThunkAction => {
     return async (dataDispatch: ExtDispatch<UserAppDataStateAction>): Promise<void> => {
-        const response = await AppAPI.getInstance().getHomeVideos(homeId, smartModuleId, {
-            ...filters,
-            skip : pageSize * pageNumber,
-            limit: pageSize,
-        });
-        await dataDispatch(setHomeVideos(homeId, smartModuleId, response, searchParamsToString({
-            pageNumber, pageSize, ...filters,
-        })));
+        const modifiedFilters = {
+            ...filters,                                             // Copy the filters
+            // change pageSize/pageNumber to skip/limit
+            skip      : filters?.pageNumber && filters.pageSize ? filters.pageNumber * filters.pageSize : undefined,
+            limit     : filters?.pageSize ? filters.pageSize : undefined,
+            // exclude pageSize/pageNumber
+            pageNumber: undefined,
+            pageSize  : undefined,
+        };
+
+        const response = await AppAPI.getInstance().getHomeVideos(homeId, smartModuleId, modifiedFilters);
+        await dataDispatch(setHomeVideos(homeId, smartModuleId, response, searchParamsToString(filters)));
     };
 };
 

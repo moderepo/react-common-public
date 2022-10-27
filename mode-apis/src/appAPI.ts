@@ -4,7 +4,7 @@ import {
 import {
     HomeMember, Home, HomeDevice, DeviceRegistrationData, DeviceProvisioningData, KeyValuePair, DeviceCommand, TimeSeriesInfo, TimeSeriesRange,
     TimeSeriesData, TimeSeriesAggregation, SmartModule, ApiErrorCode, ApiError, User, TimeSeriesCollectionInfo, TimeSeriesCollectionData,
-    TimeSeriesCollectionRange, TimeSeriesCollectionExportedUrl, BaseAPI, RequestMethod, MemberRole, VideoInfo, SortOrder, TimeSeriesExportInfo,
+    TimeSeriesCollectionRange, TimeSeriesCollectionExportedUrl, BaseAPI, RequestMethod, MemberRole, VideoInfo, TimeSeriesExportInfo,
     TimeSeriesRawData, TimeSeriesCollectionRawData, createFormData, PaginationDataSet, DATA_RANGE_HEADER_KEY, parseDataRange, Entity,
     FetchEntityFilters, EntityClass, UpdateEntityParams, CreateEntityParams, TimeSeriesResolution, UpdatableHomeDeviceProps,
     DeviceConfigFirmwareSchema, AlertRule, FetchAlertRulesFilters, CreateAlertRuleParams, UpdateAlertRuleParams, Alert, FetchAlertsFilters,
@@ -12,6 +12,9 @@ import {
 import {
     AUTHORIZATION_KEY, AUTHORIZATION_KEY_PREFIX, UserLoginInfo, UserSessionInfo,
 } from './models';
+import {
+    FetchHomeVideosFilters,
+} from '.';
 
 
 
@@ -1103,14 +1106,7 @@ export class AppAPI extends BaseAPI {
      * @param sortBy The name of the field to sort by e.g. 'searchKey', 'homeId'
      * @param sortOrder The order to sort them, e.g. 'asc' or 'desc'
      */
-    public async getHomeVideos (homeId: number, videoSmartModuleId: string, filters?: {
-        readonly searchKeys?: string;
-        readonly searchKeyPrefix?: string;
-        readonly skip?: number;
-        readonly limit?: number;
-        readonly sortBy?: string;
-        readonly sortOrder?: SortOrder;
-    }): Promise<readonly VideoInfo[]> {
+    public async getHomeVideos (homeId: number, videoSmartModuleId: string, filters?: FetchHomeVideosFilters): Promise<readonly VideoInfo[]> {
 
         // Backend expect "sortBy" to includes both the sort by field and sort order e.g. 'asc', 'desc' so we need to combine filters.sortBy
         // and filters.sortOrder

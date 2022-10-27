@@ -1,6 +1,6 @@
 {
     "name": "@moderepo/mode-data-state-robot-cloud",
-    "version": "0.1.16",
+    "version": "0.1.17",
     "description": "Module for managing Data states globally for mode ROBOT CLOUD applications",
     "scripts": {
         "build": "tsc"
@@ -30,7 +30,7 @@
     },
     "homepage": "https://github.com/moderepo/react-common-public#readme",
     "dependencies": {
-        "@moderepo/mode-apis": "^0.2.18",
+        "@moderepo/mode-apis": "^0.2.19",
         "@moderepo/mode-data-state-base": "^0.1.13",
         "immer": "^9.0.7",
         "re-reselect": "^4.0.0",
@@ -45,6 +45,6 @@
     "peerDependencies": {
         "react": ">=17.0.2",
         "react-dom": ">=17.0.2",
-        "@moderepo/mode-apis": ">=0.2.18"
+        "@moderepo/mode-apis": ">=0.2.19"
     }
 }
