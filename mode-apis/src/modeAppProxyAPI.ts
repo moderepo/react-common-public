@@ -43,6 +43,7 @@ export interface GetEventLogFilter {
     readonly skip?: number | undefined;
     readonly sortBy?: SortOrder | undefined;
     readonly fieldsFilter?: string | undefined;
+    readonly timezone?: string | undefined;
 }
 
 
