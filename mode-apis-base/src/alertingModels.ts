@@ -101,8 +101,8 @@ export interface AlertTargetMetric {
 export interface MetricsAlertCondition extends AlertCondition {
     readonly conditionType: AlertConditionType.METRIC_HEARTBEAT | AlertConditionType.METRIC_THRESHOLD;
 
-    // The Metrics that is being monitored.
-    readonly targetMetrics: [AlertTargetMetric, ...AlertTargetMetric[]];
+    // The configuration for the metric that is being monitored.
+    readonly metricsCondition: AlertTargetMetric;
 }
 
 
