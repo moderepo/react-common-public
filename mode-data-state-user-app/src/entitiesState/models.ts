@@ -7,7 +7,7 @@ export interface EntitiesState {
     // entities' ID are not unique globally therefore they need to be stored under projectId
     readonly entitiesByProjectIdByEntityId: {
         readonly [projectId: number]: {
-            [entityId: string]: Entity | undefined;
+            readonly [entityId: string]: Entity | undefined;
         } | undefined;
     };
     readonly entityIdsByProjectId: {
