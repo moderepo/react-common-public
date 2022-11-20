@@ -158,8 +158,11 @@ export const useModeFormStyle = makeStyles((theme: Theme) => {
                 },
 
                 '&.fade': {
-                    opacity: 0.4,
-                    filter : 'blur(2px)',
+                    opacity: 0.5,
+                },
+
+                '&.blur': {
+                    filter: 'blur(2px)',
                 },
 
                 '&.hidden': {
@@ -177,6 +180,15 @@ export const useModeFormStyle = makeStyles((theme: Theme) => {
                     fontFamily: '"Material Icons"',
                     marginLeft: theme.spacing(0.5),
                     color     : theme.palette.success.main,
+                },
+            },
+
+            '& .readonly-label-icon.lock': {
+                '&::after': {
+                    content   : '"lock"',
+                    fontFamily: '"Material Icons"',
+                    marginLeft: theme.spacing(0.5),
+                    color     : theme.palette.error.main,
                 },
             },
 
