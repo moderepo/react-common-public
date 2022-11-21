@@ -61,6 +61,16 @@ export const usePropValue = <T extends unknown>(propValue: T): [T, Dispatch<SetS
 };
 
 
+export enum ReadonlyInputStyle {
+    FADE = 'fade',
+    BLUR = 'blur',
+    FADE_AND_BLUR = 'fade blur',        // default
+    LOCK = 'lock',
+    NONE = ''
+}
+
+export const DEFAULT_READONLY_INPUT_STYLE = ReadonlyInputStyle.FADE_AND_BLUR;
+
 
 export interface ModeBaseInputFieldProps {
     readonly fieldName: string;
@@ -71,6 +81,8 @@ export interface ModeBaseInputFieldProps {
     readonly hidden?: boolean | undefined;
     readonly editingModeOnly?: boolean | undefined;
     readonly editable?: boolean | undefined;
+    // The style to apply to the input if it is not editable. The default is FADE_AND_BLUR
+    readonly readonlyStyle?: ReadonlyInputStyle |undefined;
     readonly hideEditableIcon?: boolean | undefined;
     readonly hideOnEdit?: boolean | undefined;
     readonly clickable?: boolean | undefined;
@@ -108,9 +120,9 @@ export const ModeTextInputField: React.FC<ModeTextInputFieldProps> = (props: Mod
     const inputLabelProps = useMemo(() => {
         return {
             shrink   : true,
-            className: props.editable && !props.hideEditableIcon ? 'editable-label-icon' : '',
+            className: props.editable && !props.hideEditableIcon ? 'editable-label-icon' : `readonly-label-icon ${props.readonlyStyle}`,
         };
-    }, [props.editable, props.hideEditableIcon]);
+    }, [props.editable, props.hideEditableIcon, props.readonlyStyle]);
 
     const inputProps = useMemo(() => {
         return {
@@ -131,8 +143,8 @@ export const ModeTextInputField: React.FC<ModeTextInputFieldProps> = (props: Mod
         return clsx(props.className, hideInput && 'hidden',
             !props.editable ? 'readonly' : '',
             !props.isInEditMode && props.clickable && 'clickable',
-            props.isInEditMode && !props.editable ? 'fade' : '');
-    }, [props.className, props.editable, props.isInEditMode, props.clickable, hideInput]);
+            props.isInEditMode && !props.editable && (props.readonlyStyle ?? DEFAULT_READONLY_INPUT_STYLE));
+    }, [props.className, props.editable, props.isInEditMode, props.clickable, props.readonlyStyle, hideInput]);
 
     const onInputChangeHandler = props.onInputChange;
     const onFormInputChangeHandler = props.onFormInputChange;
@@ -250,9 +262,9 @@ export const ModeTextAreaInputField: React.FC<ModeTextAreaInputFieldProps> = (pr
     const inputLabelProps = useMemo(() => {
         return {
             shrink   : true,
-            className: props.editable && !props.hideEditableIcon ? 'editable-label-icon' : '',
+            className: props.editable && !props.hideEditableIcon ? 'editable-label-icon' : `readonly-label-icon ${props.readonlyStyle}`,
         };
-    }, [props.editable, props.hideEditableIcon]);
+    }, [props.editable, props.hideEditableIcon, props.readonlyStyle]);
 
     const inputProps = useMemo(() => {
         return {
@@ -276,8 +288,8 @@ export const ModeTextAreaInputField: React.FC<ModeTextAreaInputFieldProps> = (pr
         return clsx(props.className, hideInput && 'hidden',
             !props.editable ? 'readonly' : '',
             !props.isInEditMode && props.clickable && 'clickable',
-            props.isInEditMode && !props.editable ? 'fade' : '');
-    }, [props.className, props.editable, props.isInEditMode, props.clickable, hideInput]);
+            props.isInEditMode && !props.editable && (props.readonlyStyle ?? DEFAULT_READONLY_INPUT_STYLE));
+    }, [props.className, props.editable, props.isInEditMode, props.clickable, props.readonlyStyle, hideInput]);
 
     const onInputChangeHandler = props.onInputChange;
     const onFormInputChangeHandler = props.onFormInputChange;
@@ -415,17 +427,17 @@ export const ModeImageInputField: React.FC<ModeImageInputFieldProps> = (props: M
     const inputLabelProps = useMemo(() => {
         return {
             shrink   : true,
-            className: props.editable && !props.hideEditableIcon ? 'editable-label-icon' : '',
+            className: props.editable && !props.hideEditableIcon ? 'editable-label-icon' : `readonly-label-icon ${props.readonlyStyle}`,
         };
-    }, [props.editable, props.hideEditableIcon]);
+    }, [props.editable, props.hideEditableIcon, props.readonlyStyle]);
 
 
     const className = useMemo(() => {
         return clsx(props.className, hideInput && 'hidden',
             !props.editable ? 'readonly' : '',
             !props.isInEditMode && props.clickable && 'clickable',
-            props.isInEditMode && !props.editable ? 'fade' : '');
-    }, [props.className, props.editable, props.isInEditMode, props.clickable, hideInput]);
+            props.isInEditMode && !props.editable && (props.readonlyStyle ?? DEFAULT_READONLY_INPUT_STYLE));
+    }, [props.className, props.editable, props.isInEditMode, props.clickable, props.readonlyStyle, hideInput]);
 
     const onInputChangeHandler = props.onInputChange;
     const onFormInputChangeHandler = props.onFormInputChange;
@@ -678,8 +690,8 @@ export const ModeCheckBoxInputField: React.FC<ModeCheckBoxInputFieldProps> = (pr
         return clsx(props.className, hideInput && 'hidden',
             !props.editable ? 'readonly' : '',
             !props.isInEditMode && props.clickable && 'clickable',
-            props.isInEditMode && !props.editable ? 'fade' : '');
-    }, [props.className, props.editable, props.isInEditMode, props.clickable, hideInput]);
+            props.isInEditMode && !props.editable && (props.readonlyStyle ?? DEFAULT_READONLY_INPUT_STYLE));
+    }, [props.className, props.editable, props.isInEditMode, props.clickable, props.readonlyStyle, hideInput]);
 
 
     const onInputChangeHandler = props.onInputChange;
@@ -706,7 +718,7 @@ export const ModeCheckBoxInputField: React.FC<ModeCheckBoxInputFieldProps> = (pr
         }
     }, [props.editable, props.clickable, onClickHandler, props.isInEditMode, props.fieldName]);
 
-    
+
     return (
         <FormControl
             className={clsx(className)}
@@ -716,7 +728,10 @@ export const ModeCheckBoxInputField: React.FC<ModeCheckBoxInputFieldProps> = (pr
         >
             <FormLabel
                 component="label"
-                className={clsx('checkbox-label', props.editable && !props.hideEditableIcon ? 'editable-label-icon' : '')}
+                className={clsx(
+                    'checkbox-label',
+                    props.editable && !props.hideEditableIcon ? 'editable-label-icon' : `readonly-label-icon ${props.readonlyStyle}`,
+                )}
             >
                 {props.label}
             </FormLabel>
@@ -809,8 +824,8 @@ export const ModeSelectInputField: React.FC<ModeSelectInputFieldProps> = (props:
         return clsx(props.className, hideInput && 'hidden',
             !props.editable ? 'readonly' : '',
             !props.isInEditMode && props.clickable && 'clickable',
-            props.isInEditMode && !props.editable ? 'fade' : '');
-    }, [props.className, props.editable, props.isInEditMode, props.clickable, hideInput]);
+            props.isInEditMode && !props.editable && (props.readonlyStyle ?? DEFAULT_READONLY_INPUT_STYLE));
+    }, [props.className, props.editable, props.isInEditMode, props.clickable, props.readonlyStyle, hideInput]);
 
 
     const options = props.options && props.options.length > 0
@@ -863,7 +878,10 @@ export const ModeSelectInputField: React.FC<ModeSelectInputFieldProps> = (props:
             variant={props.variant ?? 'standard'}
             onClick={onClick}
         >
-            <InputLabel shrink className={clsx(props.editable && !props.hideEditableIcon && 'editable-label-icon')}>
+            <InputLabel
+                shrink
+                className={clsx(props.editable && !props.hideEditableIcon ? 'editable-label-icon' : `readonly-label-icon ${props.readonlyStyle}`)}
+            >
                 {props.label}
             </InputLabel>
             <Select
@@ -891,7 +909,7 @@ export const ModeSelectInputField: React.FC<ModeSelectInputFieldProps> = (props:
                 )}
                 {options.map((option: SelectInputOption<any>) => {
                     return (
-                        <MenuItem key={option.label} value={option.value} disabled={option.disabled}>
+                        <MenuItem key={`${option.label}-${option.value}`} value={option.value} disabled={option.disabled}>
                             {option.label}
                         </MenuItem>
                     );
@@ -1022,8 +1040,8 @@ export const ModeAutoCompleteInputField: React.FC<ModeAutoCompleteInputFieldProp
         return clsx(props.className, hideInput && 'hidden',
             !props.editable ? 'readonly' : '',
             !props.isInEditMode && props.clickable && 'clickable',
-            props.isInEditMode && !props.editable ? 'fade' : '');
-    }, [props.className, props.editable, props.isInEditMode, props.clickable, hideInput]);
+            props.isInEditMode && !props.editable && (props.readonlyStyle ?? DEFAULT_READONLY_INPUT_STYLE));
+    }, [props.className, props.editable, props.isInEditMode, props.clickable, props.readonlyStyle, hideInput]);
 
 
 
@@ -1095,6 +1113,14 @@ export const ModeAutoCompleteInputField: React.FC<ModeAutoCompleteInputFieldProp
         return option.value === value;
     }, []);
 
+    const inputLabelProps = useMemo(() => {
+        return {
+            shrink   : true,
+            className: props.editable && !props.hideEditableIcon ? 'editable-label-icon' : `readonly-label-icon ${props.readonlyStyle}`,
+        };
+    }, [props.editable, props.hideEditableIcon, props.readonlyStyle]);
+
+
     const renderInput = useCallback((params) => {
         return (
             <TextField
@@ -1102,10 +1128,7 @@ export const ModeAutoCompleteInputField: React.FC<ModeAutoCompleteInputFieldProp
                 variant={props.variant ?? 'standard'}
                 type="text"
                 label={props.label}
-                InputLabelProps={{
-                    shrink   : true,
-                    className: props.editable && !props.hideEditableIcon ? 'editable-label-icon' : '',
-                }}
+                InputLabelProps={inputLabelProps}
                 placeholder={props.placeholder}
                 required={props.isInEditMode && props.required}
                 error={Boolean(props.editable && props.error)}
@@ -1113,8 +1136,8 @@ export const ModeAutoCompleteInputField: React.FC<ModeAutoCompleteInputFieldProp
                 onClick={onClick}
             />
         );
-    }, [props.variant, props.label, props.editable, props.hideEditableIcon, props.placeholder, props.isInEditMode, props.required, props.error,
-        props.description, onClick]);
+    }, [props.variant, props.label, props.placeholder, props.isInEditMode, props.required, props.editable, props.error, props.description,
+        inputLabelProps, onClick]);
 
 
     const renderOption = useCallback((option, { selected }) => {
@@ -1169,7 +1192,10 @@ export const ModeAutoCompleteInputField: React.FC<ModeAutoCompleteInputFieldProp
             variant={props.variant ?? 'standard'}
             onClick={onClick}
         >
-            <InputLabel shrink className={clsx(props.editable && !props.hideEditableIcon && 'editable-label-icon')}>
+            <InputLabel
+                shrink
+                className={clsx(props.editable && !props.hideEditableIcon ? 'editable-label-icon' : `readonly-label-icon ${props.readonlyStyle}`)}
+            >
                 {props.label}
             </InputLabel>
 

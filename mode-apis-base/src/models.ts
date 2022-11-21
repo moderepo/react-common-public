@@ -104,6 +104,7 @@ export interface HomeDevice {
     readonly id: number;
     readonly projectId: number;
     readonly deviceClass: string;
+    readonly channel?: string | undefined;
     readonly name: string;
     readonly tag: string;
     readonly homeId: number;
@@ -123,7 +124,6 @@ export interface UpdatableHomeDeviceProps {
 
     // The following props require projectKey to update
     readonly homeId?: number | undefined;
-    readonly claimCode?: string | undefined;
 }
 
 

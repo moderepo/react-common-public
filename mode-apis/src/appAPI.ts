@@ -1229,8 +1229,9 @@ export class AppAPI extends BaseAPI {
      * @param projectId
      * @param params
      */
-    public async createEntity (projectId: number, params: CreateEntityParams): Promise<void> {
-        await this.sendRequest(RequestMethod.POST, `/projects/${projectId}/entities`, params);
+    public async createEntity (projectId: number, params: CreateEntityParams): Promise<Entity> {
+        const response = await this.sendRequest(RequestMethod.POST, `/projects/${projectId}/entities`, params);
+        return response.data as Entity;
     }
 
 
