@@ -8,6 +8,7 @@ import {
     DeviceConfigSchemasState,
 } from './models';
 import {
+    ClearDeviceConfigSchemasAction,
     DeviceConfigSchemasActionType, SetDeviceConfigSchemasAction,
 } from '.';
 
@@ -22,6 +23,11 @@ const schemasByDeviceIdReducer = (
             return produce(currentState, (draft: Draft<typeof currentState>) => {
                 const actualAction = action as SetDeviceConfigSchemasAction;
                 draft[actualAction.deviceId] = castDraft(actualAction.schemas);
+            });
+        case DeviceConfigSchemasActionType.CLEAR_DEVICE_CONFIG_SCHEMAS:
+            return produce(currentState, (draft: Draft<typeof currentState>) => {
+                const actualAction = action as ClearDeviceConfigSchemasAction;
+                delete draft[actualAction.deviceId];
             });
         default:
             return currentState;

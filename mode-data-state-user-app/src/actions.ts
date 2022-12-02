@@ -35,7 +35,7 @@ import {
     ClearEntitiesAction, ClearEntityClassesAction, SetEntitiesAction, SetEntityAction, SetEntityClassAction, SetEntityClassesAction,
 } from './entitiesState';
 import {
-    SetDeviceConfigSchemasAction,
+    SetDeviceConfigSchemasAction, ClearDeviceConfigSchemasAction,
 } from './deviceConfigSchemasState';
 import {
     SetAlertRulesAction, SetAlertRuleAction, ClearAlertRulesAction, SetAlertsAction, SetAlertAction, ClearAlertsAction,
@@ -121,6 +121,7 @@ type UserAppDataStateSyncAction =
     | ClearEntityClassesAction
     // Device Config Schema actions
     | SetDeviceConfigSchemasAction
+    | ClearDeviceConfigSchemasAction
     // Alerting actions
     | SetAlertRulesAction
     | SetAlertRuleAction

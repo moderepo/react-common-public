@@ -213,8 +213,8 @@ export interface EntityMetricsDefinition {
     readonly metricsDefinitionId: string;
     readonly displayName?: string | undefined;
     readonly metricsType: MetricType;
-    readonly tagMetrics: readonly TagMetricInfo[];
-    readonly numericMetrics: readonly NumericMetricInfo[];
+    readonly tagMetrics?: readonly TagMetricInfo[] | undefined;
+    readonly numericMetrics?: readonly NumericMetricInfo[] | undefined;
     readonly dataStoreConfiguration: EntityDataStoreConfiguration;
     readonly linksTo?: readonly EntityMetricsDefinitionLinkTo[] | undefined;
 }
@@ -227,12 +227,12 @@ export const isEntityMetricsDefinition = (obj: unknown): obj is EntityMetricsDef
     const object = obj as EntityMetricsDefinition;
     return (typeof object.metricsDefinitionId === 'string' && object.metricsDefinitionId.length > 0)
         && Object.values(MetricType).includes(object.metricsType)
-        && (object.numericMetrics && !object.numericMetrics.find((metric) => {
+        && (!object.numericMetrics || (object.numericMetrics && !object.numericMetrics.find((metric) => {
             return !isNumericMetricInfo(metric);
-        }) === undefined)
-        && (object.tagMetrics && !object.tagMetrics.find((metric) => {
+        }) === undefined))
+        && (!object.tagMetrics || (object.tagMetrics && !object.tagMetrics.find((metric) => {
             return !isTagMetricInfo(metric);
-        }) === undefined)
+        }) === undefined))
         && isEntityDataStoreConfiguration(object.dataStoreConfiguration)
         && (!object.linksTo || (object.linksTo instanceof Array && object.linksTo.every((linkTo) => {
             return isEntityMetricsDefinitionLinkTo(linkTo);
