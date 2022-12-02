@@ -171,7 +171,8 @@ export interface AlertMessageTemplate {
 }
 
 export enum AlertRecipientType {
-    EMAIL = 'email'
+    EMAIL = 'email',
+    EVENT = 'event',
 }
 
 export interface AlertRecipient {
@@ -183,6 +184,11 @@ export interface AlertRecipientEmail extends AlertRecipient {
     readonly email: string;
 }
 
+export interface AlertRecipientEvent extends AlertRecipient {
+    readonly recipientType: AlertRecipientType.EVENT;
+    readonly eventType: string;
+}
+
 /**
  * Type guard to check if an object is an AlertRecipientEmail
  */
@@ -191,6 +197,14 @@ export const isEmailAlertRecipient = (obj: unknown): obj is AlertRecipientEmail 
     return recipient.recipientType === AlertRecipientType.EMAIL;
 };
 
+
+/**
+ * Type guard to check if an object is an AlertRecipientEvent
+ */
+ export const isEventAlertRecipient = (obj: unknown): obj is AlertRecipientEvent => {
+    const recipient = obj as AlertRecipientEvent;
+    return recipient.recipientType === AlertRecipientType.EVENT;
+};
 
 // We may want to have more various recipient types in the future.
 //
