@@ -304,7 +304,7 @@ export const deleteMonitor = (projectId: number, monitorId: number): RCThunkActi
  * Backend uses 'limit' and 'skip' attributes however in the frontend, we use pageNumber and pageSize so this function need
  * to accept a filter object that uses pageNumber, pageSize and then convert that to skip/limit before calling the API
  */
-export interface UIFetchIssueFilters extends Omit<Omit<FetchIssueFilters, 'skip'>, 'limit'> {
+export interface UIFetchIssueFilters extends Omit<FetchIssueFilters, 'skip' | 'limit'> {
     readonly pageNumber: number;
     readonly pageSize: number;
 }

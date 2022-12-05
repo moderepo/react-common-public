@@ -158,7 +158,7 @@ export const clearAlerts = (projectId: number): ClearAlertsAction => {
  * Backend uses 'limit' and 'skip' attributes however in the frontend, we use pageNumber and pageSize so this function need
  * to accept a filter object that uses pageNumber, pageSize and then convert that to skip/limit before calling the API
  */
-export interface UIFetchAlertRulesFilters extends Omit<Omit<FetchAlertRulesFilters, 'skip'>, 'limit'> {
+export interface UIFetchAlertRulesFilters extends Omit<FetchAlertRulesFilters, 'skip' | 'limit'> {
     readonly pageNumber?: number | undefined;
     readonly pageSize?: number | undefined;
 }
@@ -269,7 +269,7 @@ export const deleteAlertRule = (
  * The fetch alerts filter options used by the UI which uses pageNumber and pageSize instead of skip and limit.
  * These will be converted to skip/limit before we make the API call
  */
-export interface UIFetchAlertsFilters extends Omit<Omit<FetchAlertsFilters, 'skip'>, 'limit'> {
+export interface UIFetchAlertsFilters extends Omit<FetchAlertsFilters, 'skip' | 'limit'> {
     readonly pageNumber?: number | undefined;
     readonly pageSize?: number | undefined;
 }

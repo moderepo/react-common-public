@@ -15,6 +15,7 @@ import {
  */
 export enum DeviceConfigSchemasActionType {
     SET_DEVICE_CONFIG_SCHEMAS = 'set device config schemas',
+    CLEAR_DEVICE_CONFIG_SCHEMAS = 'clear device config schemas',
 }
 
 
@@ -22,6 +23,7 @@ export enum DeviceConfigSchemasActionType {
 /**
  * The Action interface for setting a list of device config schemas that belonged to a device
  * @param type - The action type
+ * @param deviceId - The deviceId the schema belongs to
  * @param schemas - The array of device schemas
  */
 export interface SetDeviceConfigSchemasAction extends BaseAction {
@@ -30,6 +32,16 @@ export interface SetDeviceConfigSchemasAction extends BaseAction {
     readonly schemas: readonly DeviceConfigFirmwareSchema[];
 }
 
+
+/**
+ * The Action interface for clearing the list of device config schemas that belonged to a device
+ * @param type - The action type
+ * @param deviceId - The deviceId the schema belongs to
+ */
+export interface ClearDeviceConfigSchemasAction extends BaseAction {
+    readonly type: DeviceConfigSchemasActionType.CLEAR_DEVICE_CONFIG_SCHEMAS;
+    readonly deviceId: number;
+}
 
 
 export const setDeviceConfigSchemas = (deviceId: number, schemas: readonly DeviceConfigFirmwareSchema[]): SetDeviceConfigSchemasAction => {
@@ -40,6 +52,13 @@ export const setDeviceConfigSchemas = (deviceId: number, schemas: readonly Devic
     };
 };
 
+
+export const clearDeviceConfigSchemas = (deviceId: number): ClearDeviceConfigSchemasAction => {
+    return {
+        type: DeviceConfigSchemasActionType.CLEAR_DEVICE_CONFIG_SCHEMAS,
+        deviceId,
+    };
+};
 
 
 /**

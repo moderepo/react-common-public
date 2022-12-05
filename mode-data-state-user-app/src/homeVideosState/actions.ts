@@ -77,7 +77,7 @@ export const clearVideos = (homeId: number, smartModuleId: string): ClearVideosA
  * Backend uses 'limit' and 'skip' attributes however in the frontend, we use pageNumber and pageSize so this function need
  * to accept a filter object that uses pageNumber, pageSize and then convert that to skip/limit before calling the API
  */
-export interface UIFetchHomeVideosFilters extends Omit<Omit<FetchHomeVideosFilters, 'skip'>, 'limit'> {
+export interface UIFetchHomeVideosFilters extends Omit<FetchHomeVideosFilters, 'skip' | 'limit'> {
     readonly pageNumber?: number | undefined;
     readonly pageSize?: number | undefined;
 }

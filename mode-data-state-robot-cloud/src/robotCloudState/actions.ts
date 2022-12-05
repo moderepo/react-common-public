@@ -245,7 +245,7 @@ export const fetchRobotsStatuses = (homeId: number, robotIds: readonly string[])
  * Backend uses 'limit' and 'skip' attributes however in the frontend, we use pageNumber and pageSize so this function need
  * to accept a filter object that uses pageNumber, pageSize and then convert that to skip/limit before calling the API
  */
-export interface UIFetchRobotFilters extends Omit<Omit<FetchRobotFilters, 'skip'>, 'limit'> {
+export interface UIFetchRobotFilters extends Omit<FetchRobotFilters, 'skip' | 'limit'> {
     readonly pageNumber: number;
     readonly pageSize: number;
 }

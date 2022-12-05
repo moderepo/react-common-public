@@ -44,6 +44,11 @@ export interface GetEventLogFilter {
     readonly sortBy?: SortOrder | undefined;
     readonly fieldsFilter?: string | undefined;
     readonly timezone?: string | undefined;
+
+    // Any other name/value that the API support. This depends on the implementation of the AppProxy. Each app proxy can support other
+    // params that are not part of the default params e.g. searchKeys, begin, end etc... However, we can't add these params to this interface
+    // because those are app proxy specific params. Therefore, we will add this to support other params.
+    readonly [paramName: string]: string | number | boolean | readonly string[] | readonly number[] | undefined;
 }
 
 

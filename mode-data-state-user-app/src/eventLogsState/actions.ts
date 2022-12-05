@@ -63,7 +63,10 @@ export const clearEventLogsData = (homeId: number, logResourcePath: string): Cle
  * The fetch alerts filter options used by the UI which uses pageNumber and pageSize instead of skip and limit.
  * These will be converted to skip/limit before we make the API call
  */
-export interface UIFetchEventLogFilter extends Omit<Omit<GetEventLogFilter, 'skip'>, 'limit'> {
+export interface UIFetchEventLogFilter extends GetEventLogFilter {
+    // Because we can't Omit "skip" and "limit", we will set these params value to undefined so that they can't be used
+    readonly skip?: undefined;
+    readonly limit?: undefined;
     readonly pageNumber?: number | undefined;
     readonly pageSize?: number | undefined;
 }

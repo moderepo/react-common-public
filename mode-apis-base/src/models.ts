@@ -351,7 +351,7 @@ export interface TimeSeriesCollectionData {
 /**
  * This is the data structure for Collection RAW data
  */
-export interface TimeSeriesCollectionRawData extends Omit<Omit<TimeSeriesRawData, 'seriesId'>, 'data'> {
+export interface TimeSeriesCollectionRawData extends Omit<TimeSeriesRawData, 'seriesId' | 'data'> {
     readonly collectionId: string;
     readonly ts: string;
     readonly limit: number;
