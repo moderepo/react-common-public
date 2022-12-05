@@ -188,7 +188,7 @@ export const fetchEntityClassById = (projectId: number, entityClassId: string): 
  * Backend uses 'limit' and 'skip' attributes however in the frontend, we use pageNumber and pageSize so this function need
  * to accept a filter object that uses pageNumber, pageSize and then convert that to skip/limit before calling the API
  */
-export interface UIFetchEntityFilters extends Omit<Omit<FetchEntityFilters, 'skip'>, 'limit'> {
+export interface UIFetchEntityFilters extends Omit<FetchEntityFilters, 'skip' | 'limit'> {
     readonly pageNumber?: number | undefined;
     readonly pageSize?: number | undefined;
 }

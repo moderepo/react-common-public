@@ -90,7 +90,7 @@ export const clearFileRequests = (homeId: number): ClearFileRequestsAction => {
  * Backend uses 'limit' and 'skip' attributes however in the frontend, we use pageNumber and pageSize so this function need
  * to accept a filter object that uses pageNumber, pageSize and then convert that to skip/limit before calling the API
  */
-export interface UIFetchFileRequestFilters extends Omit<Omit<FetchFileRequestFilters, 'skip'>, 'limit'> {
+export interface UIFetchFileRequestFilters extends Omit<FetchFileRequestFilters, 'skip' | 'limit'> {
     readonly pageNumber: number;
     readonly pageSize: number;
 }
