@@ -341,4 +341,6 @@ export interface FetchAlertsFilters {
     readonly alertRuleId?: number | undefined;
     readonly entityId?: string | undefined;
     readonly state?: AlertState | undefined;
+    readonly severity?: AlertSeverity | undefined;
+    readonly entityClass?: string | undefined;
 }
