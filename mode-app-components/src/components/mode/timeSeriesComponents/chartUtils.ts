@@ -38,6 +38,7 @@ export enum XYChartType {
     SCATTER = 'scatter',
     LINE = 'line',
     BAR = 'bar',
+    STACKED_BAR = 'stacked_bar',
     AREA = 'area',
     AVG_MIN_MAX = 'avg/min/max'
 }
