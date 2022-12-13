@@ -244,12 +244,12 @@ export const TimeSeriesTable: React.FC<TimeSeriesTableProps> = (props: TimeSerie
                                 </TableBody>
                             </Table>
                         </div>
-
-                        {props.paginationComp}
                     </>
                 )}
 
                 {props.listData && props.listData.length === 0 && props.emptyDataMessageComp}
+
+                {props.listData && props.paginationComp}
 
                 {!props.listData && (
                     <Box padding={2}>

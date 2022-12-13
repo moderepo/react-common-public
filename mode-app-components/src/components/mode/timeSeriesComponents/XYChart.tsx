@@ -218,8 +218,11 @@ const createAxisAndSeries = (options: {
     }
 
     const series = (() => {
-        if (chartType === XYChartType.BAR) {
-            return chart.series.push(new am4charts.ColumnSeries());
+        if (chartType === XYChartType.BAR || chartType === XYChartType.STACKED_BAR) {
+            const series = chart.series.push(new am4charts.ColumnSeries());
+            series.stacked = chartType === XYChartType.STACKED_BAR;
+            series.columns.template.width = am4core.percent(80);
+            return series;
         }
         return chart.series.push(new am4charts.LineSeries());
     })();

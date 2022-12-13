@@ -201,7 +201,7 @@ export const isEmailAlertRecipient = (obj: unknown): obj is AlertRecipientEmail 
 /**
  * Type guard to check if an object is an AlertRecipientEvent
  */
- export const isEventAlertRecipient = (obj: unknown): obj is AlertRecipientEvent => {
+export const isEventAlertRecipient = (obj: unknown): obj is AlertRecipientEvent => {
     const recipient = obj as AlertRecipientEvent;
     return recipient.recipientType === AlertRecipientType.EVENT;
 };
