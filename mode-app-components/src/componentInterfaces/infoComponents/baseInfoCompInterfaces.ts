@@ -41,6 +41,12 @@ export interface BaseCompInputErrors {
 }
 
 
+// The character we will use as a separator. If an item in the options array is this string instead of an Object then we will
+// add a divider to the menu
+export const SELECT_INPUT_OPTION_DIVIDER = '-';
+export type SELECT_INPUT_OPTION_DIVIDER_TYPE = typeof SELECT_INPUT_OPTION_DIVIDER;
+
+
 export interface SelectInputOption<T> {
     readonly label: string;
     readonly value: T;
@@ -53,6 +59,7 @@ export interface SelectInputOption<T> {
 export const isSelectInputOption = <T>(obj: unknown): obj is SelectInputOption<T> => {
     const option = obj as SelectInputOption<T>;
     return option !== undefined
+        && (typeof option === 'object')
         && (typeof option.label === 'string')
         && (!option.icon || typeof option.icon === 'string')
         && (option.disabled === undefined || typeof option.disabled === 'boolean')
@@ -77,7 +84,8 @@ export interface BaseEntityField <T> {
     readonly placeholder?: string | undefined;                      // The string to be displayed in the input field
     readonly value?: T | undefined;                                 // The actual value of the input which can be any type.
     readonly required?: boolean | undefined;                        // Whether the field is required. Default is false.
-    readonly options?: readonly SelectInputOption<T>[] | undefined; // Restricted list of options that are allowed for the field's value.
+    // Restricted list of options that are allowed for the field's value.
+    readonly options?: readonly (SelectInputOption<T> | SELECT_INPUT_OPTION_DIVIDER_TYPE)[] | undefined;
     readonly multipleSelectionDisplayLimit?: number | undefined;    // For inputs with 'multiple' selections, maximum number of item to display
     readonly noOptionsLabel?: string | undefined;                   // The label to show when there is no options
     readonly freeSolo?: boolean | undefined;                        // For AutoComplete inputs. Allow any input value that might not be in options
