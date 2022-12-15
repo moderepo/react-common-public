@@ -3,7 +3,7 @@ import React, {
 } from 'react';
 import {
     TableCell, Button, Icon, TextField, FormControl, InputLabel, Select, MenuItem, FormHelperText, FormControlLabel, Checkbox, FormLabel,
-    FormGroup, IconButton, TextFieldProps, InputAdornment, useTheme, makeStyles, Theme,
+    FormGroup, IconButton, TextFieldProps, InputAdornment, useTheme, makeStyles, Theme, Divider,
 } from '@material-ui/core';
 import clsx from 'clsx';
 import {
@@ -14,6 +14,7 @@ import {
 } from '@moderepo/mode-apis';
 import {
     BaseInfoCompProps, BaseEntityField, SelectInputOption, BaseListCompField, BaseListCompFieldsSet, BaseListCompFieldsSettings,
+    SELECT_INPUT_OPTION_DIVIDER_TYPE, SELECT_INPUT_OPTION_DIVIDER,
 } from '..';
 import {
     BaseListCompDataItem, isSelectInputOption,
@@ -801,7 +802,8 @@ export const ModeInfoCompCheckBoxInputField: React.FC<ModeInfoCompCheckBoxFieldP
 
 export interface ModeSelectInputFieldProps extends ModeBaseInputFieldProps {
     readonly value?: any | undefined;
-    readonly options: readonly SelectInputOption<any>[] | undefined;
+    // Make "options" required
+    readonly options: readonly (SelectInputOption<any> | SELECT_INPUT_OPTION_DIVIDER_TYPE)[] | undefined;
     readonly noOptionsLabel?: string | undefined;
 }
 
@@ -842,8 +844,11 @@ export const ModeSelectInputField: React.FC<ModeSelectInputFieldProps> = (props:
     // in the list of possible values, the Select component will not show the input's value. For this case, we will have to manually add
     // this value to the list of possible values so that it would show up in the Select component. However, we will make it disabled so that
     // the user can't select it
-    const isValueOutOfRange = props.value !== undefined && options.find((option: SelectInputOption<any>) => {
-        return option.value === props.value;
+    const isValueOutOfRange = props.value !== undefined && options.find((option) => {
+        if (typeof option !== 'string') {
+            return option.value === props.value;
+        }
+        return false;
     }) === undefined;
 
 
@@ -907,7 +912,13 @@ export const ModeSelectInputField: React.FC<ModeSelectInputFieldProps> = (props:
                         {props.value !== undefined && props.value !== null ? props.value.toString() : ''}
                     </MenuItem>
                 )}
-                {options.map((option: SelectInputOption<any>) => {
+                {options.map((option, index) => {
+                    if (typeof option === 'string') {
+                        return (
+                            // eslint-disable-next-line react/no-array-index-key
+                            <Divider key={`divider-${option}-${index}`} />
+                        );
+                    }
                     return (
                         <MenuItem key={`${option.label}-${option.value}`} value={option.value} disabled={option.disabled}>
                             {option.label}
@@ -971,7 +982,8 @@ export const ModeInfoCompSelectInputField: React.FC<ModeInfoCompSelectInputField
 export interface ModeAutoCompleteInputFieldProps extends ModeBaseInputFieldProps {
     readonly value?: any | undefined;
     readonly multiple?: boolean | undefined;
-    readonly options: readonly SelectInputOption<any>[] | undefined;
+    // Make "options" required
+    readonly options: readonly (SelectInputOption<any> | SELECT_INPUT_OPTION_DIVIDER_TYPE)[] | undefined;
     readonly noOptionsLabel?: string | undefined;
     readonly multipleSelectionDisplayLimit?: number | undefined;
     readonly placeholder?: string | undefined;
@@ -1088,8 +1100,11 @@ export const ModeAutoCompleteInputField: React.FC<ModeAutoCompleteInputFieldProp
     const filterOptions = useMemo(() => {
         return createFilterOptions({
             ignoreCase: true,
-            stringify : (option: SelectInputOption<any>) => {
+            stringify : (option: SelectInputOption<any> | SELECT_INPUT_OPTION_DIVIDER_TYPE) => {
                 // combine the value and label so that search can apply to both
+                if (typeof option === 'string') {
+                    return option;
+                }
                 return `${option.value} ${option.label}`;
             },
         });
@@ -1107,10 +1122,10 @@ export const ModeAutoCompleteInputField: React.FC<ModeAutoCompleteInputFieldProp
 
 
     const getOptionSelected = useCallback((option, value) => {
-        if (isSelectInputOption(value)) {
-            return option.value === value.value;
+        if (isSelectInputOption(option)) {
+            return option.value === value;
         }
-        return option.value === value;
+        return option === value;
     }, []);
 
     const inputLabelProps = useMemo(() => {
@@ -1141,6 +1156,17 @@ export const ModeAutoCompleteInputField: React.FC<ModeAutoCompleteInputFieldProp
 
 
     const renderOption = useCallback((option, { selected }) => {
+        // TODO - Fix Divider option
+        if (option === SELECT_INPUT_OPTION_DIVIDER) {
+            return (
+                <span style={{
+                    marginLeft: '10px',
+                }}
+                >
+                    {option}
+                </span>
+            );
+        }
         return (
             <>
                 {props.multiple && (
@@ -1169,11 +1195,14 @@ export const ModeAutoCompleteInputField: React.FC<ModeAutoCompleteInputFieldProp
         // override the renderTags so that we can disable the tags when not in edit mode
         return tagValues.map((option, index) => {
             const selectOption = props.options?.find((o) => {
-                return o.value === option;
+                if (typeof o !== 'string') {
+                    return o.value === option;
+                }
+                return false;
             });
             return (
                 <AutoCompleteTag
-                    label={selectOption?.label ?? option}
+                    label={typeof selectOption === 'string' ? selectOption : selectOption?.label ?? option}
                     isInEditMode={props.isInEditMode}
                     {...getTagProps({
                         index,
