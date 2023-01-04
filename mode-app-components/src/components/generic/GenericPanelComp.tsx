@@ -29,6 +29,7 @@ const useStyle = makeStyles(() => {
 
 
 export interface GenericPanelCompProps extends BaseCompProps {
+    readonly panelContentClass?: string | undefined;
 }
 
 
@@ -49,7 +50,7 @@ export const GenericPanelComp: React.FC<GenericPanelCompProps & PropsWithChildre
             style={props.style}
         >
             <InfoCompPanelHeader {...props} />
-            <div className={clsx(panelClasses.panelContent, classes.panelContent)}>
+            <div className={clsx(panelClasses.panelContent, classes.panelContent, props.panelContentClass)}>
                 {props.children}
             </div>
         </Paper>

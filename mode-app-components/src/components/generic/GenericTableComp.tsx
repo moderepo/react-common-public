@@ -137,7 +137,7 @@ export const GenericTableComp = <T extends unknown>(props: GenericTableCompProps
                                                             key={fieldName}
                                                             className={clsx(tableClasses.tableCol, classes.tableCol, `${fieldName}-col`)}
                                                         >
-                                                            {dataItem.actualValue[fieldName]?.toString()}
+                                                            {(dataItem.displayValue?.[fieldName] ?? dataItem.actualValue[fieldName])?.toString()}
                                                         </TableCell>
                                                     );
                                                 }

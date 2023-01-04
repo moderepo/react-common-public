@@ -1,5 +1,5 @@
 import React, {
-    useState, useEffect, useMemo, useCallback, HTMLInputTypeAttribute, Dispatch, SetStateAction,
+    useState, useEffect, useMemo, useCallback, HTMLInputTypeAttribute, Dispatch, SetStateAction, CSSProperties,
 } from 'react';
 import {
     TableCell, Button, Icon, TextField, FormControl, InputLabel, Select, MenuItem, FormHelperText, FormControlLabel, Checkbox, FormLabel,
@@ -1358,7 +1358,7 @@ export const createHeaderColumn = (
     }
 
     return (
-        <TableCell className={colClassNames} key={fieldName || field.dataItemProp || field.label}>
+        <TableCell className={clsx(colClassNames)} key={fieldName || field.dataItemProp || field.label}>
             {field.sortable
                 ? (
                     <Button
