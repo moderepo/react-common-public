@@ -1358,11 +1358,7 @@ export const createHeaderColumn = (
     }
 
     return (
-        <TableCell
-            className={clsx(colClassNames, field.headerClassName)}
-            key={fieldName || field.dataItemProp || field.label}
-            style={field.style}
-        >
+        <TableCell className={clsx(colClassNames)} key={fieldName || field.dataItemProp || field.label}>
             {field.sortable
                 ? (
                     <Button
@@ -1398,13 +1394,11 @@ export const createRemoveItemCell = <T extends unknown>(
     dataItem: BaseListCompDataItem<T>,
     className: string,
     onClickHandler: ((item: T)=> void) | undefined,
-    style?: CSSProperties,
 ): JSX.Element => {
     return (
         <TableCell
             key="remove"
             className={className}
-            style={style}
         >
             {dataItem.canBeRemoved && (
                 <IconButton
@@ -1432,13 +1426,11 @@ export const createPreviewItemCell = <T extends unknown>(
     dataItem: BaseListCompDataItem<T>,
     className: string,
     onClickHandler: ((item: T)=> void) | undefined,
-    style?: CSSProperties,
 ): JSX.Element => {
     return (
         <TableCell
             key="preview"
             className={className}
-            style={style}
         >
             <IconButton
                 onClick={(event: React.MouseEvent) => {
