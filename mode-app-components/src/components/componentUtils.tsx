@@ -1,5 +1,5 @@
 import React, {
-    useState, useEffect, useMemo, useCallback, HTMLInputTypeAttribute, Dispatch, SetStateAction,
+    useState, useEffect, useMemo, useCallback, HTMLInputTypeAttribute, Dispatch, SetStateAction, CSSProperties,
 } from 'react';
 import {
     TableCell, Button, Icon, TextField, FormControl, InputLabel, Select, MenuItem, FormHelperText, FormControlLabel, Checkbox, FormLabel,
@@ -1358,7 +1358,11 @@ export const createHeaderColumn = (
     }
 
     return (
-        <TableCell className={colClassNames} key={fieldName || field.dataItemProp || field.label}>
+        <TableCell
+            className={clsx(colClassNames, field.headerClassName)}
+            key={fieldName || field.dataItemProp || field.label}
+            style={field.style}
+        >
             {field.sortable
                 ? (
                     <Button
@@ -1394,11 +1398,13 @@ export const createRemoveItemCell = <T extends unknown>(
     dataItem: BaseListCompDataItem<T>,
     className: string,
     onClickHandler: ((item: T)=> void) | undefined,
+    style?: CSSProperties,
 ): JSX.Element => {
     return (
         <TableCell
             key="remove"
             className={className}
+            style={style}
         >
             {dataItem.canBeRemoved && (
                 <IconButton
@@ -1426,11 +1432,13 @@ export const createPreviewItemCell = <T extends unknown>(
     dataItem: BaseListCompDataItem<T>,
     className: string,
     onClickHandler: ((item: T)=> void) | undefined,
+    style?: CSSProperties,
 ): JSX.Element => {
     return (
         <TableCell
             key="preview"
             className={className}
+            style={style}
         >
             <IconButton
                 onClick={(event: React.MouseEvent) => {
