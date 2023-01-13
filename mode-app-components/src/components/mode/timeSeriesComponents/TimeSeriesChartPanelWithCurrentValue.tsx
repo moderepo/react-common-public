@@ -123,7 +123,7 @@ export const TimeSeriesChartPanelWithCurrentValue: React.FC<TimeSeriesChartPanel
         >
 
             <CompPanelHeader
-                {...props}
+                {...(props as object)}
                 customContent={(
                     <>
                         {props.currentValue && (

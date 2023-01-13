@@ -84,7 +84,7 @@ export const TimeSeriesChartPanel: React.FC<TimeSeriesChartPanelProps & React.Pr
         >
 
             <CompPanelHeader
-                {...props}
+                {...(props as object)}
                 customContent={(
                     <>
                         {props.currentValue && (

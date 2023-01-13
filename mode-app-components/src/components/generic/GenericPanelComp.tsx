@@ -49,7 +49,7 @@ export const GenericPanelComp: React.FC<GenericPanelCompProps & PropsWithChildre
             className={clsx(panelClasses.root, props.className, classes.root)}
             style={props.style}
         >
-            <InfoCompPanelHeader {...props} />
+            <InfoCompPanelHeader {...(props as object)} />
             <div className={clsx(panelClasses.panelContent, classes.panelContent, props.panelContentClass)}>
                 {props.children}
             </div>
