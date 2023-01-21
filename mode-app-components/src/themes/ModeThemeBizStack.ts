@@ -314,7 +314,10 @@ const lightPalette = createModePalette({
     },
     contrastThreshold: 5,
     chart            : {
-        series: ['#24D3BD', '#EA58C0', '#F2BB06', '#8559EF', '#1590FF'],
+        series: [
+            '#13D3BD', '#F6AA00', '#FF96E1', '#FFF100', '#008D62', '#4DC4FF', '#84919E', '#FF4B00', '#005AFF', '#000000',
+            '#71E4D7', '#F9CC66', '#FFC0ED', '#FF9366', '#66BAA0', '#94DBDD', '#B5BDC4', '#C166C1', '#669CFF', '#666666',
+        ],
     },
 });
 
@@ -447,7 +450,10 @@ const darkPalette = createModePalette({
     },
     contrastThreshold: 5,
     chart            : {
-        series      : ['#24D3BD', '#EA58C0', '#F2BB06', '#8559EF', '#1590FF'],
+        series: [
+            '#13D3BD', '#F6AA00', '#FF96E1', '#FFF100', '#008D62', '#4DC4FF', '#84919E', '#FF4B00', '#005AFF', '#FFFFFF',
+            '#71E4D7', '#F9CC66', '#FFC0ED', '#FF9366', '#66BAA0', '#94DBFF', '#B2B2B2', '#C166C1', '#669CFF', '#E5E5E5',
+        ],
         gridStroke  : '#444444',
         cursorStroke: '#ffffff',
     },

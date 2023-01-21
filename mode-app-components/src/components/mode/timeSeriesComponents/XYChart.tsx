@@ -268,6 +268,11 @@ const createAxisAndSeries = (options: {
     if (series.tooltip) {
         series.tooltip.getFillFromObject = false;
         series.tooltip.background.fill = seriesStyle.color;
+        
+        // TODO - Change chart color to be a pair of color and contrast color so that we can use the contrast color for tooltip text and other.
+        if (seriesStyle.color.hex === '#ffffff') {
+            series.tooltip.stroke = am4core.color('#000000');
+        }
     }
 
 
