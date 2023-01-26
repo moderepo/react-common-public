@@ -59,6 +59,7 @@ export interface ChartSeriesStyle {
     readonly id: string;
     readonly bullet: ChartBulletConfig;
     readonly color: am4core.Color;
+    readonly contrastText?: am4core.Color | undefined;
 }
 
 export const chartCircleBullet: ChartBulletConfig = {
@@ -84,12 +85,20 @@ export const chartPredefinedBullets: readonly ChartBulletConfig[] = [
 ];
 
 
+export interface ChartColorSettings {
+    readonly color: am4core.Color;
+    readonly contrastText?: am4core.Color | undefined;
+}
+
 /**
  * Default predefined set of colors for series line and bullets. This is only used if a selected theme does not have
  * chart color set.
  */
-export const chartDefaultColors = modeDefaultChartColorPalette.series.map((colorString) => {
-    return am4core.color(colorString);
+export const chartDefaultColors = modeDefaultChartColorPalette.series.map((colorSettings): ChartColorSettings => {
+    return {
+        color       : am4core.color(colorSettings.color),
+        contrastText: colorSettings.contrastText ? am4core.color(colorSettings.contrastText) : undefined,
+    };
 });
 
 /**
@@ -105,16 +114,17 @@ export const chartDefaultCursorStroke = am4core.color(modeDefaultChartColorPalet
  * For picking color, we will pick a color from the chartColors array at the given `index`. If the index > chartColor.length, we will
  * wrap around and start from the beginning of the array
  */
-export const getChartSeriesStyle = (chartColors: readonly am4core.Color[], index: number): ChartSeriesStyle => {
+export const getChartSeriesStyle = (chartColors: readonly ChartColorSettings[], index: number): ChartSeriesStyle => {
     if (chartColors.length > 0 && chartPredefinedBullets.length > 0) {
         const colorIndex = index % chartColors.length;
         const bulletIndex = index % chartPredefinedBullets.length;
-        const color = chartColors[colorIndex];
+        const colorSettings = chartColors[colorIndex];
         const bulletStyle = chartPredefinedBullets[bulletIndex];
         return {
-            id    : `${bulletStyle.shape}-${color.hex}`,
-            bullet: bulletStyle,
-            color,
+            id          : `${bulletStyle.shape}-${colorSettings.color.hex}`,
+            bullet      : bulletStyle,
+            color       : colorSettings.color,
+            contrastText: colorSettings.contrastText,
         };
     }
 
