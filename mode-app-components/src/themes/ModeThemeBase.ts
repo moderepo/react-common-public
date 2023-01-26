@@ -5,26 +5,82 @@ import createPalette, {
     Palette, PaletteOptions,
 } from '@material-ui/core/styles/createPalette';
 
-export const modeDefaultChartColorPalette = {
+
+export interface ModeChartThemeColorSettings {
+    readonly color: string;
+    readonly contrastText?: string | undefined;
+}
+
+
+/**
+ * Interface for ModePalette which extends MaterialUI Palette
+ */
+export interface ModePalette extends Palette {
+    // An array of color string
+    readonly chart: {
+        readonly series: readonly ModeChartThemeColorSettings[];
+        readonly gridStroke: string;
+        readonly cursorStroke: string;
+    };
+}
+
+
+export const modeDefaultChartColorPalette: ModePalette['chart'] = {
     series: [
-        '#d45087',
-        '#3366d6',
-        '#70ce5b',
-        '#ff7c43',
-        '#7d8491',
-        '#003f5c',
-        '#a05195',
-        '#c86bfa',
-        '#3fa34d',
-        '#ffc43d',
-        '#706677',
-        '#1a659e',
-        '#fb1f77',
-        '#4361ee',
-        '#2fb39c',
-        '#ccbd46',
-        '#a384b9',
-        '#5ca1c7',
+        {
+            color: '#d45087',
+        },
+        {
+            color: '#3366d6',
+        },
+        {
+            color: '#70ce5b',
+        },
+        {
+            color: '#ff7c43',
+        },
+        {
+            color: '#7d8491',
+        },
+        {
+            color: '#003f5c',
+        },
+        {
+            color: '#a05195',
+        },
+        {
+            color: '#c86bfa',
+        },
+        {
+            color: '#3fa34d',
+        },
+        {
+            color: '#ffc43d',
+        },
+        {
+            color: '#706677',
+        },
+        {
+            color: '#1a659e',
+        },
+        {
+            color: '#fb1f77',
+        },
+        {
+            color: '#4361ee',
+        },
+        {
+            color: '#2fb39c',
+        },
+        {
+            color: '#ccbd46',
+        },
+        {
+            color: '#a384b9',
+        },
+        {
+            color: '#5ca1c7',
+        },
     ],
     gridStroke  : '#eeeeee',
     cursorStroke: '#000000',
@@ -41,18 +97,6 @@ const modeBaseChartColorPalette = {
 export const defaultMapTilesURL: string = 'https://api.maptiler.com/maps/streets/256/{z}/{x}/{y}.png';
 
 
-/**
- * Interface for ModePalette which extends MaterialUI Palette
- */
-export interface ModePalette extends Palette {
-    // An array of color string
-    readonly chart: {
-        readonly series: readonly string[];
-        readonly gridStroke: string;
-        readonly cursorStroke: string;
-    };
-}
-
 
 /**
  * Interface for ModeTheme which extends MaterialUI Palette
@@ -65,7 +109,7 @@ export interface ModeTheme extends Theme {
 export interface ModePaletteOptions extends PaletteOptions {
     // An array of color string
     readonly chart?: {
-        readonly series?: readonly string[] | undefined;
+        readonly series?: readonly ModeChartThemeColorSettings[] | undefined;
         readonly gridStroke?: string | undefined;
         readonly cursorStroke?: string | undefined;
     } | undefined;

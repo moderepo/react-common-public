@@ -22,7 +22,7 @@ import {
 import {
     AvgMinMaxChartSettings, ChartBulletShape, chartDateFormatByDataResolution, chartDefaultColors, chartDefaultCursorStroke,
     chartDefaultGridStroke, chartFullDateFormat, ChartSeriesStyle, ChartSettings, chartShortDateFormat, chartCircleBullet, getChartSeriesStyle,
-    XYChartType,
+    XYChartType, ChartColorSettings,
 } from '.';
 
 
@@ -164,8 +164,9 @@ const createAxisAndSeries = (options: {
     readonly dateAxis?: am4charts.DateAxis | undefined;
     readonly dateAxisDataField: string;
     readonly avgMinMaxChartSettings?: AvgMinMaxChartSettings | undefined,
-    readonly chartColors: readonly am4core.Color[],
+    readonly chartColors: readonly ChartColorSettings[],
     readonly gridStroke: am4core.Color,
+    readonly theme: ModeTheme;
 }) => {
     const {
         chart, chartType, metric, hasMultipleSeries, seriesCount, seriesIndex, opposite, yAxisRange,
@@ -212,10 +213,12 @@ const createAxisAndSeries = (options: {
     }
 
     // Give the valueAxis some padding but only if range is not provided
+    /*
     if (!(yAxisRange?.min || yAxisRange?.max)) {
         valueAxis.extraMin = 0.05;
         valueAxis.extraMax = 0.05;
     }
+    */
 
     const series = (() => {
         if (chartType === XYChartType.BAR || chartType === XYChartType.STACKED_BAR) {
@@ -268,10 +271,9 @@ const createAxisAndSeries = (options: {
     if (series.tooltip) {
         series.tooltip.getFillFromObject = false;
         series.tooltip.background.fill = seriesStyle.color;
-        
-        // TODO - Change chart color to be a pair of color and contrast color so that we can use the contrast color for tooltip text and other.
-        if (seriesStyle.color.hex === '#ffffff') {
-            series.tooltip.stroke = am4core.color('#000000');
+        series.tooltip.strokeWidth = 0;
+        if (seriesStyle.contrastText) {
+            series.tooltip.label.fill = seriesStyle.contrastText;
         }
     }
 
@@ -327,7 +329,7 @@ const createAxisAndSeries = (options: {
     valueAxis.renderer.line.strokeOpacity = 1;
     valueAxis.renderer.line.strokeWidth = 2;
     valueAxis.renderer.line.stroke = series.stroke;
-    valueAxis.renderer.labels.template.fill = series.stroke;
+    valueAxis.renderer.labels.template.fill = am4core.color(options.theme.palette.text.primary);
     if (!shareYAxis) {
         valueAxis.renderer.opposite = opposite;
     }
@@ -449,8 +451,11 @@ export const XYChart: React.FC<XYChartProps> = (props: XYChartProps) => {
     const { chartColors, gridStroke, cursorStroke } = useMemo(() => {
         if (theme && theme.palette.chart && theme.palette.chart.series.length > 0) {
             return {
-                chartColors: theme.palette.chart.series.map((colorString) => {
-                    return am4core.color(colorString);
+                chartColors: theme.palette.chart.series.map((colorSettings): ChartColorSettings => {
+                    return {
+                        color       : am4core.color(colorSettings.color),
+                        contrastText: colorSettings.contrastText ? am4core.color(colorSettings.contrastText) : undefined,
+                    };
                 }),
                 gridStroke  : am4core.color(theme.palette.chart.gridStroke),
                 cursorStroke: am4core.color(theme.palette.chart.cursorStroke),
@@ -775,6 +780,7 @@ export const XYChart: React.FC<XYChartProps> = (props: XYChartProps) => {
                     avgMinMaxChartSettings: props.avgMinMaxChartSettings,
                     chartColors,
                     gridStroke,
+                    theme,
                 });
             });
         }

@@ -315,8 +315,48 @@ const lightPalette = createModePalette({
     contrastThreshold: 5,
     chart            : {
         series: [
-            '#13D3BD', '#F6AA00', '#FF96E1', '#FFF100', '#008D62', '#4DC4FF', '#84919E', '#FF4B00', '#005AFF', '#000000',
-            '#71E4D7', '#F9CC66', '#FFC0ED', '#FF9366', '#66BAA0', '#94DBDD', '#B5BDC4', '#C166C1', '#669CFF', '#666666',
+            {
+                color: '#13D3BD',
+            }, {
+                color: '#F6AA00',
+            }, {
+                color: '#FF96E1',
+            }, {
+                color       : '#FFF100',
+                contrastText: '#000000',
+            }, {
+                color: '#008D62',
+            }, {
+                color: '#4DC4FF',
+            }, {
+                color: '#84919E',
+            }, {
+                color: '#FF4B00',
+            }, {
+                color: '#005AFF',
+            }, {
+                color: '#000000',
+            }, {
+                color: '#71E4D7',
+            }, {
+                color: '#F9CC66',
+            }, {
+                color: '#FFC0ED',
+            }, {
+                color: '#FF9366',
+            }, {
+                color: '#66BAA0',
+            }, {
+                color: '#94DBDD',
+            }, {
+                color: '#B5BDC4',
+            }, {
+                color: '#C166C1',
+            }, {
+                color: '#669CFF',
+            }, {
+                color: '#666666',
+            },
         ],
     },
 });
@@ -451,8 +491,49 @@ const darkPalette = createModePalette({
     contrastThreshold: 5,
     chart            : {
         series: [
-            '#13D3BD', '#F6AA00', '#FF96E1', '#FFF100', '#008D62', '#4DC4FF', '#84919E', '#FF4B00', '#005AFF', '#FFFFFF',
-            '#71E4D7', '#F9CC66', '#FFC0ED', '#FF9366', '#66BAA0', '#94DBFF', '#B2B2B2', '#C166C1', '#669CFF', '#E5E5E5',
+            {
+                color: '#13D3BD',
+            }, {
+                color: '#F6AA00',
+            }, {
+                color: '#FF96E1',
+            }, {
+                color       : '#FFF100',
+                contrastText: '#000000',
+            }, {
+                color: '#008D62',
+            }, {
+                color: '#4DC4FF',
+            }, {
+                color: '#84919E',
+            }, {
+                color: '#FF4B00',
+            }, {
+                color: '#005AFF',
+            }, {
+                color       : '#FFFFFF',
+                contrastText: '#000000',
+            }, {
+                color: '#71E4D7',
+            }, {
+                color: '#F9CC66',
+            }, {
+                color: '#FFC0ED',
+            }, {
+                color: '#FF9366',
+            }, {
+                color: '#66BAA0',
+            }, {
+                color: '#94DBFF',
+            }, {
+                color: '#B2B2B2',
+            }, {
+                color: '#C166C1',
+            }, {
+                color: '#669CFF',
+            }, {
+                color: '#E5E5E5',
+            },
         ],
         gridStroke  : '#444444',
         cursorStroke: '#ffffff',
