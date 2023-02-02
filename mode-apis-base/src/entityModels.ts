@@ -276,8 +276,8 @@ export const isS3FileInfo = (obj: unknown): obj is S3FileInfo => {
 export interface EntityDisplaySettings {
     readonly name: string;
     readonly description: string;
-    readonly iconData?: S3FileInfo;
-    readonly imageData?: S3FileInfo;
+    readonly iconData?: S3FileInfo | undefined;
+    readonly imageData?: S3FileInfo | undefined;
     readonly uiSettings?: object | undefined;
 }
 
@@ -289,8 +289,8 @@ export const isEntityDisplaySettings = (obj: unknown): obj is EntityDisplaySetti
     const object = obj as EntityDisplaySettings;
     return (typeof object.name === 'string' && object.name.length > 0)
         && (!object.description || typeof object.description === 'string')
-        && (isS3FileInfo(object.iconData))
-        && (isS3FileInfo(object.imageData))
+        && (object.iconData === undefined || isS3FileInfo(object.iconData))
+        && (object.imageData === undefined || isS3FileInfo(object.imageData))
         && (!object.uiSettings || typeof object.uiSettings === 'object');
 };
 
@@ -401,7 +401,6 @@ export interface Entity {
     readonly entityClass: string;
     readonly parentId?: string | undefined;
     readonly displaySettings: EntityDisplaySettings;
-    readonly tags: readonly string[];
     readonly attributes?: {
         [key: string]: EntityAttributeValueType | undefined;
     } | undefined;
@@ -428,10 +427,7 @@ export const isEntity = (obj: unknown): obj is Entity => {
          && (typeof object.entityClass === 'string' && object.entityClass.length > 0)
          && (!object.parentId || (typeof object.parentId === 'string' && object.parentId.length > 0))
          && (typeof object.timeZone === 'string' && object.timeZone.length > 0)
-         && (isEntityDisplaySettings(object.displaySettings))
-         && (object.tags && object.tags.find((tag) => {
-             return typeof tag !== 'string' || tag.length === 0;
-         }) === undefined);
+         && (isEntityDisplaySettings(object.displaySettings));
 };
 
 
