@@ -3,7 +3,7 @@
 /* eslint-disable max-classes-per-file */
 
 
-export interface WebSocketEvent {
+export interface ModeWebSocketEvent {
     readonly eventType: string;
     readonly eventData: unknown;
     readonly timestamp: string;
@@ -16,7 +16,17 @@ export interface WebSocketEvent {
 }
 
 
-export type WebSocketObserver = (event: WebSocketEvent)=> void;
+/**
+ * Type guard function to check if an object is a ModeWebSocketEvent
+ */
+export const isModeWebSocketEvent = (obj: unknown): obj is ModeWebSocketEvent => {
+    const event = obj as ModeWebSocketEvent;
+    return typeof event === 'object' && !(event instanceof Array)
+            && typeof event.eventType === 'string';
+};
+
+
+export type WebSocketObserver = (data: ModeWebSocketEvent | unknown)=> void;
 
 export class WebSocketObservable {
 
@@ -32,8 +42,16 @@ export class WebSocketObservable {
         if (webSocket) {
             webSocket.onmessage = (event: MessageEvent<any>) => {
                 try {
-                    this.notifyAllObservers(JSON.parse(event.data) as WebSocketEvent);
+                    if (
+                        (typeof event.data === 'object' && !(event.data instanceof Array) && !(event.data instanceof Blob))
+                        || typeof event.data === 'string'
+                    ) {
+                        this.notifyAllObservers(JSON.parse(event.data) as ModeWebSocketEvent);
+                    } else {
+                        this.notifyAllObservers(event.data);
+                    }
                 } catch (error) {
+                    this.notifyAllObservers(event.data);
                     console.error(event);
                 }
             };
@@ -52,9 +70,9 @@ export class WebSocketObservable {
         this.observers.delete(observer);
     }
 
-    public notifyAllObservers (event: WebSocketEvent) {
+    public notifyAllObservers (data: ModeWebSocketEvent | unknown) {
         this.observers.forEach((observer: WebSocketObserver) => {
-            observer(event);
+            observer(data);
         });
     }
 
@@ -78,15 +96,19 @@ export class WebSocketObservable {
  * This interface for the params object that we can pass to the createWebSocket function
  */
 export interface WebSocketParams {
-    readonly homeId?: number | undefined;
-    readonly deviceId?: number | undefined;
-
     // OPTIONAL token to use instead of the token already set in the WebSocketConnection instance
     readonly authToken?: string | undefined;
+
+    // The param name to be used for passing authToken to the backend. By default, this will use the name 'authToken' and the caller can
+    // override that and specify other name to be used. For example, to use the name `token=xxx` then set this 'authTokenParamName' to 'token'
+    readonly authTokenParamName?: string | undefined;
 
     // OPTIONAL path to use instead of the default path. This path MUST be a RELATIVE path excluding the baseUrl e.g. "/myCustom/path"
     // The WebSocketFactory will take care of prepending the baseUrl to the path e.g. "wss://api.tinkermode.com/myCustom/path"
     readonly path?: string | undefined;
+
+    // Other params to be passed in the URL as quest string
+    readonly otherParams?: object | undefined;
 }
 
 
@@ -131,18 +153,18 @@ export class WebSocketFactory {
     ): WebSocket | undefined {
         try {
             const searchParams = new URLSearchParams();
+            const authTokenName = params?.authTokenParamName !== undefined ? params.authTokenParamName : 'authToken';
             if (params?.authToken) {
                 // If custom authToken is provided then use the provided authToken
-                searchParams.append('authToken', params.authToken);
+                searchParams.append(authTokenName, params.authToken);
             } else if (this.authToken) {
                 // Else use the authToken already set in WebSocketConnection instance
-                searchParams.append('authToken', this.authToken);
+                searchParams.append(authTokenName, this.authToken);
             }
-            if (params?.homeId !== undefined) {
-                searchParams.append('homeId', params.homeId.toString());
-            }
-            if (params?.deviceId !== undefined) {
-                searchParams.append('deviceId', params.deviceId.toString());
+            if (params?.otherParams) {
+                (Object.entries(params.otherParams).forEach(([name, value]) => {
+                    searchParams.append(name, value.toString());
+                }));
             }
 
             const path = `${this.baseUrl}${params?.path ?? '/userSession/websocket'}`;
