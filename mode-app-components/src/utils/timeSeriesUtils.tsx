@@ -110,6 +110,26 @@ export interface MultiSeriesDataPoint<T extends number | string> {
 }
 
 
+
+/**
+ * Interface for 1 chart data point of multiple metrics including Numeric and Tag Metrics and. Each data point contains 1 date value and 1 or
+ * more values for each metric e.g.
+ *      {
+ *          dataPointTimestamp: 1636480800000,
+ *          temperature: 53,
+ *          pressure: 24,
+ *          battery: 100
+ *          error: "200",
+ *          state: "success",
+ *      }
+ */
+export interface MultiMetricsDataPoint {
+    readonly dataPointTimestamp: number;
+    [metricId: string]: number | string | null;
+}
+
+
+
 /**
  * A multi-series data points for a collection which has separate MultiSeriesDataPoint for numericMetrics and tagMetrics
  */
@@ -221,32 +241,6 @@ export const getTimeSeriesDataInterval = (timeSeriesData: TimeSeriesData): TimeS
         timeUnit: 'second',
         value   : 1,
     };
-};
-
-
-/**
- * Custom hook used for filtering time series data points that are not in the view.
- */
-export const useFilterTimeSeriesDataPoints = <T extends number | string>(
-    timeSeriesData: MultiSeriesDataPoint<T>[] | undefined, itemsPerPage: number, currentPage: number,
-): BaseListCompDataItem<MultiSeriesDataPoint<T>>[] | undefined => {
-
-    const [filteredData, setFilteredData] = useState<BaseListCompDataItem<MultiSeriesDataPoint<T>>[]>();
-
-    useEffect(() => {
-        if (timeSeriesData && itemsPerPage > 0 && currentPage >= 0) {
-            setFilteredData(timeSeriesData.slice(
-                currentPage * itemsPerPage,
-                (currentPage + 1) * itemsPerPage,
-            ).map((item: MultiSeriesDataPoint<T>): BaseListCompDataItem<MultiSeriesDataPoint<T>> => {
-                return {
-                    actualValue: item,
-                };
-            }));
-        }
-    }, [timeSeriesData, itemsPerPage, currentPage]);
-
-    return filteredData;
 };
 
 

@@ -1,11 +1,13 @@
-import React from 'react';
+import React, {
+    useMemo,
+} from 'react';
 import {
     Paper, Table, TableRow, TableCell, TableHead, TableBody, makeStyles, CircularProgress, Box,
 } from '@material-ui/core';
 import clsx from 'clsx';
 import {
-    BaseListCompField, BaseListCompFieldsSet, BaseListCompFieldsSettings, BaseListCompProps, BaseListCompDataItem, MultiSeriesDataPoint,
-    roundValue, useModePanelStyle, useModeTableStyle, createHeaderColumn,
+    BaseListCompField, BaseListCompFieldsSet, BaseListCompFieldsSettings, BaseListCompProps, useModePanelStyle, useModeTableStyle, createHeaderColumn,
+    MultiMetricsDataPoint, getNumberFormatter, getDateTimeFormatter,
 } from '../../..';
 import {
     CompPanelHeader,
@@ -31,8 +33,10 @@ const useStyle = makeStyles(() => {
 
         tableCol: {
             '&.date-col': {
-                width    : '50%',
                 textAlign: 'left',
+            },
+            '&.spacer-col': {
+                width: '100%',
             },
             '&.value-col': {
                 textAlign: 'center',
@@ -44,19 +48,34 @@ const useStyle = makeStyles(() => {
 });
 
 
+// TimeSeriesTableCompField settings is just a BaseListCompField with an additional attribute "decimalPlaces" which can be used for customizing
+// decimalPlaces for each field.
+export interface TimeSeriesTableCompField extends BaseListCompField {
+    // Decimal places to apply to all metrics
+    readonly decimalPlaces?: number | undefined;
+}
+
 
 /**
  * Table columns setting for TimeSeriesDataTable. TimeSeriesDataTable columns settings MUST contain these column keys
  */
 export interface TimeSeriesTableFieldsSet extends BaseListCompFieldsSet {
     readonly date: BaseListCompField;
+    readonly [fieldName: string]: TimeSeriesTableCompField | undefined;
 }
 
 
-export interface TimeSeriesDataTableProps extends BaseListCompProps<MultiSeriesDataPoint<number | string>> {
-    readonly listData: readonly BaseListCompDataItem<MultiSeriesDataPoint<number | string>>[] | undefined;
+export interface TimeSeriesDataTableProps extends Omit<BaseListCompProps<MultiMetricsDataPoint>, 'listData'> {
+    readonly listData: readonly MultiMetricsDataPoint[] | undefined;
     readonly fieldsSettings: BaseListCompFieldsSettings<TimeSeriesTableFieldsSet>;
-    readonly decimalPlaces: number;
+
+    readonly locale?: string | undefined;
+
+    // Decimal places to apply to all metrics
+    readonly decimalPlaces?: number | undefined;
+
+    readonly dateTimeFormat?: 'full' | 'compact' | 'date' | 'time' | Intl.DateTimeFormatOptions | undefined;
+
     readonly labels: {
         readonly emptyValues: string;           // value to be displayed if there is no value
     }
@@ -80,6 +99,25 @@ export const TimeSeriesDataTable = (props: TimeSeriesDataTableProps) => {
     }).length;
 
 
+    const defaultNumberFormatter = useMemo(() => {
+        return getNumberFormatter(props.locale ?? 'en', props.decimalPlaces ?? 3);
+    }, [props.decimalPlaces, props.locale]);
+
+
+    // Because Intl.NumberFormatter can only round number to 0 and 20 decimalPlaces therefore we can pre-create number formatter ahead of time
+    const numberFormatterByDecimalPlaces = useMemo(() => {
+        const result: Intl.NumberFormat[] = [];
+        for (let i = 0; i <= 20; i += 1) {
+            result[i] = getNumberFormatter(props.locale ?? 'en', i);
+        }
+        return result;
+    }, [props.locale]);
+
+
+    const dateFormatter = useMemo(() => {
+        return getDateTimeFormatter(props.locale ?? 'en', props.dateTimeFormat ?? 'full');
+    }, [props.dateTimeFormat, props.locale]);
+
 
     return (
         <Paper elevation={2} className={clsx(panelClasses.root, props.className, props.showCustomActionOnHover && 'show-custom-action-on-hover')}>
@@ -101,6 +139,7 @@ export const TimeSeriesDataTable = (props: TimeSeriesDataTableProps) => {
                                                     `${tableClasses.tableCol} ${classes.tableCol} date-col`,
                                                 )
                                             }
+                                            <TableCell className={`${tableClasses.tableCol} ${classes.tableCol} spacer-col`} />
 
                                             {Object.values(props.fieldsSettings.fields).filter((column: BaseListCompField | undefined) => {
                                                 return !column?.hidden && column !== props.fieldsSettings.fields.date
@@ -122,40 +161,50 @@ export const TimeSeriesDataTable = (props: TimeSeriesDataTableProps) => {
                                 <TableBody>
                                     <>
                                         {props.listData.map((
-                                            dataItem: BaseListCompDataItem<MultiSeriesDataPoint<number | string>>, rowIndex: number,
+                                            dataItem, rowIndex: number,
                                         ): JSX.Element => {
                                             return (
                                                 <TableRow
                                                     className={clsx(tableClasses.tableBodyRow)}
-                                                    key={`${dataItem.actualValue.dateString}-${rowIndex.toString()}`}
+                                                    key={`${dataItem.dataPointTimestamp}-${rowIndex.toString()}`}
                                                 >
                                                     <TableCell
                                                         className={clsx(tableClasses.tableCol, classes.tableCol, 'date-col')}
                                                     >
-                                                        {dataItem.actualValue.dateString}
+                                                        {dateFormatter.format(dataItem.dataPointTimestamp)}
                                                     </TableCell>
-                                                    {Object.values(props.fieldsSettings.fields).filter((column: BaseListCompField | undefined) => {
+                                                    
+                                                    <TableCell className={`${tableClasses.tableCol} ${classes.tableCol} spacer-col`} />
+
+                                                    {Object.values(props.fieldsSettings.fields).filter((column) => {
                                                         return !column?.hidden && column !== props.fieldsSettings.fields.date
                                                             && column !== props.fieldsSettings.fields.remove;
-                                                    }).map((column: BaseListCompField | undefined) => {
+                                                    }).map((column) => {
                                                         if (column) {
+                                                            const value = column.dataItemProp ? dataItem[column.dataItemProp] : undefined;
+                                                            const formattedValue = (() => {
+                                                                if (value !== undefined && value !== null) {
+                                                                    if (typeof value === 'number') {
+                                                                        if (column.decimalPlaces !== undefined) {
+                                                                            // Make sure the decimalPlaces is between 0 and 20
+                                                                            const decimalPlaces = Math.max(0, Math.min(20, column.decimalPlaces));
+                                                                            return numberFormatterByDecimalPlaces[decimalPlaces].format(value);
+                                                                        }
+                                                                        // Use default number formatter
+                                                                        return defaultNumberFormatter.format(value);
+                                                                    }
+                                                                    // value is a string so return it as is
+                                                                    return value;
+                                                                }
+                                                                return props.labels.emptyValues;
+                                                            })();
+
                                                             return (
                                                                 <TableCell
                                                                     key={`${column.dataItemProp || column.label}}`}
                                                                     className={clsx(tableClasses.tableCol, classes.tableCol, 'value-col')}
                                                                 >
-                                                                    {
-                                                                        column.dataItemProp
-                                                                        && typeof dataItem.actualValue.values[column.dataItemProp] === 'number'
-                                                                            ? roundValue(
-                                                                                Number(dataItem.actualValue.values[column.dataItemProp]),
-                                                                                props.decimalPlaces,
-                                                                            )
-                                                                            : (
-                                                                                column.dataItemProp
-                                                                                && dataItem.actualValue.values[column.dataItemProp]
-                                                                            ) || props.labels.emptyValues
-                                                                    }
+                                                                    { formattedValue }
                                                                 </TableCell>
                                                             );
                                                         }

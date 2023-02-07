@@ -95,3 +95,48 @@ export const roundValue = (value: number, decimalPlaces: number = 2): string => 
     }
     return '0';
 };
+
+
+
+/**
+ * Return a number formatter that can be use for rounding numbers. NOTE that this object can be reused multiple times. Don't need to create
+ * a formatter each time we need to format a number.
+ */
+export const getNumberFormatter = (locale: string, decimalPlaces: number) => {
+    return new Intl.NumberFormat(locale ?? 'en', {
+        maximumFractionDigits: Math.max(0, Math.min(20, decimalPlaces)),
+    });
+};
+
+
+/**
+ * Return a Date formatter that can used for formatting Dates. NOTE that this object can be reused multiple times. Don't need to create
+ * a formatter each time we need to format a date.
+ *
+ * @param format - Can be a shortcut format name e.g. 'full', 'compact', 'date', 'time' or an Intl.DateTimeFormatOptions object
+ */
+export const getDateTimeFormatter = (locale: string, format: 'full' | 'compact' | 'date' | 'time' | Intl.DateTimeFormatOptions) => {
+    const options = ((): Intl.DateTimeFormatOptions => {
+        if (typeof format === 'string') {
+            const options: Intl.DateTimeFormatOptions = {
+            };
+            if (format === 'date' || format === 'compact' || format === 'full') {
+                options.month = format === 'compact' ? '2-digit' : 'short';
+                options.day = '2-digit';
+                options.year = format === 'compact' ? '2-digit' : 'numeric';
+                options.hour12 = false;
+            }
+
+            if (format === 'time' || format === 'compact' || format === 'full') {
+                options.hour = '2-digit';
+                options.minute = '2-digit';
+                options.second = '2-digit';
+                options.hour12 = false;
+            }
+            return options;
+        }
+        return format;
+    })();
+
+    return new Intl.DateTimeFormat(locale, options);
+};

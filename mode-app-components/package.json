@@ -1,6 +1,6 @@
 {
     "name": "@moderepo/mode-app-components",
-    "version": "0.2.17",
+    "version": "0.2.18",
     "description": "Components that can be used for implementing MODE applications",
     "scripts": {
         "build": "tsc"
