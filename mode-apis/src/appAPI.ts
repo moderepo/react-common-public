@@ -1193,7 +1193,18 @@ export class AppAPI extends BaseAPI {
      * @returns
      */
     public async getEntities (projectId: number, filters: FetchEntityFilters): Promise<PaginationDataSet<Entity>> {
-        const response = await this.sendRequest(RequestMethod.GET, `/projects/${projectId}/entities`, filters);
+        // Because front end separate "filters.sortBy" and "filters.sortOrder" while the back end expect both of them to be in 1 param,
+        // we will need to modify the "filters" object. We will make a copy of the "filters" object and then modify the "sortBy" value
+        // by combining the "sortBy" with "sortOrder". And then delete the "sortOrder" since we don't need to send it to the back end.
+        const modifiedFilters = {
+            ...filters,                                    // make a copy of the "filters" object
+            sortBy: filters?.sortBy && filters?.sortOrder  // sortBy and sortOrder BOTH need to be provided or none but can't have 1 only.
+                ? `${filters.sortBy}:${filters.sortOrder}` // concatenate filters.sortBy and filters.sortOrder with ":"
+                : undefined,
+        };
+        delete modifiedFilters.sortOrder;
+
+        const response = await this.sendRequest(RequestMethod.GET, `/projects/${projectId}/entities`, modifiedFilters);
 
         if (response.data instanceof Array) {
             const range = parseDataRange(response.headers[DATA_RANGE_HEADER_KEY]);
