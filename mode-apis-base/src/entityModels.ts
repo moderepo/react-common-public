@@ -475,8 +475,8 @@ export interface FetchEntityFilters {
     readonly recursive?: boolean | undefined;
     readonly attributesQuery?: string | undefined;
 
-    // To have the back end sort the results by the specified "sortBy" (attribute name) in the specified "sortOrder"
-    readonly sortBy?: string;
+    // To have the back end sort the results by the specified "sortField" (attribute name) in the specified "sortOrder"
+    readonly sortField?: string;
     readonly sortOrder?: SortOrder;
 }
 
