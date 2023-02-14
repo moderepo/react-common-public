@@ -343,10 +343,6 @@ export interface EntityAttributeParam<ValueType extends EntityAttributeValueType
     readonly min?: number | undefined;
     readonly max?: number | undefined;
     readonly regex?: string | undefined;
-
-    // Whether or not the entity can be sorted by this attribute. This is OPTIONAL because existing entity classes' attribute schema
-    // might not have this settings. The default will be FALSE unless this attribute is specifically set to true.
-    readonly sortable?: boolean | undefined;
 }
 
 /**
@@ -420,13 +416,13 @@ export interface Entity {
     }[] | undefined;
 
     /**
-     * The summary of the entity instance's descendants. It is a map of the descendants' entityClass to the number of instances for that class. e.g.
+     * The counts of the entity instance's descendants. It is a map of the descendants' entityClass to the number of instances for that class. e.g.
      *      entityInstance: {
      *          entityId: "customer_1"
      *          entityClass: "customer",
      *          homeId: 1234,
      *          ...
-     *          summary: {
+     *          descendantCounts: {
      *              site: 3,
      *              control_server: 5,
      *              ruber_3000: 58,
@@ -438,7 +434,7 @@ export interface Entity {
      *      - 5 entity instances of class "control_server"
      *      - 58 entity instances of class "ruber_3000"
      */
-    readonly summary?: {
+    readonly descendantCounts?: {
         readonly [entityClass: string]: number | undefined;
     } | undefined;
 }
@@ -456,6 +452,13 @@ export const isEntity = (obj: unknown): obj is Entity => {
          && (typeof object.timeZone === 'string' && object.timeZone.length > 0)
          && (isEntityDisplaySettings(object.displaySettings));
 };
+
+
+export enum EntitySortFieldType {
+    BASIC = 'basic',
+    ATTRIBUTES = 'attributes',
+    DESCENDANT_COUNTS = 'descendantCounts',
+}
 
 
 // Interface for Entity filter options when calling GET entities API
@@ -476,8 +479,12 @@ export interface FetchEntityFilters {
     readonly attributesQuery?: string | undefined;
 
     // To have the back end sort the results by the specified "sortField" (attribute name) in the specified "sortOrder"
-    readonly sortField?: string;
-    readonly sortOrder?: SortOrder;
+    // "sortField" can be the name of an entity's basic attributes e.g. "entityClass", "entityId", "homeId", etc...
+    // "sortField" can also be the name of an entity's custom attribute name or descendant counts. However, if sortField IS NOT an entity's
+    // basic attribute, the caller MUST provide the field type
+    readonly sortField?: string | undefined;
+    readonly sortFieldType?: EntitySortFieldType.ATTRIBUTES | EntitySortFieldType.DESCENDANT_COUNTS | undefined;
+    readonly sortOrder?: SortOrder | undefined;
 }
 
 

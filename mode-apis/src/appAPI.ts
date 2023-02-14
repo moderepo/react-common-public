@@ -1193,15 +1193,22 @@ export class AppAPI extends BaseAPI {
      * @returns
      */
     public async getEntities (projectId: number, filters: FetchEntityFilters): Promise<PaginationDataSet<Entity>> {
-        // Because front end separate "filters.sortBy" and "filters.sortOrder" while the back end expect both of them to be in 1 param,
-        // we will need to modify the "filters" object. We will make a copy of the "filters" object and then modify the "sortBy" value
-        // by combining the "sortBy" with "sortOrder". And then delete the "sortOrder" since we don't need to send it to the back end.
+
+        // Front end separate "sortField", "sortFieldType", and "sortOrder" as 3 different params while back end only accept 1 param
+        // "sortOrder". Therefore we need to combine the "sortField", "sortFieldType", and "sortOrder" as 1 param before sending it to the back end
+        // Here is the template
+        //      If "sortFieldType" is undefined then "sortOrder='${sortField}:${sortOrder}"
+        //      If "sortFieldType" is NOT undefined then "sortOrder='${sortFieldType}.${sortField}:${sortOrder}"
         const modifiedFilters = {
-            ...filters,                                         // make a copy of the "filters" object
+            ...filters,
             sortBy: filters?.sortField && filters?.sortOrder    // sortField and sortOrder BOTH need to be provided or none but can't have 1 only.
-                ? `${filters.sortField}:${filters.sortOrder}`   // concatenate filters.sortField and filters.sortOrder with ":"
+                ? `${filters.sortFieldType ? `${filters.sortFieldType}.` : ''}${filters.sortField}:${filters.sortOrder}`
                 : undefined,
         };
+
+        // Delete these 3 params because we don't need to pass them to the back end
+        delete modifiedFilters.sortFieldType;
+        delete modifiedFilters.sortField;
         delete modifiedFilters.sortOrder;
 
         const response = await this.sendRequest(RequestMethod.GET, `/projects/${projectId}/entities`, modifiedFilters);
