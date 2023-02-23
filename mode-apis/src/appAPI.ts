@@ -1193,7 +1193,25 @@ export class AppAPI extends BaseAPI {
      * @returns
      */
     public async getEntities (projectId: number, filters: FetchEntityFilters): Promise<PaginationDataSet<Entity>> {
-        const response = await this.sendRequest(RequestMethod.GET, `/projects/${projectId}/entities`, filters);
+
+        // Front end separate "sortField", "sortFieldType", and "sortOrder" as 3 different params while back end only accept 1 param
+        // "sortOrder". Therefore we need to combine the "sortField", "sortFieldType", and "sortOrder" as 1 param before sending it to the back end
+        // Here is the template
+        //      If "sortFieldType" is undefined then "sortOrder='${sortField}:${sortOrder}"
+        //      If "sortFieldType" is NOT undefined then "sortOrder='${sortFieldType}.${sortField}:${sortOrder}"
+        const modifiedFilters = {
+            ...filters,
+            sortBy: filters?.sortField && filters?.sortOrder    // sortField and sortOrder BOTH need to be provided or none but can't have 1 only.
+                ? `${filters.sortFieldType ? `${filters.sortFieldType}.` : ''}${filters.sortField}:${filters.sortOrder}`
+                : undefined,
+        };
+
+        // Delete these 3 params because we don't need to pass them to the back end
+        delete modifiedFilters.sortFieldType;
+        delete modifiedFilters.sortField;
+        delete modifiedFilters.sortOrder;
+
+        const response = await this.sendRequest(RequestMethod.GET, `/projects/${projectId}/entities`, modifiedFilters);
 
         if (response.data instanceof Array) {
             const range = parseDataRange(response.headers[DATA_RANGE_HEADER_KEY]);

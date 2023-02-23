@@ -1,6 +1,6 @@
 /* eslint-disable max-len */
 import {
-    SmartModuleType, TimeSeriesAggregation,
+    SmartModuleType, SortOrder, TimeSeriesAggregation,
 } from '.';
 
 
@@ -414,6 +414,29 @@ export interface Entity {
         readonly metricsDefinitionId: string;
         readonly metricsId: string;
     }[] | undefined;
+
+    /**
+     * The counts of the entity instance's descendants. It is a map of the descendants' entityClass to the number of instances for that class. e.g.
+     *      entityInstance: {
+     *          entityId: "customer_1"
+     *          entityClass: "customer",
+     *          homeId: 1234,
+     *          ...
+     *          descendantCounts: {
+     *              site: 3,
+     *              control_server: 5,
+     *              ruber_3000: 58,
+     *          }
+     *      }
+     *
+     * Base on the data above. the "customer_1" has
+     *      - 3 entity instances of class "site"
+     *      - 5 entity instances of class "control_server"
+     *      - 58 entity instances of class "ruber_3000"
+     */
+    readonly descendantCounts?: {
+        readonly [entityClass: string]: number | undefined;
+    } | undefined;
 }
 
 /**
@@ -431,6 +454,13 @@ export const isEntity = (obj: unknown): obj is Entity => {
 };
 
 
+export enum EntitySortFieldType {
+    BASIC = 'basic',
+    ATTRIBUTES = 'attributes',
+    DESCENDANT_COUNTS = 'descendantCounts',
+}
+
+
 // Interface for Entity filter options when calling GET entities API
 export interface FetchEntityFilters {
     readonly skip?: number | undefined;
@@ -442,7 +472,19 @@ export interface FetchEntityFilters {
     // An comma separated list of entity classes
     readonly entityClasses?: string | undefined;
     readonly parentId?: string | null | undefined;
+    // To tell the backend whether or not to return only the DIRECT children or includes all descendants.
+    // By default, the back end will only include the entity instances that are direct children of the specified "parentId". If this flag
+    // is set to true, the back end will also includes children, grandchildren, great grandchildren, etc... of the "parentId"
+    readonly recursive?: boolean | undefined;
     readonly attributesQuery?: string | undefined;
+
+    // To have the back end sort the results by the specified "sortField" (attribute name) in the specified "sortOrder"
+    // "sortField" can be the name of an entity's basic attributes e.g. "entityClass", "entityId", "homeId", etc...
+    // "sortField" can also be the name of an entity's custom attribute name or descendant counts. However, if sortField IS NOT an entity's
+    // basic attribute, the caller MUST provide the field type
+    readonly sortField?: string | undefined;
+    readonly sortFieldType?: EntitySortFieldType.ATTRIBUTES | EntitySortFieldType.DESCENDANT_COUNTS | undefined;
+    readonly sortOrder?: SortOrder | undefined;
 }
 
 

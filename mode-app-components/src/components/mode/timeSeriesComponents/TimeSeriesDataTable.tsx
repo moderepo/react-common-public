@@ -36,7 +36,8 @@ const useStyle = makeStyles(() => {
                 textAlign: 'left',
             },
             '&.spacer-col': {
-                width: '100%',
+                width  : '100%',
+                padding: 0,
             },
             '&.value-col': {
                 textAlign: 'center',
