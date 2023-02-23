@@ -104,3 +104,6 @@ export const AUTH_KEY_EXPIRATION_CHECK_FREQ_IN_MS: number = 30000;      // How f
 
 export const METRIC_VIEW_DEFAULT_TIME_RANGE = Time.DAY_IN_MS;           // The default time range in the time series metric view
 export const METRIC_VIEW_MIN_TIME_RANGE = 30 * Time.MINUTE_IN_MS;       // The minimum time range the user can select from the date selector
+
+
+export const BLANK_IMAGE = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII=';

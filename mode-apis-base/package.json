@@ -1,6 +1,6 @@
 {
     "name": "@moderepo/mode-apis-base",
-    "version": "0.2.10",
+    "version": "0.2.11",
     "description": "Classes, Models, and utils for all MODE apis",
     "scripts": {
         "build": "tsc"
