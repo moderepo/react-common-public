@@ -19,6 +19,16 @@ import {
 
 
 /**
+ * The home props that can be updated
+ */
+export interface UpdatableHomeProps {
+    readonly name?: string | undefined;
+    readonly deactivated?: boolean | undefined;
+}
+
+
+
+/**
  * These are the API used for end-user applications
  */
 export class AppAPI extends BaseAPI {
@@ -342,14 +352,14 @@ export class AppAPI extends BaseAPI {
 
 
     /**
-     * Update the user home's name
+     * Update the user home
      * @param homeId - The id of the user home we want to update
-     * @param name - The new name to give to the home
+     * @param params - The object contains the home props that needs to be updated
      */
-    public async updateHome (homeId: number, name: string): Promise<void> {
-        await this.sendRequest(RequestMethod.PATCH, `/homes/${homeId}`, {
-            name,
-        });
+    public async updateHome (homeId: number, params: UpdatableHomeProps, projectApiKey?: string): Promise<void> {
+        await this.sendRequest(RequestMethod.PATCH, `/homes/${homeId}`, params, projectApiKey ? {
+            [AUTHORIZATION_KEY]: `${AUTHORIZATION_KEY_PREFIX} ${projectApiKey}`,
+        } : undefined);
     }
 
 

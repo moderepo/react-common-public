@@ -49,6 +49,31 @@ const useStyle = makeStyles((theme: Theme) => {
             '&.creationTime-col': {
                 textAlign: 'left',
             },
+            '&.deactivated-col': {
+                textAlign : 'center',
+                '& .value': {
+                    fontSize     : 'smaller',
+                    fontWeight   : 500,
+                    padding      : theme.spacing(0.3, 1),
+                    borderRadius : 100,
+                    textTransform: 'lowercase',
+                    width        : '100%',
+                    display      : 'inline-block',
+                },
+
+                '&.active': {
+                    '& .value': {
+                        background: theme.palette.success.main,
+                        color     : theme.palette.success.contrastText,
+                    },
+                },
+                '&.deactivated': {
+                    '& .value': {
+                        background: theme.palette.error.main,
+                        color     : theme.palette.error.contrastText,
+                    },
+                },
+            },
         },
 
         addHomeButton: {
@@ -74,6 +99,7 @@ const useStyle = makeStyles((theme: Theme) => {
 export interface DisplayableHomesTableDataItem {
     readonly id?: string;
     readonly name?: string;
+    readonly deactivated?: string;
     readonly creationTime?: string;
 }
 
@@ -96,6 +122,7 @@ export interface HomesTableDataItem extends BaseListCompDataItem<Home> {
 interface HomesTableFieldsSet extends BaseListCompFieldsSet {
     readonly id?: BaseListCompField;
     readonly name?: BaseListCompField;
+    readonly deactivated?: BaseListCompField;
     readonly creationTime?: BaseListCompField;
 }
 
@@ -160,6 +187,21 @@ export const HomesTable: React.FC<HomesTableProps> = (props: HomesTableProps) =>
                                             {Object.keys(props.fieldsSettings.fields).filter((fieldName: string) => {
                                                 return !props.fieldsSettings.fields[fieldName]?.hidden;
                                             }).map((fieldName: string) => {
+
+                                                if (fieldName === 'deactivated' && props.fieldsSettings.fields.deactivated
+                                                && !props.fieldsSettings.fields.deactivated.hidden) {
+                                                    return (
+                                                        <TableCell
+                                                            key={fieldName}
+                                                            className={clsx(tableClasses.tableCol, classes.tableCol, `${fieldName}-col`,
+                                                                dataItem.actualValue.deactivated ? 'deactivated' : 'active')}
+                                                        >
+                                                            <div className="value">
+                                                                {dataItem.displayValue.deactivated}
+                                                            </div>
+                                                        </TableCell>
+                                                    );
+                                                }
 
                                                 if (fieldName === 'remove' && props.fieldsSettings.fields.remove
                                                         && !props.fieldsSettings.fields.remove.hidden) {

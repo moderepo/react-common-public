@@ -51,7 +51,9 @@ export class FluxDSHomeCompCtrl extends BaseHomeCompCtrl {
             if (name !== currentHome.name) {
                 try {
                     // dispatch an action to update the user name and/or password
-                    await this.dispatch(updateHome(currentHome.id, name));
+                    await this.dispatch(updateHome(currentHome.id, {
+                        name,
+                    }));
 
                     return {
                         isDataModified: true,
