@@ -1,6 +1,6 @@
 {
     "name": "@moderepo/mode-app-components",
-    "version": "0.2.20",
+    "version": "0.2.23",
     "description": "Components that can be used for implementing MODE applications",
     "scripts": {
         "build": "tsc"
@@ -31,9 +31,9 @@
         "@material-ui/icons": "^4.11.2",
         "@material-ui/lab": "^4.0.0-alpha.60",
         "@material-ui/pickers": "^3.3.10",
-        "@moderepo/mode-apis": "^0.3.12",
-        "@moderepo/mode-data-state-robot-cloud": "^0.2.10",
-        "@moderepo/mode-data-state-user-app": "^0.2.10",
+        "@moderepo/mode-apis": "^0.3.14",
+        "@moderepo/mode-data-state-robot-cloud": "^0.2.12",
+        "@moderepo/mode-data-state-user-app": "^0.2.12",
         "@moderepo/mode-ui-state": "^0.1.5",
         "@types/react": "^17.0.38",
         "@types/react-dom": "^17.0.11",
@@ -64,9 +64,9 @@
         "@material-ui/icons": ">=4.11.2",
         "react-router-dom": ">=5.2.0",
         "use-debounce": ">=7.0.1",
-        "@moderepo/mode-apis": ">=0.3.12",
-        "@moderepo/mode-data-state-robot-cloud": "0.2.10",
-        "@moderepo/mode-data-state-user-app": "0.2.10",
+        "@moderepo/mode-apis": ">=0.3.14",
+        "@moderepo/mode-data-state-robot-cloud": "0.2.12",
+        "@moderepo/mode-data-state-user-app": "0.2.12",
         "@moderepo/mode-ui-state": ">=0.1.5"
     }
 }

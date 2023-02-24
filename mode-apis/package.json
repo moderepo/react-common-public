@@ -1,6 +1,6 @@
 {
     "name": "@moderepo/mode-apis",
-    "version": "0.3.12",
+    "version": "0.3.14",
     "description": "MODE's apis for end-user apps",
     "scripts": {
         "build": "tsc"

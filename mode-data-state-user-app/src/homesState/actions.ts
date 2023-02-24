@@ -1,5 +1,5 @@
 import {
-    AppAPI, Home, PaginationDataSet,
+    AppAPI, Home, PaginationDataSet, UpdatableHomeProps,
 } from '@moderepo/mode-apis';
 import {
     BaseAction, ExtDispatch, searchParamsToString,
@@ -207,10 +207,11 @@ export const deleteHome = (homeId: number): UserAppThunkAction => {
 /**
  * Update a home
  * @param homeId - The ID of the home we want to update
- * @param name - The new name of the home
+ * @param params - The object containing the home props to be updated
+ * @param projectApiKey - Required for updating the home's "deactivated"
  */
-export const updateHome = (homeId: number, name: string): UserAppThunkAction => {
+export const updateHome = (homeId: number, params: UpdatableHomeProps, projectApiKey?: string): UserAppThunkAction => {
     return async (): Promise<void> => {
-        return await AppAPI.getInstance().updateHome(homeId, name);
+        return await AppAPI.getInstance().updateHome(homeId, params, projectApiKey);
     };
 };

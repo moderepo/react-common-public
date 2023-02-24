@@ -11,6 +11,7 @@ import {
  */
 export interface BaseHomeInfoUpdatableInputs {
     readonly name?: string | undefined;
+    readonly deactivated?: boolean | undefined;
 }
 
 
@@ -27,6 +28,7 @@ export interface BaseHomeInfoProps extends BaseInfoCompProps {
     readonly fields: {
         readonly id?: BaseEntityField<number>;
         readonly name: BaseEntityField<string>;
+        readonly deactivated?: BaseEntityField<boolean>;
         readonly creationTime?: BaseEntityField<string>;
     }
 
