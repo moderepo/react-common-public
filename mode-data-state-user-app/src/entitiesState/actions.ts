@@ -284,9 +284,10 @@ export const updateEntity = (
 export const deleteEntity = (
     projectId: number,
     entityId: string,
+    deleteDescendants: boolean = false,
 ): UserAppThunkAction => {
     return async (dataDispatch: ExtDispatch<UserAppDataStateAction>): Promise<void> => {
-        await AppAPI.getInstance().deleteEntity(projectId, entityId);
+        await AppAPI.getInstance().deleteEntity(projectId, entityId, deleteDescendants);
 
         // Need to clear the entities because the list of entities changed
         await dataDispatch(clearEntities(projectId));
