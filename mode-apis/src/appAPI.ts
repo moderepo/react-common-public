@@ -1279,8 +1279,8 @@ export class AppAPI extends BaseAPI {
      * @param projectId
      * @param entityId
      */
-    public async deleteEntity (projectId: number, entityId: string): Promise<void> {
-        await this.sendRequest(RequestMethod.DELETE, `/projects/${projectId}/entities/${entityId}`);
+    public async deleteEntity (projectId: number, entityId: string, deleteDescendants: boolean = false): Promise<void> {
+        await this.sendRequest(RequestMethod.DELETE, `/projects/${projectId}/entities/${entityId}?deleteDescendants=${deleteDescendants}`);
     }
 
 
