@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 import {
     AxiosRequestConfig, AxiosResponse,
 } from 'axios';
@@ -1193,6 +1194,37 @@ export class AppAPI extends BaseAPI {
     public async getEntityClassById (projectId: number, entityClassId: string): Promise<EntityClass> {
         const response = await this.sendRequest(RequestMethod.GET, `/projects/${projectId}/entityClasses/${entityClassId}`);
         return response.data as EntityClass;
+    }
+
+
+    /**
+     * Create multiple entity classes
+     * @param projectId
+     * @returns
+     */
+    public async createEntityClasses (projectId: number, entityClasses: readonly object[]): Promise<readonly EntityClass[]> {
+        const response = await this.sendRequest(RequestMethod.POST, `/projects/${projectId}/entityClasses`, entityClasses);
+        return response.data as EntityClass[];
+    }
+
+
+    /**
+     * Create multiple entity classes
+     * @param projectId
+     * @returns
+     */
+    public async updateEntityClass (projectId: number, entityClassName: string, entityClass: object): Promise<void> {
+        await this.sendRequest(RequestMethod.PATCH, `/projects/${projectId}/entityClasses/${entityClassName}`, entityClass);
+    }
+
+
+    /**
+     * Delete an entity class
+     * @param projectId
+     * @returns
+     */
+    public async deleteEntityClass (projectId: number, entityClassName: string): Promise<void> {
+        await this.sendRequest(RequestMethod.DELETE, `/projects/${projectId}/entityClasses/${entityClassName}`);
     }
 
 

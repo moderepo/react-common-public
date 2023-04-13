@@ -185,6 +185,60 @@ export const fetchEntityClassById = (projectId: number, entityClassId: string): 
 
 
 /**
+ * Create entity classes for the specified project
+ * @param projectId - The id of the project to look for
+ * @param entityClasses - The array of entity classes object to create
+ */
+export const createEntityClasses = (
+    projectId: number,
+    entityClasses: readonly {}[],
+): UserAppThunkAction => {
+    return async (dataDispatch: ExtDispatch<UserAppDataStateAction
+    >): Promise<void> => {
+        await AppAPI.getInstance().createEntityClasses(projectId, entityClasses);
+        // Refetch all entity classes
+        await dataDispatch(fetchEntityClasses(projectId));
+    };
+};
+
+
+/**
+ * Update an existing entity class
+ * @param projectId - The id of the project to look for
+ * @param entityClass - The entity class object to create
+ */
+export const updateEntityClass = (
+    projectId: number,
+    entityClassId: string,
+    entityClass: {},
+): UserAppThunkAction => {
+    return async (dataDispatch: ExtDispatch<UserAppDataStateAction
+    >): Promise<void> => {
+        await AppAPI.getInstance().updateEntityClass(projectId, entityClassId, entityClass);
+        await dataDispatch(fetchEntityClassById(projectId, entityClassId));
+    };
+};
+
+
+/**
+ * Delete an entity class
+ * @param projectId - The id of the project to look for
+ * @param entityClasses - The array of entity classes object to create
+ */
+export const deleteEntityClass = (
+    projectId: number,
+    entityClassId: string,
+): UserAppThunkAction => {
+    return async (dataDispatch: ExtDispatch<UserAppDataStateAction
+    >): Promise<void> => {
+        await AppAPI.getInstance().deleteEntityClass(projectId, entityClassId);
+        // Refetch all entity classes
+        await dataDispatch(fetchEntityClasses(projectId));
+    };
+};
+
+
+/**
  * Backend uses 'limit' and 'skip' attributes however in the frontend, we use pageNumber and pageSize so this function need
  * to accept a filter object that uses pageNumber, pageSize and then convert that to skip/limit before calling the API
  */
