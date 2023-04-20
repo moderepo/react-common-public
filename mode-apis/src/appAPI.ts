@@ -1199,6 +1199,7 @@ export class AppAPI extends BaseAPI {
 
     /**
      * Create multiple entity classes
+     * @deprecated
      * @param projectId
      * @returns
      */
@@ -1207,6 +1208,16 @@ export class AppAPI extends BaseAPI {
         return response.data as EntityClass[];
     }
 
+
+    /**
+     * Create one entity classes
+     * @param projectId
+     * @returns
+     */
+    public async createEntityClass (projectId: number, entityClass: object): Promise<EntityClass> {
+        const response = await this.sendRequest(RequestMethod.POST, `/projects/${projectId}/entityClasses`, entityClass);
+        return response.data as EntityClass;
+    }
 
     /**
      * Create multiple entity classes
