@@ -203,6 +203,24 @@ export const createEntityClasses = (
 
 
 /**
+ * Create one entity class for the specified project
+ * @param projectId - The id of the project to look for
+ * @param entityClass - The entity class object to create
+ */
+export const createEntityClass = (
+    projectId: number,
+    entityClass: object,
+): UserAppThunkAction => {
+    return async (dataDispatch: ExtDispatch<UserAppDataStateAction
+    >): Promise<void> => {
+        await AppAPI.getInstance().createEntityClass(projectId, entityClass);
+        // Refetch all entity classes
+        await dataDispatch(fetchEntityClasses(projectId));
+    };
+};
+
+
+/**
  * Update an existing entity class
  * @param projectId - The id of the project to look for
  * @param entityClass - The entity class object to create
