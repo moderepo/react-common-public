@@ -212,13 +212,11 @@ const createAxisAndSeries = (options: {
         valueAxis.max = yAxisRange.max;
     }
 
-    // Give the valueAxis some padding but only if range is not provided
-    /*
-    if (!(yAxisRange?.min || yAxisRange?.max)) {
-        valueAxis.extraMin = 0.05;
-        valueAxis.extraMax = 0.05;
+    // If one of the min/max is set, then enforce strictMinMax
+    if (yAxisRange?.min !== undefined || yAxisRange?.max !== undefined) {
+        valueAxis.strictMinMax = true;
     }
-    */
+
 
     const series = (() => {
         if (chartType === XYChartType.BAR || chartType === XYChartType.STACKED_BAR) {
