@@ -319,6 +319,8 @@ export enum EntityAttributeType {
     BOOLEAN = 'boolean',
     ARRAY = 'array',
     OBJECT = 'object',
+    DATE = 'date',
+    DATETIME = 'date-time',
 }
 
 
