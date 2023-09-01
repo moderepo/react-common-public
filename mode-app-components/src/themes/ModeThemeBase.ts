@@ -94,7 +94,7 @@ const modeBaseChartColorPalette = {
 };
 
 
-export const defaultMapTilesURL: string = 'https://api.maptiler.com/maps/streets/256/{z}/{x}/{y}.png';
+export const defaultMapTilesURL: string = 'https://api.maptiler.com/maps/outdoor-v2/256/{z}/{x}/{y}.png';
 
 
 

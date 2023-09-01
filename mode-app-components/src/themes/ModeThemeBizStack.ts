@@ -545,7 +545,7 @@ const darkPalette = createModePalette({
  */
 export const modeThemeDark = createModeTheme(deepmerge(modeThemeBizStack, {
     palette    : darkPalette,
-    mapTilesURL: 'https://api.maptiler.com/maps/ch-swisstopo-lbm-dark/256/{z}/{x}/{y}.png',
+    mapTilesURL: 'https://api.maptiler.com/maps/jp-mierune-dark/256/{z}/{x}/{y}.png',
     overrides  : {
         MuiCssBaseline: {
             '@global': {
