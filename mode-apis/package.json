@@ -30,7 +30,7 @@
     "types": "dist/index.d.ts",
     "dependencies": {
         "@moderepo/mode-apis-base": "^0.2.11",
-        "axios": "^1.12.1"
+        "axios": "^1.12.2"
     },
     "devDependencies": {
         "typescript": "^4.5.4"
